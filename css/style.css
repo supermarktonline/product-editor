@@ -1,0 +1,146 @@
+body {
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.toggleList-button {
+  cursor: pointer;
+}
+
+.navbar-nav > li > a, .navbar-brand {
+  padding-top:4px !important; 
+  padding-bottom:0 !important;
+  height: 28px;
+}
+.navbar {
+  min-height:28px !important;
+  margin: 1px;
+}
+
+#table-container {
+  border: 1px solid #eee;
+  margin: 0 2px;
+  height: 10em;
+  overflow-y: scroll;
+}
+
+#product-table {
+  margin: 0;
+}
+
+#product-table tr:not(.head-row) {
+  cursor: pointer;
+}
+
+#product-table tr:not(.head-row):hover {
+  background-color: #ded;
+}
+
+#product-table tr td {
+  padding: 4px !important;
+}
+
+.row-active {
+  background-color: #ffe;
+}
+
+#img-container {
+  float: left;
+  margin: 3px 0 0 3px;
+  width: 40%;
+  border: 1px solid #ddd;
+  height: 600px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.div-img {
+  height: 400px;
+  overflow: hidden;
+}
+
+#thumb-container {
+  padding-top: 8px;
+  text-align: center;
+}
+
+.my-thumbnail {
+  width: 31.5%;
+  cursor: pointer;
+  margin: 0 1px;
+}
+
+#input-container {
+  float: left;
+  margin: 3px 0 0 3px;
+  width: 59%;
+}
+
+#li-tab1.active a {
+  background-color: #f5ffff !important;
+  border-bottom: 1px solid #f5ffff;
+
+}
+
+#li-tab2.active a {
+  background-color: #f5fff5 !important;
+  border-bottom: 1px solid #f5fff5;
+}
+
+#tab-menu {
+  border: 1px solid #ddd;
+  border-top: none;
+  
+}
+
+#tab1 {
+  padding: 8px;
+  background-color: #f5ffff;
+  height: 680px;
+}
+#tab2 {
+  padding: 8px;
+  background-color: #f5fff5;
+  height: 680px;
+}
+
+
+#prod-tags {
+  width: 400px;
+}
+
+.nrg-group {
+  width: 50%;
+  height: auto;
+  float: left;
+  padding: 5px;
+}
+.nrg-group label {
+  font-weight: normal;
+}
+
+.div-allergene {
+  float: left;
+}
+.div-allergene-right {
+  margin-left: 40px;
+  padding-left: 20px;
+  border-left: 1px solid #eee;
+}
+
+.div-categories {
+  float: left;
+  margin-right: 40px;
+}
+
+.div-attributes {
+  float: left;
+  margin-right: 40px;
+}
+
+hr {
+  clear: both;
+}
