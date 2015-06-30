@@ -1,0 +1,48 @@
+
+.umsg {
+    padding:5px 10px;
+    margin: 8px 0;
+    border:1px solid transparent
+}
+
+.error {
+    background-color:#fee;
+    border-color:#911;
+    color:#911;
+}
+
+.warning {
+    background-color:#ffe;
+    border-color:#991;
+    color:#991;
+}
+
+.success {
+    background-color:#efe;
+    border-color:#191;
+    color:#191;
+}
+
+/* */
+main {
+    padding: 10px;
+}
+
+.mc {
+    padding: 10px;
+    margin:10px 0;
+    border-bottom: 1px solid #ccc;
+    background-color: #f0f0f0;
+}
+
+.mc h1 {
+    font-size:20px;
+    margin-top:0;
+    
+}
+
+#area_sel_container {
+    overflow-y:scroll;
+    max-height: 250px;
+}
+
