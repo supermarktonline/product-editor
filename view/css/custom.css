@@ -46,3 +46,16 @@ main {
     max-height: 250px;
 }
 
+
+.confirmdelete {
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    position:fixed;
+    background-color:rgba(0,0,0,0.2);
+}
+
+.hide {
+    display:none;
+}
