@@ -5,7 +5,7 @@ global $user_messages;
 
 
 /**
- * Execute an import.
+ * Execute an import of data.
  */
 if(isset($_POST['newimp']) && $_POST['newimp']=="doit") {
     
@@ -19,8 +19,11 @@ if(isset($_POST['newimp']) && $_POST['newimp']=="doit") {
                 
                 // file is ok, lets try to parse it and insert it into the database
                 $pstr = "INSERT INTO fdata VALUES (DEFAULT";
-                for($i=0;$i<(NUM_IMPORT_ROWS+2);$i++) {
+                for($i=0;$i<(NUM_IMPORT_COLS+1);$i++) {
                     $pstr .= ",?";
+                }
+                for($i=0;$i<NUM_DEFAULT_COLS_AFTER;$i++) {
+                    $pstr .= ",DEFAULT";
                 }
                 $pstr.=")";
                 
@@ -36,15 +39,13 @@ if(isset($_POST['newimp']) && $_POST['newimp']=="doit") {
                             $stmt =  $db->prepare($pstr);
                             
                             // if not, parsing of the row went probably wrong
-                            if(count($data)===NUM_IMPORT_ROWS) {
+                            if(count($data)===NUM_IMPORT_COLS) {
                                 
                                 $stmt->bindValue(1,$sqltime);
                                 
-                                for($i=2;$i<=NUM_IMPORT_ROWS+1;$i++) {
+                                for($i=2;$i<=NUM_IMPORT_COLS+1;$i++) {
                                     $stmt->bindValue($i,$data[$i-2]); 
                                 }
-                                
-                                $stmt->bindValue((NUM_IMPORT_ROWS+2),$edited,PDO::PARAM_BOOL);
                                 
                                 if(!$stmt->execute()) {
                                     array_push($user_messages,array("warning","Row number ".$row." was not imported: SQL Failure: ".$db->errorInfo()[2]));
@@ -74,8 +75,85 @@ if(isset($_POST['newimp']) && $_POST['newimp']=="doit") {
     if(empty($user_messages)) {
         array_push($user_messages,array("success","Congrats: Import successfully executed."));
     }
-    
 }
+
+
+/*
+ * Execute an import of google Product List
+ */
+if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
+    
+    if(isset($_FILES["impfilegpr"])) {
+
+        if ($_FILES["impfilegpr"]["error"] > 0) {
+              array_push($user_messages,array("error",$_FILES["file"]["error"]));
+        } else {
+        
+            if($_FILES["impfilegpr"]["type"]=="text/csv") {
+                
+                // file is ok, lets try to parse it and insert it into the database
+                
+                $up   = "UPDATE category SET lvl_1 = :lvl1, lvl_2 = :lvl2, lvl_3 = :lvl3, lvl_4 = :lvl4, lvl_5 = :lvl5, lvl_6 = :lvl6, lvl_7 = :lvl7 WHERE gid=:gid";
+                $ins  = "INSERT INTO category (gid,lvl_1,lvl_2,lvl_3,lvl_4,lvl_5,lvl_6,lvl_7) VALUES (:gid,:lvl1,:lvl2,:lvl3,:lvl4,:lvl5,:lvl6,:lvl7)";
+                
+                $row = 1;
+                if (($handle = fopen($_FILES["impfilegpr"]["tmp_name"], "r")) !== FALSE) {
+                    while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+                        
+                        if($row>0) {
+                            
+                            $stup =  $db->prepare($up);
+                            $stins = $db->prepare($ins);
+                            
+                            $populate = function($stmt,$data) {
+                                $stmt->bindValue(":gid",$data[0]); 
+                                $stmt->bindValue(":lvl1",$data[1]); 
+                                $stmt->bindValue(":lvl2",$data[2]); 
+                                $stmt->bindValue(":lvl3",$data[3]); 
+                                $stmt->bindValue(":lvl4",$data[4]); 
+                                $stmt->bindValue(":lvl5",$data[5]); 
+                                $stmt->bindValue(":lvl6",$data[6]); 
+                                $stmt->bindValue(":lvl7",$data[7]); 
+                                return $stmt;
+                            };
+                            
+                            $stup = $populate($stup,$data);
+                            $stins = $populate($stins,$data);
+                            
+                           
+
+                            if(!$stup->execute()) {
+                                if(!$stins->execute()) {
+                                    array_push($user_messages,array("warning","Row number ".$row." created: SQL Failure: ".$db->errorInfo()[2]));
+                                }
+                            }
+                        }
+                        
+                        $row++;
+                    }
+                    fclose($handle);
+                } else {
+                    array_push($user_messages,array("error","CSV could not be opened."));
+                }
+                
+                
+            } else {
+                array_push($user_messages,array("error","Can only accept .csv-Files."));
+            }
+        }
+    } else {
+        array_push($user_messages,array("error","Please choose a file to import."));
+    }
+    
+    if(empty($user_messages)) {
+        array_push($user_messages,array("success","Congrats: Import successfully executed."));
+    }
+}
+
+
+
+
+
 
 /**
  * Execute list deletion.
@@ -151,6 +229,23 @@ $imports = $stmt->fetchAll();
             
         </div>
       </div>
+          
+      <div class="mc">
+        <h1>Import or update Google product category list</h1>
+        
+        <div class="area_sel_container">
+        
+            <form method="post" action="" enctype="multipart/form-data">
+                
+                <p>Note: List must be a .csv File in the correct format.</p>
+                
+                <p><input type="file" name="impfilegpr" /></p>
+                <p><button type="submit" name="newimpgpr" value="doit">Import ausführen</button></p>
+                
+            </form>
+            
+        </div>
+      </div>
       
       
 
@@ -164,7 +259,7 @@ $imports = $stmt->fetchAll();
             ?>
             <a href="/?edit=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id']; ?></a>
             &nbsp;&nbsp;&nbsp;
-            <a href="#" data-deletelist="<?php echo urlencode($row['import_id']); ?>">[Delete this import]</a>
+            <a href="#" data-deletelist="<?php echo urlencode($row['import_id']); ?>">[Delete this import]</a><br/>
             
             <?php
         }
@@ -180,7 +275,7 @@ $imports = $stmt->fetchAll();
         <?php
         foreach ($imports as $row) {
             ?>
-            <a href="/?export=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id']; ?></a>
+            <a href="/?export=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id']; ?></a><br/>
             <?php
         }
         ?>

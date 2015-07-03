@@ -1,3 +1,12 @@
+<?php
+
+// query the list of the desired import
+$stmt = $db->prepare('SELECT * FROM fdata WHERE import_id = :import_id ORDER BY id ASC');
+$stmt->bindValue(":import_id",urldecode($_GET['edit']));
+$stmt->execute();
+$imports = $stmt->fetchAll();
+
+?>
 <!DOCTYPE html>
 <html>
   <?php include ("header.php"); ?>
@@ -9,11 +18,8 @@
         <div class="navbar-header"><a class="navbar-brand">Produkteditor</a></div>
         <div id="menu-navbar">
           <ul class="nav navbar-nav">
-            <li class="active"><a class="dropdown-toggle">Home<span class="sr-only">(current)</span></a></li>
             <li><a onclick="toggleList();" class="toggleList-button dropdown-toggle">Produktliste ein/ausblenden</a></li>
-            <li><a href="#" class="dropdown-toggle">Editierte Produkte</a></li>
-            <li><a href="#" class="dropdown-toggle">Import/Export</a></li>
-            
+            <li><a href="/" class="dropdown-toggle">Import/Export</a></li>
           </ul>
         </div>
       </div>
@@ -24,243 +30,248 @@
       <table id="product-table" class="table table-striped">
         <tr class="head-row">
           <th>#</th>
+          <th>Bearbeitet</th>
           <th>Name</th>
           <th>EAN Code</th>
           <th>Marke</th>
         </tr>
-        <tr class="row-active">
-          <td>1</td>
-          <td>Erbsen und Karotten</td>
-          <td>4054665465</td>
-          <td>Spar</td>
+        
+        <?php
+        // <tr class="row-active">
+        foreach($imports as $imp) { 
+            
+            ?>
+        <tr data-open_edit_id="<?php echo $imp["id"]; ?>">
+            <td><?php echo $imp["id"]; ?></td>
+            <td><span class="eds <?php echo ($imp["edited"]) ? "eds-edited":"eds-new"; ?>"></span></td>
+            <td><?php
+                if(strlen($tp = $imp["productName de_AT"])>1) {
+                    echo $tp;
+                } else if(strlen($tp = $imp["productName de_DE"])>1) {
+                    echo $tp;
+                } else if(strlen($tp = $imp["productName en_US"])>1) {
+                    echo $tp;
+                } else if(strlen($tp = $imp["productName es_ES"])>1) {
+                    echo $tp;
+                } else if(strlen($tp = $imp["productName fr_FR"])>1) {
+                    echo $tp;
+                }
+            ?></td>
+            <td><?php echo $imp["articleeancode"]; ?></td>
+            <td><?php
+                if(strlen($tp = $imp["productBrand de_AT"])>1) {
+                    echo $tp;
+                } else if(strlen($tp = $imp["productBrand de_DE"])>1) {
+                    echo $tp;
+                } else if(strlen($tp = $imp["productBrand en_US"])>1) {
+                    echo $tp;
+                } else if(strlen($tp = $imp["productBrand es_ES"])>1) {
+                    echo $tp;
+                } else if(strlen($tp = $imp["productBrand fr_FR"])>1) {
+                    echo $tp;
+                }
+            ?></td>
         </tr>
-        <tr>
-          <td>2</td>
-          <td>Fruchtjoghurt</td>
-          <td>94564649831</td>
-          <td>Nöm</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Fruchtjoghurt</td>
-          <td>94564649831</td>
-          <td>Nöm</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Fruchtjoghurt</td>
-          <td>94564649831</td>
-          <td>Nöm</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Fruchtjoghurt</td>
-          <td>94564649831</td>
-          <td>Nöm</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>Fruchtjoghurt</td>
-          <td>94564649831</td>
-          <td>Nöm</td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>Fruchtjoghurt</td>
-          <td>94564649831</td>
-          <td>Nöm</td>
-        </tr>
+        <?php
+        }
+        ?>
       </table>
     </div>
     <div id="main-container">
+        
+      <!-- Images -->
       <div id="img-container">  
         
-        <div class="div-img">
-          <img src="<?php echo VIEWPATH; ?>img/prod2.jpg">  
-        </div>
-        <div id="thumb-container">
-          <img src="<?php echo VIEWPATH; ?>img/product_ex.jpg" class="img-thumbnail my-thumbnail">
-          <img src="<?php echo VIEWPATH; ?>img/product_ex.jpg" class="img-thumbnail my-thumbnail">
-          <img src="<?php echo VIEWPATH; ?>img/product_ex.jpg" class="img-thumbnail my-thumbnail">
-        </div>
+          <div id="current_image">
+              
+          </div>
+          <div id="thumb-container">
+              
+          </div>
       </div>
+      
+      <!-- input container -->
       <div id="input-container">
         <ul id="tab-list" class="nav nav-tabs nav-justified" role="tablist">
           <li role="presentation" id="li-tab1" class="active"><a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Allgemein & Nährwerte</a></li>
           <li role="presentation" id="li-tab2"><a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">Inhaltsstoffe, etc.</a></li>
         </ul>  
+          
+          
         <div id="tab-menu" class="tab-content">
           <div id="tab1" role="tabpanel" class="tab-pane active">
             <form methop="post" action="/save" id="product-form">
               <div class="form-group">
                 <label class="control-label">Name</label>
-                <input type="text" name="name" value="Erbsen und Karotten" class="form-control">
+                <input type="text" id="name"   value="" class="form-control">
               </div>
               <div class="form-group">
                 <label class="control-label">Beschreibung</label>
-                <textarea name="description" rows="2" class="form-control">Das sind schöne Erbsen mit Karotten!</textarea>
+                <textarea  id="description"  rows="2" class="form-control"></textarea>
               </div>
+                
               <div class="nutrition-container">
                 <label class="control-label">Nährwertangaben:</label><br>
                 <div class="nrg-group">
                   <label class="control-label">pro 100</label>
-                  <select>
+                  <select id="nutrient_unit">
                     <option>g</option>
                     <option>ml</option>
                   </select>
                   <br><br>
+                  
+                  
                   <div class="form-group form-group-sm form-horizontal">
-                    <label for="input-energy" class="control-label">Energie (in KJ)</label>
+                    <label  class="control-label">Energie (in KJ)</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionEnergy" type="text" placeholder="14" id="input-energy" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-group form-group-sm form-horizontal">
-                    <label for="input-fat" class="control-label">Fett (total)</label>
-                    <div class="col-sm-5"> 
-                      <input name="nutritionFat" type="text" placeholder="14" id="input-fat" class="form-control">
+                      <input  type="text"  id="nutrient_100_energy" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label for="input-fatSat" class="control-label">Fett (gesättigt)</label>
+                    <label  class="control-label">Fett (total)</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionFatSat" type="text" placeholder="14" id="input-fatSat" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-group form-group-sm">
-                    <label for="input-protein" class="control-label">Proteine</label>
-                    <div class="col-sm-5"> 
-                      <input name="nutritionProtein" type="text" placeholder="14" id="input-protein" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-group form-group-sm">
-                    <label for="input-fibers" class="control-label">Ballaststoffe</label>
-                    <div class="col-sm-5"> 
-                      <input name="nutritionFibers" type="text" placeholder="14" id="input-fibers" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-group form-group-sm">
-                    <label for="input-calcium" class="control-label">Calcium</label>
-                    <div class="col-sm-5"> 
-                      <input name="nutritionCalcium" type="text" placeholder="14" id="input-calcium" class="form-control">
+                      <input  type="text"  id="nutrient_100_fat_total" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label for="input-carb" class="control-label">Kohlenhydrate</label>
+                    <label  class="control-label">Fett (gesättigt)</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionCarb" type="text" placeholder="14" id="input-carb" class="form-control">
+                      <input  type="text"  id="nutrient_100_fat_saturated" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-sugar" class="control-label">Zucker</label>
+                    <label  class="control-label">Proteine</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionSugar" type="text" placeholder="14" id="input-sugar" class="form-control">
+                      <input  type="text"  id="nutrient_100_protein" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-sodium" class="control-label">Salz</label>
+                    <label  class="control-label">Ballaststoffe</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionSodium" type="text" placeholder="14" id="input-sodium" class="form-control">
+                      <input  type="text"  id="nutrient_100_fibers" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-lactose" class="control-label">Lactose</label>
+                    <label  class="control-label">Calcium</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionLactose" type="text" placeholder="14" id="input-lactose" class="form-control">
+                      <input  type="text"  id="nutrient_100_calcium" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group form-group-sm form-horizontal">
+                    <label  class="control-label">Kohlenhydrate</label>
+                    <div class="col-sm-5"> 
+                      <input  type="text"  id="nutrient_100_carb" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-natrium" class="control-label">Natrium</label>
+                    <label  class="control-label">Zucker</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionNatrium" type="text" placeholder="14" id="input-natrium" class="form-control">
+                      <input  type="text"  id="nutrient_100_sugar" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-breadunits" class="control-label">Broteinheiten</label>
+                    <label  class="control-label">Salz</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionBreadunits" type="text" placeholder="14" id="input-breadunits" class="form-control">
+                      <input  type="text"  id="nutrient_100_salt" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group form-group-sm">
+                    <label  class="control-label">Lactose</label>
+                    <div class="col-sm-5"> 
+                      <input  type="text"  id="nutrient_100_lactose" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group form-group-sm">
+                    <label  class="control-label">Natrium</label>
+                    <div class="col-sm-5"> 
+                      <input  type="text"  id="nutrient_100_natrium" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group form-group-sm">
+                    <label  class="control-label">Broteinheiten</label>
+                    <div class="col-sm-5"> 
+                      <input  type="text"  id="nutrient_100_bread_unit" class="form-control">
                     </div>
                   </div>
                 </div>
                 <div class="nrg-group">
                   <label class="control-label">pro</label>
-                  <input type="text" class="myTextInput" placeholder="250">
-                  <select>
-                    <option>g</option>
-                    <option>ml</option>
-                  </select>
-                  <input type="text" class="myTextInput" placeholder="z.B. 'inklusive Milch'">
+                  <input type="text" class="myTextInput" id="nutrient_snd_amount" >
+                  <span id="nutrient_unit_copy"></span>
+                  
+                  
+                  <input type="text" class="myTextInput" id="nutrient_snd_additional" >
                   <br><br>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label for="input-indi-energy" class="control-label">Energie (in KJ)</label>
+                    <label  class="control-label">Energie (in KJ)</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiEnergy" type="text" placeholder="14" id="input-indi-energy" class="form-control">
+                      <input  type="text"  id="nutrient_snd_energy" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label for="input-indi-fat" class="control-label">Fett (total)</label>
+                    <label  class="control-label">Fett (total)</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiFat" type="text" placeholder="14" id="input-indi-fat" class="form-control">
+                      <input  type="text"  id="nutrient_snd_fat_total" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label for="input-indi-fatSat" class="control-label">Fett (gesättigt)</label>
+                    <label  class="control-label">Fett (gesättigt)</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiFatSat" type="text" placeholder="14" id="input-indi-fatSat" class="form-control">
+                      <input  type="text"  id="nutrient_snd_fat_saturated" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-indi-protein" class="control-label">Proteine</label>
+                    <label  class="control-label">Proteine</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiProtein" type="text" placeholder="14" id="input-indi-protein" class="form-control">
+                      <input  type="text"  id="nutrient_snd_protein" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-indi-fibers" class="control-label">Ballaststoffe</label>
+                    <label  class="control-label">Ballaststoffe</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiFibers" type="text" placeholder="14" id="input-indi-fibers" class="form-control">
+                      <input  type="text"  id="nutrient_snd_fibers" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-indi-calcium" class="control-label">Calcium</label>
+                    <label  class="control-label">Calcium</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiCalcium" type="text" placeholder="14" id="input-indi-calcium" class="form-control">
+                      <input  type="text"  id="nutrient_snd_calcium" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label for="input-indi-carb" class="control-label">Kohlenhydrate</label>
+                    <label  class="control-label">Kohlenhydrate</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiCarb" type="text" placeholder="14" id="input-indi-carb" class="form-control">
+                      <input  type="text"  id="nutrient_snd_carb" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-indi-sugar" class="control-label">Zucker</label>
+                    <label  class="control-label">Zucker</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiSugar" type="text" placeholder="14" id="input-indi-sugar" class="form-control">
+                      <input  type="text"  id="nutrient_snd_sugar" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-indi-sodium" class="control-label">Salz</label>
+                    <label  class="control-label">Salz</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiSodium" type="text" placeholder="14" id="input-indi-sodium" class="form-control">
+                      <input  type="text"  id="nutrient_snd_salt" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-indi-lactose" class="control-label">Lactose</label>
+                    <label  class="control-label">Lactose</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiLactose" type="text" placeholder="14" id="input-indi-lactose" class="form-control">
+                      <input  type="text"  id="nutrient_snd_lactose" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-indi-natrium" class="control-label">Natrium</label>
+                    <label  class="control-label">Natrium</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiNatrium" type="text" placeholder="14" id="input-natrium" class="form-control">
+                      <input  type="text"  id="nutrient_snd_natrium" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label for="input-indi-breadunits" class="control-label">Broteinheiten</label>
+                    <label  class="control-label">Broteinheiten</label>
                     <div class="col-sm-5"> 
-                      <input name="nutritionIndiBreadunits" type="text" placeholder="14" id="input-breadunits" class="form-control">
+                      <input  type="text"  id="nutrient_snd_bread_unit" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -270,7 +281,7 @@
           <div id="tab2" role="tabpanel" class="tab-pane">
             <div class="form-group">
             <label class="control-label">Inhaltsstoffe</label>
-            <input type="text" name="tags" data-role="tagsinput" class="form-control">
+            <input type="text"  data-role="tagsinput" class="form-control">
           </div>
           <div class="form-group"> 
             <div class="div-allergene">  
@@ -515,8 +526,8 @@
         
       </div>
       <div id="send-container">
-        <button class="btn btn-default">sichern</button>
-        <button class="btn btn-default send-btn">senden</button>
+        <button id="save_now" class="btn btn-default" data-save_id="">sichern</button>
+        <div id="message_container"></div>
       </div>
     </div>
 

@@ -59,3 +59,17 @@ main {
 .hide {
     display:none;
 }
+
+.eds {
+    display:inline-block;
+    width:10px;
+    height:10px;
+}
+
+.eds-edited {
+    background-color:#191;
+}
+
+.eds-new {
+    background-color:#911;
+}
