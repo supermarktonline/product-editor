@@ -56,7 +56,7 @@ main {
     background-color:rgba(0,0,0,0.2);
 }
 
-.hide {
+.hide,.no-show {
     display:none;
 }
 
@@ -72,4 +72,23 @@ main {
 
 .eds-new {
     background-color:#911;
+}
+
+/* Ingredients */
+.ic_ing {
+    background-color:#009;
+    color:#fff;
+    display: inline-block;
+    padding:3px 5px;
+    margin:5px;
+    cursor:default;
+}
+
+.ic_ing_remove {
+    font-weight:700;
+    display:inline-block;
+    padding:5px;
+    background-color:#b11;
+    border-radius:50%;
+    cursor:pointer;
 }

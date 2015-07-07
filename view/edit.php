@@ -6,6 +6,12 @@ $stmt->bindValue(":import_id",urldecode($_GET['edit']));
 $stmt->execute();
 $imports = $stmt->fetchAll();
 
+
+$stmt2 = $db->prepare('SELECT * FROM ingredient ORDER BY name DESC');
+$stmt2->execute();
+$ingredients = $stmt2->fetchAll();
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -77,7 +83,7 @@ $imports = $stmt->fetchAll();
         ?>
       </table>
     </div>
-    <div id="main-container">
+    <div id="main-container" class="no-show">
         
       <!-- Images -->
       <div id="img-container">  
@@ -118,6 +124,7 @@ $imports = $stmt->fetchAll();
                     <option>g</option>
                     <option>ml</option>
                   </select>
+                  <button type="button" id="generate_nw">Generate right</button>
                   <br><br>
                   
                   
@@ -201,6 +208,9 @@ $imports = $stmt->fetchAll();
                   
                   
                   <input type="text" class="myTextInput" id="nutrient_snd_additional" >
+                  
+                  
+                  
                   <br><br>
                   <div class="form-group form-group-sm form-horizontal">
                     <label  class="control-label">Energie (in KJ)</label>
@@ -281,82 +291,95 @@ $imports = $stmt->fetchAll();
           <div id="tab2" role="tabpanel" class="tab-pane">
             <div class="form-group">
             <label class="control-label">Inhaltsstoffe</label>
-            <input type="text"  data-role="tagsinput" class="form-control">
+            
+            <p>
+                <span id="ingredients_collector"></span>
+                <span id="ingredients_selwrap">
+                    <input type="text" id="ingredients_selector" />
+                    <div id="ingredients_suggestor"></div>
+                </span>
+            </p>
+            
           </div>
           <div class="form-group"> 
             <div class="div-allergene">  
-              <label class="control-label">Allergene (pro Inhaltsstoff):</label>
+                <label class="control-label">Allergene für <span id="current_ingredient" data-id="">...</span>:</label>
               <div id="allergy-select">
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">A - glutenhaltiges Getreide
+                    <input type="checkbox" id="cur_ingr_a" data-cur_ingr="a">A - glutenhaltiges Getreide
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">B - Krebstiere
+                    <input type="checkbox" id="cur_ingr_b"  data-cur_ingr="b">B - Krebstiere
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">C - Ei
+                    <input type="checkbox" id="cur_ingr_c"  data-cur_ingr="c">C - Ei
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">D - Fisch
+                    <input type="checkbox" id="cur_ingr_d"   data-cur_ingr="d">D - Fisch
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">E - Erdnuss
+                    <input type="checkbox" id="cur_ingr_e"  data-cur_ingr="e">E - Erdnuss
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">F - Soja
+                    <input type="checkbox" id="cur_ingr_f"  data-cur_ingr="f">F - Soja
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">G - Milch oder Laktose
+                    <input type="checkbox" id="cur_ingr_g"  data-cur_ingr="g">G - Milch oder Laktose
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">H - Schalenfrüchte
+                    <input type="checkbox" id="cur_ingr_h"  data-cur_ingr="h">H - Schalenfrüchte
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">L - Sellerie
+                    <input type="checkbox" id="cur_ingr_l"  data-cur_ingr="l">L - Sellerie
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">M - Senf
+                    <input type="checkbox" id="cur_ingr_m"  data-cur_ingr="m">M - Senf
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">N - Sesam
+                    <input type="checkbox" id="cur_ingr_n"  data-cur_ingr="n">N - Sesam
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">O - Sulfite
+                    <input type="checkbox" id="cur_ingr_o"  data-cur_ingr="o">O - Sulfite
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">P - Lupinen
+                    <input type="checkbox" id="cur_ingr_p"  data-cur_ingr="p">P - Lupinen
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">R - Weichtiere
+                    <input type="checkbox"  id="cur_ingr_r"  data-cur_ingr="r">R - Weichtiere
                   </label>
                 </div>
+                
+                  <div>
+                      <button id="ingredient_deleter">Inhaltsstoff komplett löschen</button>
+                  </div>
+                  
               </div>
             </div>
             <div class="div-allergene div-allergene-right">  
@@ -531,5 +554,8 @@ $imports = $stmt->fetchAll();
       </div>
     </div>
 
+      
+      <div class="hidden" id="ingredients"><?php echo json_encode($ingredients); ?></div>
+      
   </body>
 </html>

@@ -144,7 +144,7 @@ CREATE TABLE fdata (
 CREATE TABLE ingredient (
 
     id SERIAL PRIMARY KEY,
-    name varchar(255),
+    name varchar(255) UNIQUE,
     a boolean DEFAULT false,
     b boolean DEFAULT false,
     c boolean DEFAULT false,

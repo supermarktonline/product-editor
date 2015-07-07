@@ -8,6 +8,10 @@ if(isset($_REQUEST['edit'])) {
     include("productjson.php");
 } else if(isset($_REQUEST['updateproduct'])) {
     include("updateproduct.php");
+} else if(isset($_REQUEST['ingredient_connection'])) {
+    include("ingredient_connection.php");
+} else if(isset($_REQUEST['ingredient'])) {
+    include("ingredient.php");
 } else {
     include("import-export.php");
 }
