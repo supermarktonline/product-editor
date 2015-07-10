@@ -119,7 +119,6 @@ $(document).on('click','*[data-open_edit_id]',function() {
                     appendIngredient(getIngredientBy("id",icons[i]["ingredient_id"]));
                 }
                 
-                
                 clearCurrentAllergen();
                 
                 for(var i = 0;i<allergene.length; i++) {
@@ -129,9 +128,28 @@ $(document).on('click','*[data-open_edit_id]',function() {
                         $('[data-art_ingr="'+allergene[i]+'"]').prop("checked",false);
                     }
                 }
+            }
+        });
+        
+        // show categories
+        $('#category_select_wrapper').html('');
+        
+        $.ajax({url: "/?category_connection=get&fdata_id="+product["id"], success: function(result){
+                
+                var ids;
+                
+                try {
+                    ids = JSON.parse(result);
+                } catch(e) {
+                    $('#message_container').html('<div class="umsg error">'+result+'</div>');
+                    return;
+                }
+                
+                populateCategories(ids);
                 
             }
         });
+        
         
     }});
     
@@ -168,6 +186,26 @@ $(document).on('click','#save_now',function() {
            $('tr[data-open_edit_id="'+save_id+'"] td:nth-child(2)').html('<span class="eds eds-edited"></span>');
        } else {
            $('#message_container').html('<div class="umsg error">'+result+'</div>');
+       }
+    }});
+
+    // update all categories
+    var categories = {};
+    categories["categories"]=[];
+    
+    $('#category_select_wrapper').children('.csw-row').each(function() {
+        var catid = parseInt($(this).attr('data-current_cat')) || 0;
+        
+        if(catid>0) {
+            categories["categories"].push(catid);
+        }
+    });
+    
+    $.ajax({ type:"POST", url: "/?category_connection=update&fdata_id="+save_id, data:categories, success: function(result){
+       if(result==="success") {
+           $('#message_container').append('<div class="umsg success">Article categories updated successfully.</div>');
+       } else {
+           $('#message_container').append('<div class="umsg error">'+result+'</div>');
        }
     }});
     

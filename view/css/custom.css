@@ -23,9 +23,18 @@
     color:#191;
 }
 
+.clear {
+    float:none;
+    clear:both;
+}
+
 /* */
 main {
     padding: 10px;
+}
+
+#main-container {
+    padding-bottom:100px;
 }
 
 .mc {
@@ -91,4 +100,33 @@ main {
     background-color:#b11;
     border-radius:50%;
     cursor:pointer;
+}
+
+/* Categories */
+#category_select_wrapper {
+    padding-bottom:10px;
+}
+
+.csw-row {
+    padding:5px;
+}
+
+.csw-row:nth-child(2n) {
+    background-color:#f5f5ff;
+}
+
+.csw-row select {
+    display:inline-block;
+    margin:3px 7px;
+}
+
+#cat_adder {
+    padding:0 5px;
+    margin-left:10px;
+    font-size:20px;
+    background-color:#aaf;
+    border-radius:50%;
+    font-weight:700;
+    cursor:pointer;
+    color:#fff;
 }

@@ -99,12 +99,12 @@ a {
 #tab1 {
   padding: 8px;
   background-color: #f5ffff;
-  height: 680px;
+  min-height: 680px;
 }
 #tab2 {
   padding: 8px;
   background-color: #f5fff5;
-  height: 680px;
+  min-height: 680px;
 }
 
 

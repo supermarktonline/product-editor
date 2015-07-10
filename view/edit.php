@@ -12,7 +12,7 @@ $stmt2->execute();
 $ingredients = $stmt2->fetchAll();
 
 
-$stmt3 = $db->prepare('SELECT * FROM category');
+$stmt3 = $db->prepare('SELECT * FROM category ORDER BY gid');
 $stmt3->execute();
 $categories = $stmt3->fetchAll();
 
@@ -464,15 +464,18 @@ $categories = $stmt3->fetchAll();
             </div>
             <hr>
             <div id="category-container">
-              <label>Kategorie</label><br>
-              <div class="div-categories">  
-                <select>
-                  <option>-- wählen --</option>
-                  <option>Milchprodukte</option>
-                  <option>Fleisch und Wurst</option>
-                  <option>Brot und Gebäck</option>
-                </select>
+                <label>Kategorie</label><span id="cat_adder">+</span><br>
+              
+              
+              
+              <div id="category_select_wrapper">  
+                  
+                
+                  
               </div>
+              
+              
+              
             </div>
             <hr>
             <label class="control-label">Gütesiegel, etc.</label>
@@ -547,6 +550,8 @@ $categories = $stmt3->fetchAll();
       <div class="hidden" id="ingredients"><?php echo json_encode($ingredients); ?></div>
       
       <div class="hidden" id="categories"><?php echo json_encode($categories); ?></div>
-      
+    
+      <div class="clear"></div>
+    </div>
   </body>
 </html>
