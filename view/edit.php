@@ -12,6 +12,11 @@ $stmt2->execute();
 $ingredients = $stmt2->fetchAll();
 
 
+$stmt3 = $db->prepare('SELECT * FROM category');
+$stmt3->execute();
+$categories = $stmt3->fetchAll();
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -387,72 +392,72 @@ $ingredients = $stmt2->fetchAll();
               <div id="allergy-select">
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">A - glutenhaltiges Getreide
+                    <input type="checkbox" id="art_ingr_a" data-art_ingr="a">A - glutenhaltiges Getreide
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">B - Krebstiere
+                    <input type="checkbox" id="art_ingr_b" data-art_ingr="b">B - Krebstiere
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">C - Ei
+                    <input type="checkbox" id="art_ingr_c" data-art_ingr="c">C - Ei
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">D - Fisch
+                    <input type="checkbox" id="art_ingr_d" data-art_ingr="d">D - Fisch
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">E - Erdnuss
+                    <input type="checkbox" id="art_ingr_e" data-art_ingr="e">E - Erdnuss
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">F - Soja
+                    <input type="checkbox" id="art_ingr_f" data-art_ingr="f">F - Soja
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">G - Milch oder Laktose
+                    <input type="checkbox" id="art_ingr_g" data-art_ingr="g">G - Milch oder Laktose
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">H - Schalenfrüchte
+                    <input type="checkbox" id="art_ingr_h" data-art_ingr="h">H - Schalenfrüchte
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">L - Sellerie
+                    <input type="checkbox" id="art_ingr_l" data-art_ingr="l">L - Sellerie
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">M - Senf
+                    <input type="checkbox" id="art_ingr_m" data-art_ingr="m">M - Senf
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">N - Sesam
+                    <input type="checkbox" id="art_ingr_n" data-art_ingr="n">N - Sesam
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">O - Sulfite
+                    <input type="checkbox" id="art_ingr_o" data-art_ingr="o">O - Sulfite
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">P - Lupinen
+                    <input type="checkbox" id="art_ingr_p" data-art_ingr="p">P - Lupinen
                   </label>
                 </div>
                 <div class="checkbox"> 
                   <label>
-                    <input type="checkbox">R - Weichtiere
+                    <input type="checkbox" id="art_ingr_r" data-art_ingr="r">R - Weichtiere
                   </label>
                 </div>
               </div>
@@ -460,22 +465,6 @@ $ingredients = $stmt2->fetchAll();
             <hr>
             <div id="category-container">
               <label>Kategorie</label><br>
-              <div class="div-categories">  
-                <select>
-                  <option>-- wählen --</option>
-                  <option>Milchprodukte</option>
-                  <option>Fleisch und Wurst</option>
-                  <option>Brot und Gebäck</option>
-                </select>
-              </div>
-              <div class="div-categories">  
-                <select>
-                  <option>-- wählen --</option>
-                  <option>Milchprodukte</option>
-                  <option>Fleisch und Wurst</option>
-                  <option>Brot und Gebäck</option>
-                </select>
-              </div>
               <div class="div-categories">  
                 <select>
                   <option>-- wählen --</option>
@@ -556,6 +545,8 @@ $ingredients = $stmt2->fetchAll();
 
       
       <div class="hidden" id="ingredients"><?php echo json_encode($ingredients); ?></div>
+      
+      <div class="hidden" id="categories"><?php echo json_encode($categories); ?></div>
       
   </body>
 </html>
