@@ -172,7 +172,7 @@ $(document).on('change','*[data-cur_ingr]',function() {
                     refreshArticleAllergeneAuto();
                     
                     
-                    $('#message_container').html('<div class="umsg success">Inhaltsstoff erfolgreich aktualisiert.</div>');
+                    $('#message_container').html('<div class="umsg success">Inhaltsstoff erfolgreich aktualisiert. Do not forget to save the article, too.</div>');
                 }
             }
         });

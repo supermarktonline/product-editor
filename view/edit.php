@@ -17,6 +17,11 @@ $stmt3->execute();
 $categories = $stmt3->fetchAll();
 
 
+$stmt3 = $db->prepare('SELECT * FROM sealetc ORDER BY name');
+$stmt3->execute();
+$seals = $stmt3->fetchAll();
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -119,6 +124,10 @@ $categories = $stmt3->fetchAll();
               <div class="form-group">
                 <label class="control-label">Beschreibung</label>
                 <textarea  id="description"  rows="2" class="form-control"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Anmerkung(en) (allg. Anmerkungen zum Einpflegen des Artikels)</label>
+                  <textarea  id="notice"  rows="2" class="form-control"></textarea>
               </div>
                 
               <div class="nutrition-container">
@@ -290,6 +299,7 @@ $categories = $stmt3->fetchAll();
                     </div>
                   </div>
                 </div>
+                <div class="clear"></div>
               </div>
             </form>
           </div>
@@ -465,72 +475,18 @@ $categories = $stmt3->fetchAll();
             <hr>
             <div id="category-container">
                 <label>Kategorie</label><span id="cat_adder">+</span><br>
-              
-              
-              
-              <div id="category_select_wrapper">  
-                  
-                
-                  
-              </div>
-              
-              
-              
+              <div id="category_select_wrapper"></div>
             </div>
             <hr>
-            <label class="control-label">Gütesiegel, etc.</label>
+            
+            <label>Gütesiegel, etc.</label>
+            <input type="text" id="seal_new" value="" /><span id="seal_adder">+</span>
+            <input type="text" id="seal_remove" value="" /><span id="seal_remover">-</span>
+            <br>
+            
             <div id="attributes-container">
-              <div class="div-attributes">  
-                <div class="checkbox"> 
-                  <label>
-                    <input type="checkbox">Fairtrade
-                  </label>
-                </div>
-                <div class="checkbox"> 
-                  <label>
-                    <input type="checkbox">Bio
-                  </label>
-                </div>
-                <div class="checkbox"> 
-                  <label>
-                    <input type="checkbox">Glutenfrei
-                  </label>
-                </div>
-              </div>
-              <div class="div-attributes">  
-                <div class="checkbox"> 
-                  <label>
-                    <input type="checkbox">Laktosefrei
-                  </label>
-                </div>
-                <div class="checkbox"> 
-                  <label>
-                    <input type="checkbox">Vegetarisch
-                  </label>
-                </div>
-                <div class="checkbox"> 
-                  <label>
-                    <input type="checkbox">Vegan
-                  </label>
-                </div>
-              </div>
-              <div class="div-attributes">  
-                <div class="checkbox"> 
-                  <label>
-                    <input type="checkbox">Fettarm
-                  </label>
-                </div>
-                <div class="checkbox"> 
-                  <label>
-                    <input type="checkbox">Fruktosefrei
-                  </label>
-                </div>
-                <div class="checkbox"> 
-                  <label>
-                    <input type="checkbox">Zuckerfrei
-                  </label>
-                </div>
-              </div>
+              <div id="guetesiegel" class="div-attributes"></div>
+                <div class="clear"></div>
             </div>
             <hr>
             
@@ -550,6 +506,8 @@ $categories = $stmt3->fetchAll();
       <div class="hidden" id="ingredients"><?php echo json_encode($ingredients); ?></div>
       
       <div class="hidden" id="categories"><?php echo json_encode($categories); ?></div>
+      
+      <div class="hidden" id="seals"><?php echo json_encode($seals); ?></div>
     
       <div class="clear"></div>
     </div>

@@ -10,5 +10,6 @@
   <script src="<?php echo VIEWPATH; ?>js/script.js"></script>
   <script src="<?php echo VIEWPATH; ?>js/ingredient.js"></script>
   <script src="<?php echo VIEWPATH; ?>js/category.js"></script>
+  <script src="<?php echo VIEWPATH; ?>js/sealetc.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 </head>

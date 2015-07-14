@@ -120,7 +120,7 @@ main {
     margin:3px 7px;
 }
 
-#cat_adder {
+#cat_adder, #seal_adder, #seal_remover {
     padding:0 5px;
     margin-left:10px;
     font-size:20px;
@@ -129,4 +129,26 @@ main {
     font-weight:700;
     cursor:pointer;
     color:#fff;
+}
+
+#seal_remover {
+    
+}
+
+#guetesiegel > div.gs {
+    float:left;
+    display:inline-block;
+    margin:5px;
+}
+
+#guetesiegel > div.gs label {
+    font-weight:400;
+}
+
+#guetesiegel > div.gs input[type="checkbox"] {
+    margin:3px;
+}
+
+#seal_new {
+    margin-left:10px;
 }

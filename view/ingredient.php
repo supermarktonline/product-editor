@@ -52,7 +52,7 @@ if($_REQUEST["ingredient"]=="create") {
         $row = $con[0];
         
         // deletion allowed if the ingredient is only connected to the current product
-        if($row["fdata_id"]==$_REQUEST["fdata_id"]) {
+        if($row["fdata_id"]==$_REQUEST["fdata_id"] || count($con) === 0) {
             $stmt = $db->prepare("DELETE FROM ingredient WHERE id=:ingredient_id");
             $stmt->bindValue(":ingredient_id",$_REQUEST["ingredient_id"]);
             $stmt->execute();

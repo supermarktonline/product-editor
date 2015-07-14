@@ -189,9 +189,11 @@ CREATE TABLE fdata_category (
 );
 
 
+
+--- 
 CREATE TABLE sealetc (
     id SERIAL PRIMARY KEY,
-    name varchar(255)
+    name varchar(255) UNIQUE
 );
 
 

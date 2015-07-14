@@ -40,8 +40,11 @@ var ingredients;
 
 var ingredient_names = [];
 
+var seals;
+
 
 $(document).ready(function() {
+    // initialize the ingredients
    ingredients = JSON.parse($('#ingredients').html());
    
    for(var i = 0; i < ingredients.length; i++) {
@@ -62,6 +65,13 @@ $(document).ready(function() {
            
        }
    });
+   
+   
+   // initialize the seals
+   seals = JSON.parse($('#seals').html());
+   
+   initializeSeals(seals);
+   
    
 });
 
@@ -85,6 +95,7 @@ $(document).on('click','*[data-open_edit_id]',function() {
         
         $('#name').val(product["productName de_AT"]);
         $('#description').val(product["productDescription de_AT"]);
+        $('#notice').val(product["notice"]);
         
         var images = product["productimages"];
         var imagesAr = images.split(",");
@@ -150,6 +161,34 @@ $(document).on('click','*[data-open_edit_id]',function() {
             }
         });
         
+        // Show Gütesiegel etc.
+        $('.seal').each(function() {
+           $(this).prop('checked', false);  
+        });
+        
+        $.ajax({url: "/?sealetc_connection=get&fdata_id="+product["id"], success: function(result){
+                
+                var ids;
+                
+                try {
+                    ids = JSON.parse(result);
+                } catch(e) {
+                    $('#message_container').html('<div class="umsg error">'+result+'</div>');
+                    return;
+                }
+                
+                for(var i = 0; i < ids.length; i++) {
+                   
+                    var sid = ids[i]["sealetc_id"];
+                    
+                    $('.seal[value="'+sid+'"]').each(function() {
+                       $(this).prop("checked",true); 
+                    });
+                }
+                
+            }
+        });
+        
         
     }});
     
@@ -165,6 +204,7 @@ $(document).on('click','#save_now',function() {
     product["edited"] = true;
     product["productName___de_AT"] = $('#name').val();
     product["productDescription___de_AT"] = $('#description').val();
+    product["notice"] = $('#notice').val();
     
     $.each(product_simple_properties,function(key,value) {
         if($("#" + value).length > 0) {
@@ -208,6 +248,29 @@ $(document).on('click','#save_now',function() {
            $('#message_container').append('<div class="umsg error">'+result+'</div>');
        }
     }});
+    
+    
+    // update all seals
+    var ids = {};
+    
+    var tpids = [];
+    
+    $('.seal').each(function() {
+        if($(this).is(":checked")) {
+            tpids.push($(this).val());
+        }
+    });
+    
+    ids["ids"] = tpids;
+    
+    $.ajax({ type:"POST", url: "/?sealetc_connection=update&fdata_id="+save_id, data:ids, success: function(result){
+       if(result==="success") {
+           $('#message_container').append('<div class="umsg success">Article seals updated successfully.</div>');
+       } else {
+           $('#message_container').append('<div class="umsg error">'+result+'</div>');
+       }
+    }});
+    
     
 });
 

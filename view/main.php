@@ -14,6 +14,12 @@ if(isset($_REQUEST['edit'])) {
     include("ingredient_connection.php");
 } else if(isset($_REQUEST['ingredient'])) {
     include("ingredient.php");
-} else {
+} else if(isset($_REQUEST['sealetc'])) {
+    include("sealetc.php");
+} else if(isset($_REQUEST['sealetc_connection'])) {
+    include("sealetc_connection.php");
+} else if(empty($_REQUEST)) {
     include("import-export.php");
+} else {
+    echo "The router could not interpret your request.";
 }
