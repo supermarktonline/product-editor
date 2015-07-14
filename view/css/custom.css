@@ -152,3 +152,16 @@ main {
 #seal_new {
     margin-left:10px;
 }
+
+.cfg_row {
+    margin-bottom:7px;
+}
+
+.rec-direct {
+    color:#f77;
+    font-weight:700 !important;
+}
+
+.rec-parent {
+    color:#f77;
+}

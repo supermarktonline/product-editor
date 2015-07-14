@@ -91,3 +91,31 @@ function appendSeal(seal,checked) {
 
     $('#guetesiegel').append(html);
 }
+
+
+
+/* Seal category highlighting */
+$(document).on('click','#active_category_seal_update',function() {
+   
+    var ids = {};
+    
+    var tpids = [];
+    
+    $('.seal').each(function() {
+        if($(this).is(":checked")) {
+            tpids.push($(this).val());
+        }
+    });
+    
+    ids["ids"] = tpids;
+    
+    $.ajax({ type:"POST", url: "/?category_sealetc_connection=update&category_id="+$('#active_category').val(), data:ids, success: function(result){
+       if(result==="success") {
+           $('#message_container').html('<div class="umsg success">Category / seal configuration updated successfully.</div>');
+           setGlobalCurrentCat($('#active_category').val());
+       } else {
+           $('#message_container').html('<div class="umsg error">'+result+'</div>');
+       }
+    }});
+    
+});

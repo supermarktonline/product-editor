@@ -479,10 +479,18 @@ $seals = $stmt3->fetchAll();
             </div>
             <hr>
             
-            <label>Gütesiegel, etc.</label>
-            <input type="text" id="seal_new" value="" /><span id="seal_adder">+</span>
-            <input type="text" id="seal_remove" value="" /><span id="seal_remover">-</span>
-            <br>
+            <div class="cfg_row">
+                <label>Gütesiegel, etc.</label>
+                <input type="text" id="seal_new" value="" /><span id="seal_adder">+</span>
+                <input type="text" id="seal_remove" value="" /><span id="seal_remover">-</span>
+            </div>
+            
+            <div class="cfg_row">
+                <button id="active_category_seal_update">Speichere Highlight-Konfiguration</button>
+                &nbsp;&nbsp;&nbsp;<label>Aktive Kategorie:</label> 
+                <input type="hidden" id="active_category" value="" /> 
+                <span id="active_category_display"></span>
+            </div>
             
             <div id="attributes-container">
               <div id="guetesiegel" class="div-attributes"></div>

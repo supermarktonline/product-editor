@@ -26,11 +26,12 @@ $(document).on('change','.cat-selector',function() {
         // the row number is set to the value of the parent selector, if it doesnt exist, it is set to zero
         if(currentLevel === 1) {
             $(this).parent().attr('data-current_cat',0);
-            
             $(this).parent().remove();
-            
+            setGlobalCurrentCat(0);
         } else {
-            $(this).parent().attr('data-current_cat',$('#sel-l'+(currentLevel-1)+'-'+rowId).val());
+            var parselid = $('#sel-l'+(currentLevel-1)+'-'+rowId).val();
+            $(this).parent().attr('data-current_cat',parselid);
+            setGlobalCurrentCat(parselid);
         }
         
     } else {
@@ -41,11 +42,100 @@ $(document).on('change','.cat-selector',function() {
         // the value is set to the selected category
         $(this).parent().attr('data-current_cat',selected);
         
+        setGlobalCurrentCat(selected);
+        
         // a selector of the next level has to be created
         $(this).parent().append(getCategorySelector(nextLevel,selectedName,"sel-l"+nextLevel+"-"+rowId,""));
     }
     
 });
+
+
+/*
+ * Sets the global current cat AND the seal relationships.
+ */
+function setGlobalCurrentCat(catid) {
+    
+    // set id to hidden element
+    $('#active_category').val(catid);
+    
+    // remove seal highlighting
+    $('.gs label').each(function() {
+       $(this).attr('class','');
+    });
+    
+    // set the label
+    if(catid==0) {
+        $('#active_category_display').text("");
+    } else {
+
+        // set the label
+        var cat = getCategoryById(catid);
+
+        for(var i = 7; i > 0; i--) {
+            if(cat["lvl_"+i]!="") {
+                $('#active_category_display').text(cat["lvl_"+i]);
+                break;
+            }
+        }
+        
+        // lets calculate this client side, less stress for the poor server
+        var parents = getParentIds(cat);
+        
+        
+        $.ajax({url: "/?category_sealetc_connection=get&category_id="+catid+"&parent_ids="+JSON.stringify(parents), success: function(result){
+
+                var decoded;
+
+                try {
+                    decoded = JSON.parse(result);
+                    
+                } catch(e) {
+                    $('#message_container').html('<div class="umsg error">'+result+'</div>');
+                    return;
+                }
+                
+                // we have two cases here
+                var parentcon = decoded["parent"];
+
+                for(var i = 0; i < parentcon.length; i++) {
+                    $('.gs[data-id="'+parentcon[i]["sealetc_id"]+'"] label').each(function() {
+                       $(this).addClass('rec-parent'); 
+                    });
+                }
+                
+                var directcon = decoded["direct"];
+                
+                for(var i = 0; i < directcon.length; i++) {
+                    $('.gs[data-id="'+directcon[i]["sealetc_id"]+'"] label').each(function() {
+                       $(this).addClass('rec-direct'); 
+                    });
+                }
+                
+
+            }
+        });
+        
+        
+    }
+}
+
+
+function getParentIds(cat) {
+    
+    var parents = [];
+    
+    for(var i = 0; i < categories.length; i++) {
+        for(var a = 1; a < 7; a++) {
+            if((categories[i]["lvl_"+a] === cat["lvl_"+a]) && (cat["lvl_"+a] !== "") && (categories[i]["lvl_"+(a+1)] === "") && (categories[i]["gid"] !== cat["gid"])) {
+                parents.push(categories[i]["gid"]);
+            }
+        }
+    }
+    
+    return parents;
+}
+
 
 $(document).on('click','#cat_adder',function() {
     createCatRow(0);
@@ -125,27 +215,28 @@ function getRecursiveSelectors(cat_id,numrows) {
 }
 
 function getCategorySelector(level,parent,id,preselect) {
+    
     return buildCategorySelector(getCategoriesForLevel(level,parent),level,id,preselect);
 }
 
 
-function buildCategorySelector(categories,level,id,preselect) {
+function buildCategorySelector(cats,level,id,preselect) {
     
-    if(categories.length>0) {
+    if(cats.length>0) {
 
         var html = '<select data-level="'+level+'" class="cat-selector cat-selector-l'+level+'" name="'+id+'" id="'+id+'">';
 
         html += '<option value="">-- not selected --</option>';
 
-        for(var i=0;i<categories.length;i++) {
+        for(var i=0;i<cats.length;i++) {
             
             var selected = "";
             
-            if(categories[i]["lvl_"+level] === preselect) {
+            if(cats[i]["lvl_"+level] === preselect) {
                 selected = 'selected="selected"';
             }
             
-            html += '<option '+selected+' value="'+categories[i]["gid"]+'">'+categories[i]["lvl_"+level]+'</option>';
+            html += '<option '+selected+' value="'+cats[i]["gid"]+'">'+cats[i]["lvl_"+level]+'</option>';
         }
 
         html += '</select>';
@@ -163,15 +254,24 @@ function getCategoriesForLevel(level,parent) {
                 cats.push(categories[i]);
             }
         }
-    }
+    } else {
     
-    for(var i=0;i<categories.length;i++) {
-        if((categories[i]["lvl_"+(level-1)] === parent) 
-                && (categories[i]["lvl_"+level] != "")
-                && (categories[i]["lvl_"+(level+1)] == "")) {
-            cats.push(categories[i]);
+        for(var i=0;i<categories.length;i++) {
+            if((categories[i]["lvl_"+(level-1)] === parent) 
+                    && (categories[i]["lvl_"+level] != "")
+                    && (categories[i]["lvl_"+(level+1)] == "")) {
+                cats.push(categories[i]);
+            }
         }
     }
     
     return cats;
+}
+
+function getCategoryById(catid) {
+    for(var i = 0; i < categories.length; i++) {
+        if(categories[i]["gid"]==catid) {
+            return categories[i];
+        }
+    }
 }

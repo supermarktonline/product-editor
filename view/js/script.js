@@ -72,7 +72,6 @@ $(document).ready(function() {
    
    initializeSeals(seals);
    
-   
 });
 
 
@@ -185,13 +184,9 @@ $(document).on('click','*[data-open_edit_id]',function() {
                        $(this).prop("checked",true); 
                     });
                 }
-                
             }
         });
-        
-        
     }});
-    
 });
 
 
