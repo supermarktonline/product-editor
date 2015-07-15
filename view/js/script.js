@@ -99,14 +99,6 @@ $(document).on('click','*[data-open_edit_id]',function() {
         var images = product["productimages"];
         var imagesAr = images.split(",");
         
-        if(imagesAr) {
-            $.each(imagesAr, function( index, value ) {
-              if(index===0) {
-                  $('#current_image').html('<img src="'+value+'" alt="" />');
-              }
-            });
-        }
-        
         // populate the simple fields
         $.each(product_simple_properties,function(key,value) {
             if($("#" + value).length > 0) {
@@ -185,8 +177,42 @@ $(document).on('click','*[data-open_edit_id]',function() {
                     });
                 }
             }
+        }); 
+
+        // the images
+        
+        $('#thumb-container').html('');
+        $('#current_image_wrapper').html('');
+        
+        var images_product = product["productimages"].split(",").map(function(e){return e.trim();});
+        var images_article = product["articleimages"].split(",").map(function(e){return e.trim();});
+
+        var allImages = images_product.concat(images_article);
+
+        var allImagesUnique = [];
+        
+        $.each(allImages, function(i, el){
+            if(($.inArray(el, allImagesUnique) === -1) && (el !== "")) allImagesUnique.push(el);
         });
+        
+        var first = true;
+        
+        $.each(allImagesUnique,function(i,img_src) {
+            if(first===true) {
+                
+               setActiveImage(img_src);
+               
+                first = false;
+            }
+            
+            $('#thumb-container').append('<div data-src="'+img_src+'"><img src="'+img_src+'" alt="" /></div>');
+            
+        });
+        
+        
+        
     }});
+
 });
 
 

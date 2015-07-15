@@ -96,15 +96,21 @@ $seals = $stmt3->fetchAll();
     <div id="main-container" class="no-show">
         
       <!-- Images -->
-      <div id="img-container">  
-        
-          <div id="current_image">
-              
-          </div>
-          <div id="thumb-container">
-              
-          </div>
-      </div>
+      
+      
+        <div id="img-container">  
+
+            <div id="current_image_wrapper">
+
+            </div>
+                    
+            <div id="thumb-container" class="clearfix">
+
+            </div>
+            
+        </div>
+
+      
       
       <!-- input container -->
       <div id="input-container">
