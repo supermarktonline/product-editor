@@ -20,8 +20,6 @@ if(isset($_REQUEST['edit'])) {
     include("sealetc_connection.php");
 } else if(isset($_REQUEST['category_sealetc_connection'])) {
     include("category_sealetc_connection.php");
-} else if(empty($_REQUEST)) {
-    include("import-export.php");
 } else {
-    echo "The router could not interpret your request: ".print_r($_REQUEST);
-}
+    include("import-export.php");
+} 
