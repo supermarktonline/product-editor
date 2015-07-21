@@ -66,6 +66,18 @@ main {
     display:inline-block;
 }
 
+.area_sel_container label {
+    display:inline-block;
+    width:150px;
+}
+
+.area_sel_container_row {
+    padding:4px;
+}
+
+.area_sel_container_row:nth-child(2n) {
+    background-color:#ddd;
+}
 
 .confirmdelete {
     left:0;

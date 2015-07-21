@@ -140,9 +140,10 @@ CREATE TABLE fdata (
 
 );
 
-CREATE TABLE import_id_name (
+CREATE TABLE import_properties (
     import_id timestamp PRIMARY KEY,
-    name varchar(255)
+    name varchar(255),
+    media_path varchar(255)
 );
 
 

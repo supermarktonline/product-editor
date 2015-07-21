@@ -16,3 +16,5 @@ define('NUM_COLS_OVERALL',NUM_COLS_BEFORE+NUM_DEFAULT_COLS_AFTER+NUM_IMPORT_COLS
 define('NUM_GOOGLE_IMPORT_COLS',8);
 
 define('VIEWPATH','view/');
+
+define('APP_URL',((strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,4))=='http') ? "http://" : "https://").$_SERVER['HTTP_HOST']."/");

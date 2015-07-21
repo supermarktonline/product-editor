@@ -42,6 +42,8 @@ var ingredient_names = [];
 
 var seals;
 
+var media_path = "";
+
 
 $(document).ready(function() {
     // initialize the ingredients
@@ -66,6 +68,8 @@ $(document).ready(function() {
        }
    });
    
+   
+   media_path = $('#media_path').text();
    
    // initialize the seals
    seals = JSON.parse($('#seals').html());
@@ -200,12 +204,12 @@ $(document).on('click','*[data-open_edit_id]',function() {
         $.each(allImagesUnique,function(i,img_src) {
             if(first===true) {
                 
-               setActiveImage(img_src);
+               setActiveImage(media_path+img_src);
                
                 first = false;
             }
             
-            $('#thumb-container').append('<div data-src="'+img_src+'"><img src="'+img_src+'" alt="" /></div>');
+            $('#thumb-container').append('<div data-src="'+media_path+img_src+'"><img src="'+media_path+img_src+'" alt="" /></div>');
             
         });
         

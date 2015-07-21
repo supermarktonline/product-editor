@@ -1,8 +1,6 @@
 $(document).on('click','#thumb-container > div',function() {
     
-    
     setActiveImage($(this).attr('data-src'));
-    
     
 });
 

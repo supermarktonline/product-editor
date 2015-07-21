@@ -65,9 +65,10 @@ if(isset($_POST['newimp']) && $_POST['newimp']=="doit") {
                     
                     // also save the name mapping
                     if($anySuccess) {
-                        $stmt = $db->prepare('INSERT INTO import_id_name (import_id,name) VALUES (:import_id,:name)');
+                        $stmt = $db->prepare('INSERT INTO import_properties (import_id,name,media_path) VALUES (:import_id,:name,:media_path)');
                         $stmt->bindValue(":import_id",$sqltime);
                         $stmt->bindValue(":name",$_POST['name']);
+                        $stmt->bindValue(":media_path",$_POST['media_path']);
                         $stmt->execute();
                     }
                     
@@ -170,15 +171,18 @@ if(isset($_POST["new_import_name"])) {
     
     $import_id = urldecode($_POST["import_id"]);
     $name = $_POST["new_import_name"];
+    $media_path = $_POST["media_path"];
     
-    $stmt =  $db->prepare("UPDATE import_id_name SET name = :name WHERE import_id = :import_id");
+    $stmt =  $db->prepare("UPDATE import_properties SET name = :name,media_path = :media_path WHERE import_id = :import_id");
     $stmt->bindValue(":import_id",$import_id);
+    $stmt->bindValue(":media_path",$media_path);
     $stmt->bindValue(":name",$name);
     
     if(!$stmt->execute() || $stmt->rowCount() < 1) {
-        $stmt = $db->prepare('INSERT INTO import_id_name (import_id,name) VALUES (:import_id,:name)');
+        $stmt = $db->prepare('INSERT INTO import_properties (import_id,name,media_path) VALUES (:import_id,:name,:media_path)');
         $stmt->bindValue(":import_id",$import_id);
         $stmt->bindValue(":name",$name);
+        $stmt->bindValue(":media_path",$media_path);
         $stmt->execute();
     } 
 }
@@ -199,7 +203,7 @@ if(isset($_POST["delete_list"]) && $_POST["delete_list"]=="do") {
             array_push($user_messages,array("success","The import ".urldecode($_POST["todelete"])." was successfully deleted."));
         }
         
-        $stmt2 =  $db->prepare("DELETE FROM import_id_name WHERE import_id = :import_id");
+        $stmt2 =  $db->prepare("DELETE FROM import_properties WHERE import_id = :import_id");
         $stmt2->bindValue(":import_id",urldecode($_POST["todelete"]));
         $stmt2->execute();
         
@@ -208,7 +212,7 @@ if(isset($_POST["delete_list"]) && $_POST["delete_list"]=="do") {
 
 
 // get list of imports
-$stmt = $db->prepare('SELECT DISTINCT fdata.import_id, nam.name FROM fdata LEFT OUTER JOIN import_id_name AS nam ON (nam.import_id = fdata.import_id) ORDER BY fdata.import_id DESC');
+$stmt = $db->prepare('SELECT DISTINCT fdata.import_id, nam.name,nam.media_path FROM fdata LEFT OUTER JOIN import_properties AS nam ON (nam.import_id = fdata.import_id) ORDER BY fdata.import_id DESC');
 $stmt->execute();
 $imports = $stmt->fetchAll();
         
@@ -256,7 +260,8 @@ $imports = $stmt->fetchAll();
                 
                 <p>Note: List must be a .csv File in the correct format.</p>
                 
-                <p>Name:&nbsp;&nbsp;<input type="text" name="impname" value="" /></p>
+                <p><label>Name:</label><input type="text" name="name" value="" /></p>
+                <p><label>Media Path:</label><input type="text" name="media_path" value="" /></p>
                 <p><input type="file" name="impfile" /></p>
                 <p><button type="submit" name="newimp" value="doit">Import ausführen</button></p>
             </form>
@@ -291,16 +296,18 @@ $imports = $stmt->fetchAll();
         
         foreach ($imports as $row) {
             ?>
-            <a href="/?edit=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id']; ?></a> 
-            &nbsp;&nbsp;&nbsp;
-            <form method="post" action="">
-                <input type="text" name="new_import_name" value="<?php echo $row['name']; ?>" />
-                <input type="hidden" name="import_id" value="<?php echo urlencode($row['import_id']); ?>" />
-                <input type="submit" name="update_import_name" value="Update list name" />
-            </form>
-            &nbsp;&nbsp;&nbsp;
-            <a href="#" data-deletelist="<?php echo urlencode($row['import_id']); ?>">[Delete this import]</a><br/>
-            
+            <div class="area_sel_container_row">
+                <a href="/?edit=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id']; ?></a> 
+                &nbsp;&nbsp;&nbsp;
+                <form method="post" action="">
+                    Name: <input type="text" name="new_import_name" value="<?php echo $row['name']; ?>" />
+                    Media Path: <input type="text" name="media_path" value="<?php echo $row['media_path']; ?>" />
+                    <input type="hidden" name="import_id" value="<?php echo urlencode($row['import_id']); ?>" />
+                    <input type="submit" name="update_import_properties" value="Update properties" />
+                </form>
+                &nbsp;&nbsp;&nbsp;
+                <a href="#" data-deletelist="<?php echo urlencode($row['import_id']); ?>">[Delete this import]</a>
+            </div>
             <?php
         }
         ?>

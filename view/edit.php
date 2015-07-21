@@ -21,11 +21,13 @@ $stmt4 = $db->prepare('SELECT * FROM sealetc ORDER BY name');
 $stmt4->execute();
 $seals = $stmt4->fetchAll();
 
-$stmt5 = $db->prepare('SELECT name FROM import_id_name WHERE import_id = :import_id');
+$stmt5 = $db->prepare('SELECT name,media_path FROM import_properties WHERE import_id = :import_id');
 $stmt5->bindValue(":import_id",urldecode($_GET['edit']));
 $stmt5->execute();
-$name = $stmt5->fetchColumn();
+$properties = $stmt5->fetch();
 
+$name = $properties["name"];
+$media_path = $properties["media_path"];
 
 ?>
 <!DOCTYPE html>
@@ -530,6 +532,8 @@ $name = $stmt5->fetchColumn();
       <div class="hidden" id="categories"><?php echo json_encode($categories); ?></div>
       
       <div class="hidden" id="seals"><?php echo json_encode($seals); ?></div>
+      
+      <div class="hidden" id="media_path"><?php echo $media_path; ?></div>
     
       <div class="clear"></div>
     </div>
