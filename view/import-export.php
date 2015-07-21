@@ -29,6 +29,7 @@ if(isset($_POST['newimp']) && $_POST['newimp']=="doit") {
                 
                 $sqltime = Tool::timePHPtoSQL(time());
                 $edited=false;
+                $anySuccess = false;
                 
                 $row = 1;
                 if (($handle = fopen($_FILES["impfile"]["tmp_name"], "r")) !== FALSE) {
@@ -49,6 +50,8 @@ if(isset($_POST['newimp']) && $_POST['newimp']=="doit") {
                                 
                                 if(!$stmt->execute()) {
                                     array_push($user_messages,array("warning","Row number ".$row." was not imported: SQL Failure: ".$db->errorInfo()[2]));
+                                } else {
+                                    $anySuccess = true;
                                 }
                             } else {
                                 array_push($user_messages,array("error","Row number ".$row." was not imported: Incorrect number of fields."));
@@ -59,6 +62,15 @@ if(isset($_POST['newimp']) && $_POST['newimp']=="doit") {
                         $row++;
                     }
                     fclose($handle);
+                    
+                    // also save the name mapping
+                    if($anySuccess) {
+                        $stmt = $db->prepare('INSERT INTO import_id_name (import_id,name) VALUES (:import_id,:name)');
+                        $stmt->bindValue(":import_id",$sqltime);
+                        $stmt->bindValue(":name",$_POST['name']);
+                        $stmt->execute();
+                    }
+                    
                 } else {
                     array_push($user_messages,array("error","CSV could not be opened."));
                 }
@@ -151,7 +163,25 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
 }
 
 
-
+/**
+ * Execute list name update.
+ */
+if(isset($_POST["new_import_name"])) {
+    
+    $import_id = urldecode($_POST["import_id"]);
+    $name = $_POST["new_import_name"];
+    
+    $stmt =  $db->prepare("UPDATE import_id_name SET name = :name WHERE import_id = :import_id");
+    $stmt->bindValue(":import_id",$import_id);
+    $stmt->bindValue(":name",$name);
+    
+    if(!$stmt->execute() || $stmt->rowCount() < 1) {
+        $stmt = $db->prepare('INSERT INTO import_id_name (import_id,name) VALUES (:import_id,:name)');
+        $stmt->bindValue(":import_id",$import_id);
+        $stmt->bindValue(":name",$name);
+        $stmt->execute();
+    } 
+}
 
 
 
@@ -168,17 +198,21 @@ if(isset($_POST["delete_list"]) && $_POST["delete_list"]=="do") {
         } else {
             array_push($user_messages,array("success","The import ".urldecode($_POST["todelete"])." was successfully deleted."));
         }
+        
+        $stmt2 =  $db->prepare("DELETE FROM import_id_name WHERE import_id = :import_id");
+        $stmt2->bindValue(":import_id",urldecode($_POST["todelete"]));
+        $stmt2->execute();
+        
     }
 }
 
 
 // get list of imports
-$stmt = $db->prepare('SELECT DISTINCT import_id FROM fdata ORDER BY import_id DESC');
+$stmt = $db->prepare('SELECT DISTINCT fdata.import_id, nam.name FROM fdata LEFT OUTER JOIN import_id_name AS nam ON (nam.import_id = fdata.import_id) ORDER BY fdata.import_id DESC');
 $stmt->execute();
 $imports = $stmt->fetchAll();
         
 ?>
-
 <!DOCTYPE html>
 <html>
   <?php include ("header.php"); ?>
@@ -222,9 +256,9 @@ $imports = $stmt->fetchAll();
                 
                 <p>Note: List must be a .csv File in the correct format.</p>
                 
+                <p>Name:&nbsp;&nbsp;<input type="text" name="impname" value="" /></p>
                 <p><input type="file" name="impfile" /></p>
                 <p><button type="submit" name="newimp" value="doit">Import ausführen</button></p>
-                
             </form>
             
         </div>
@@ -257,7 +291,13 @@ $imports = $stmt->fetchAll();
         
         foreach ($imports as $row) {
             ?>
-            <a href="/?edit=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id']; ?></a>
+            <a href="/?edit=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id']; ?></a> 
+            &nbsp;&nbsp;&nbsp;
+            <form method="post" action="">
+                <input type="text" name="new_import_name" value="<?php echo $row['name']; ?>" />
+                <input type="hidden" name="import_id" value="<?php echo urlencode($row['import_id']); ?>" />
+                <input type="submit" name="update_import_name" value="Update list name" />
+            </form>
             &nbsp;&nbsp;&nbsp;
             <a href="#" data-deletelist="<?php echo urlencode($row['import_id']); ?>">[Delete this import]</a><br/>
             
@@ -275,7 +315,10 @@ $imports = $stmt->fetchAll();
         <?php
         foreach ($imports as $row) {
             ?>
-            <a href="/?export=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id']; ?></a><br/>
+            <a href="/?export=<?php echo urlencode($row['import_id']); ?>">
+                <?php echo $row['import_id']; ?> <?php echo ($row['name']) ? "(".$row["name"].")" : ""; ?>
+            </a>
+            <br/>
             <?php
         }
         ?>

@@ -17,9 +17,14 @@ $stmt3->execute();
 $categories = $stmt3->fetchAll();
 
 
-$stmt3 = $db->prepare('SELECT * FROM sealetc ORDER BY name');
-$stmt3->execute();
-$seals = $stmt3->fetchAll();
+$stmt4 = $db->prepare('SELECT * FROM sealetc ORDER BY name');
+$stmt4->execute();
+$seals = $stmt4->fetchAll();
+
+$stmt5 = $db->prepare('SELECT name FROM import_id_name WHERE import_id = :import_id');
+$stmt5->bindValue(":import_id",urldecode($_GET['edit']));
+$stmt5->execute();
+$name = $stmt5->fetchColumn();
 
 
 ?>
@@ -37,6 +42,9 @@ $seals = $stmt3->fetchAll();
             <li><a onclick="toggleList();" class="toggleList-button dropdown-toggle">Produktliste ein/ausblenden</a></li>
             <li><a href="/" class="dropdown-toggle">Import/Export</a></li>
           </ul>
+        </div>
+        <div class="navbar-right-label">
+            <?php echo $name.", ".urldecode($_GET['edit']); ?>
         </div>
       </div>
     </nav>

@@ -140,6 +140,11 @@ CREATE TABLE fdata (
 
 );
 
+CREATE TABLE import_id_name (
+    import_id timestamp PRIMARY KEY,
+    name varchar(255)
+);
+
 
 CREATE TABLE ingredient (
 
