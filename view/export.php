@@ -1,6 +1,8 @@
 <?php
 
 
+include("export-functions.php");
+
 header("Content-type: text/csv");
 header("Content-Disposition: attachment; filename=export-".urldecode($_GET['export']).".csv");
 header("Pragma: no-cache");
@@ -26,8 +28,6 @@ foreach($fdata[0] as $key  => $value) {
     $count++;
 }
 
-
-
 $column_gatherer=array();
 foreach($fdata as $row) {
     
@@ -38,8 +38,25 @@ foreach($fdata as $row) {
         if($count > NUM_COLS_BEFORE && $count <= NUM_COLS_BEFORE+NUM_IMPORT_COLS) {
             
             if($key=="articletagpaths") {
-                // @TODO: Calculate new Tag Paths
-                $article[$key] = $value;
+                
+                $tagpath = "";
+                
+                // Categories
+                $tagpath .= getCategoryExportPath($row["id"]);
+                
+                // Nutrients
+                $tagpath .= getNutrientExportPath($row);
+                
+                // allergene
+                $tagpath .= getAllergenExportPath($row);
+                
+                // gütesiegel etc.
+                $tagpath .= getSealEtcExportPath($row["id"]);
+                
+                $article[$key] = $tagpath;
+                
+            } else if(strtolower($key)==strtolower("productdescription de_at")) {
+                $article[$key] = $value.getIngredientExport($row["id"]);
             } else {
                 $article[$key] = $value;
             }

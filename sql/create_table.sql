@@ -35,6 +35,7 @@ CREATE TABLE fdata (
     articleCurrency varchar(10),
     articleTaxCategory varchar(255),
     articleRestrictDeliveryToZone varchar(255),
+
     "productName de_AT" varchar(255),
     "productName de_DE" varchar(255),
     "productName en_US" varchar(255),
