@@ -1,6 +1,13 @@
+CREATE TABLE import (
+    id timestamp PRIMARY KEY,
+    name varchar(255),
+    media_path varchar(255)
+);
+
+
 CREATE TABLE fdata (
     id SERIAL PRIMARY KEY,
-    import_id timestamp,
+    import_id timestamp REFERENCES import (id) ON UPDATE RESTRICT ON DELETE RESTRICT,
     productMuid varchar(255),
     productNumber varchar(255),
     productOverrideInsertNew varchar(255),
@@ -91,7 +98,7 @@ CREATE TABLE fdata (
     articleSelectorTags varchar(255),
     articleMerchantTags varchar(255),
 
-    edited boolean DEFAULT false,
+    status integer DEFAULT 0,
     notice text DEFAULT '',
     nutrient_unit varchar(10) DEFAULT 'g',
 
@@ -139,12 +146,6 @@ CREATE TABLE fdata (
     allergen_p boolean DEFAULT false,
     allergen_r boolean DEFAULT false
 
-);
-
-CREATE TABLE import_properties (
-    import_id timestamp PRIMARY KEY,
-    name varchar(255),
-    media_path varchar(255)
 );
 
 

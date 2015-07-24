@@ -28,52 +28,63 @@ if(isset($_POST['newimp']) && $_POST['newimp']=="doit") {
                 $pstr.=")";
                 
                 $sqltime = Tool::timePHPtoSQL(time());
-                $edited=false;
-                $anySuccess = false;
                 
-                $row = 1;
-                if (($handle = fopen($_FILES["impfile"]["tmp_name"], "r")) !== FALSE) {
-                    while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
-                        
-                        if($row>1) {
-                            
-                            $stmt =  $db->prepare($pstr);
-                            
-                            // if not, parsing of the row went probably wrong
-                            if(count($data)===NUM_IMPORT_COLS) {
-                                
-                                $stmt->bindValue(1,$sqltime);
-                                
-                                for($i=2;$i<=NUM_IMPORT_COLS+1;$i++) {
-                                    $stmt->bindValue($i,$data[$i-2]); 
-                                }
-                                
-                                if(!$stmt->execute()) {
-                                    array_push($user_messages,array("warning","Row number ".$row." was not imported: SQL Failure: ".$db->errorInfo()[2]));
+                // 1. Create the import
+                $stmt = $db->prepare('INSERT INTO import (id,name,media_path) VALUES (:id,:name,:media_path)');
+                $stmt->bindValue(":id",$sqltime);
+                $stmt->bindValue(":name",$_POST['name']);
+                $stmt->bindValue(":media_path",$_POST['media_path']);
+                $res = $stmt->execute();
+                
+                if($res) {
+                
+                    $anySuccess = false;
+                    
+                    $row = 1;
+                    if (($handle = fopen($_FILES["impfile"]["tmp_name"], "r")) !== FALSE) {
+                        while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+
+                            if($row>1) {
+
+                                $stmt =  $db->prepare($pstr);
+
+                                // if not, parsing of the row went probably wrong
+                                if(count($data)===NUM_IMPORT_COLS) {
+
+                                    $stmt->bindValue(1,$sqltime);
+
+                                    for($i=2;$i<=NUM_IMPORT_COLS+1;$i++) {
+                                        $stmt->bindValue($i,$data[$i-2]); 
+                                    }
+
+                                    if(!$stmt->execute()) {
+                                        array_push($user_messages,array("warning","Row number ".$row." was not imported: SQL Failure: ".$db->errorInfo()[2]));
+                                    } else {
+                                        $anySuccess = true;
+                                    }
                                 } else {
-                                    $anySuccess = true;
+                                    array_push($user_messages,array("error","Row number ".$row." was not imported: Incorrect number of fields."));
                                 }
-                            } else {
-                                array_push($user_messages,array("error","Row number ".$row." was not imported: Incorrect number of fields."));
+
                             }
-                            
+
+                            $row++;
                         }
-                        
-                        $row++;
-                    }
-                    fclose($handle);
+                        fclose($handle);
+
+                        // no reason to save empty import
+                        if(!$anySuccess) {
+                            $stmt = $db->prepare('DELETE FROM import WHERE id=:id)');
+                            $stmt->bindValue(":id",$sqltime);
+                            $stmt->execute();
+                        }
                     
-                    // also save the name mapping
-                    if($anySuccess) {
-                        $stmt = $db->prepare('INSERT INTO import_properties (import_id,name,media_path) VALUES (:import_id,:name,:media_path)');
-                        $stmt->bindValue(":import_id",$sqltime);
-                        $stmt->bindValue(":name",$_POST['name']);
-                        $stmt->bindValue(":media_path",$_POST['media_path']);
-                        $stmt->execute();
+                    } else {
+                        array_push($user_messages,array("error","CSV could not be opened."));
                     }
-                    
+                                    
                 } else {
-                    array_push($user_messages,array("error","CSV could not be opened."));
+                    array_push($user_messages,array("error","Import could not be created."));
                 }
                 
                 
@@ -173,18 +184,14 @@ if(isset($_POST["new_import_name"])) {
     $name = $_POST["new_import_name"];
     $media_path = $_POST["media_path"];
     
-    $stmt =  $db->prepare("UPDATE import_properties SET name = :name,media_path = :media_path WHERE import_id = :import_id");
-    $stmt->bindValue(":import_id",$import_id);
+    $stmt =  $db->prepare("UPDATE import SET name = :name,media_path = :media_path WHERE id = :id");
+    $stmt->bindValue(":id",$import_id);
     $stmt->bindValue(":media_path",$media_path);
     $stmt->bindValue(":name",$name);
     
-    if(!$stmt->execute() || $stmt->rowCount() < 1) {
-        $stmt = $db->prepare('INSERT INTO import_properties (import_id,name,media_path) VALUES (:import_id,:name,:media_path)');
-        $stmt->bindValue(":import_id",$import_id);
-        $stmt->bindValue(":name",$name);
-        $stmt->bindValue(":media_path",$media_path);
-        $stmt->execute();
-    } 
+    if(!$stmt->execute()) {
+        array_push($user_messages,array("error","Failed to update import."));
+    }
 }
 
 
@@ -203,8 +210,8 @@ if(isset($_POST["delete_list"]) && $_POST["delete_list"]=="do") {
             array_push($user_messages,array("success","The import ".urldecode($_POST["todelete"])." was successfully deleted."));
         }
         
-        $stmt2 =  $db->prepare("DELETE FROM import_properties WHERE import_id = :import_id");
-        $stmt2->bindValue(":import_id",urldecode($_POST["todelete"]));
+        $stmt2 =  $db->prepare("DELETE FROM import WHERE id = :id");
+        $stmt2->bindValue(":id",urldecode($_POST["todelete"]));
         $stmt2->execute();
         
     }
@@ -212,7 +219,7 @@ if(isset($_POST["delete_list"]) && $_POST["delete_list"]=="do") {
 
 
 // get list of imports
-$stmt = $db->prepare('SELECT DISTINCT fdata.import_id, nam.name,nam.media_path FROM fdata LEFT OUTER JOIN import_properties AS nam ON (nam.import_id = fdata.import_id) ORDER BY fdata.import_id DESC');
+$stmt = $db->prepare('SELECT DISTINCT fdata.import_id, nam.name,nam.media_path FROM fdata LEFT OUTER JOIN import AS nam ON (nam.id = fdata.import_id) ORDER BY fdata.import_id DESC');
 $stmt->execute();
 $imports = $stmt->fetchAll();
         
@@ -303,7 +310,7 @@ $imports = $stmt->fetchAll();
                     Name: <input type="text" name="new_import_name" value="<?php echo $row['name']; ?>" />
                     Media Path: <input type="text" name="media_path" value="<?php echo $row['media_path']; ?>" />
                     <input type="hidden" name="import_id" value="<?php echo urlencode($row['import_id']); ?>" />
-                    <input type="submit" name="update_import_properties" value="Update properties" />
+                    <input type="submit" name="update_import" value="Update properties" />
                 </form>
                 &nbsp;&nbsp;&nbsp;
                 <a href="#" data-deletelist="<?php echo urlencode($row['import_id']); ?>">[Delete this import]</a>
@@ -317,14 +324,18 @@ $imports = $stmt->fetchAll();
     
       <div class="mc">
         <h1>Select a list to export</h1>
-        
+        <p>Note: For products with state "10" the state is updated to "15", no change otherwise.</p>
         <div class="area_sel_container">
         <?php
         foreach ($imports as $row) {
             ?>
-            <a href="/?export=<?php echo urlencode($row['import_id']); ?>">
+            <form method="get" action="">
                 <?php echo $row['import_id']; ?> <?php echo ($row['name']) ? "(".$row["name"].")" : ""; ?>
-            </a>
+                <input type="hidden" name="export" value="<?php echo urlencode($row['import_id']); ?>" />
+                | Minstate: <input type="text" size="2" name="minstate" value="10" />
+                Maxstate: <input type="text" size="2" name="maxstate" value="10" />
+                <input type="submit" value="Export now" />
+            </form>
             <br/>
             <?php
         }

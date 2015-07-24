@@ -94,16 +94,34 @@ main {
 
 .eds {
     display:inline-block;
-    width:10px;
-    height:10px;
+    color:#fff;
+    width:25px;
+    height:15px;
+    text-align:center;
 }
 
-.eds-edited {
+.eds-state-0 {
+    background-color:#911;
+}
+
+.eds-state-1,.eds-state-2,.eds-state-3,.eds-state-4,.eds-state-5 {
+    background-color:#eea236;
+}
+
+.eds-state-6,.eds-state-7,.eds-state-8,.eds-state-9 {
+    background-color:#9b0;
+}
+
+.eds-state-10,.eds-state-11,.eds-state-12,.eds-state-13,.eds-state-14 {
     background-color:#191;
 }
 
-.eds-new {
-    background-color:#911;
+.eds-state-15,.eds-state-16,.eds-state-17,.eds-state-18,.eds-state-19 {
+    background-color:#0b0;
+}
+
+.eds-state-20 {
+    background-color:#888;
 }
 
 /* Ingredients */

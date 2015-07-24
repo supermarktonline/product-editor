@@ -1,8 +1,13 @@
 <?php
 
+$minstate = intval((isset($_GET['minstate'])) ? $_GET['minstate']:"0");
+$maxstate = intval((isset($_GET['maxstate'])) ? $_GET['maxstate']:"20");
+
 // query the list of the desired import
-$stmt = $db->prepare('SELECT * FROM fdata WHERE import_id = :import_id ORDER BY id ASC');
+$stmt = $db->prepare('SELECT * FROM fdata WHERE import_id = :import_id AND status >=:minstate AND status <= :maxstate ORDER BY id ASC');
 $stmt->bindValue(":import_id",urldecode($_GET['edit']));
+$stmt->bindValue(":minstate",$minstate);
+$stmt->bindValue(":maxstate",$maxstate);
 $stmt->execute();
 $imports = $stmt->fetchAll();
 
@@ -21,8 +26,8 @@ $stmt4 = $db->prepare('SELECT * FROM sealetc ORDER BY name');
 $stmt4->execute();
 $seals = $stmt4->fetchAll();
 
-$stmt5 = $db->prepare('SELECT name,media_path FROM import_properties WHERE import_id = :import_id');
-$stmt5->bindValue(":import_id",urldecode($_GET['edit']));
+$stmt5 = $db->prepare('SELECT name,media_path FROM import WHERE id = :id');
+$stmt5->bindValue(":id",urldecode($_GET['edit']));
 $stmt5->execute();
 $properties = $stmt5->fetch();
 
@@ -43,6 +48,15 @@ $media_path = $properties["media_path"];
           <ul class="nav navbar-nav">
             <li><a onclick="toggleList();" class="toggleList-button dropdown-toggle">Produktliste ein/ausblenden</a></li>
             <li><a href="/" class="dropdown-toggle">Import/Export</a></li>
+            <li>
+                <form action="" method="get">
+                    <input type="hidden" name="edit" value="<?php echo $_GET['edit']; ?>" />
+                    <input type="text" name="minstate" value="<?php echo $minstate; ?>" size="2" />
+                    <input type="text" name="maxstate" value="<?php echo $maxstate; ?>" size="2" />
+                    <input type="submit" value="Filter Status" />
+                    (0=new,5=edited,10=finished,15=exported once,other=custom)
+                </form>
+            </li>
           </ul>
         </div>
         <div class="navbar-right-label">
@@ -56,7 +70,7 @@ $media_path = $properties["media_path"];
       <table id="product-table" class="table table-striped">
         <tr class="head-row">
           <th>#</th>
-          <th>Bearbeitet</th>
+          <th>Status</th>
           <th>Name</th>
           <th>EAN Code</th>
           <th>Marke</th>
@@ -69,7 +83,7 @@ $media_path = $properties["media_path"];
             ?>
         <tr data-open_edit_id="<?php echo $imp["id"]; ?>">
             <td><?php echo $imp["id"]; ?></td>
-            <td><span class="eds <?php echo ($imp["edited"]) ? "eds-edited":"eds-new"; ?>"></span></td>
+            <td><span class="eds eds-state-<?php echo $imp["status"]; ?>"><?php echo $imp["status"]; ?></span></td>
             <td><?php
                 if(strlen($tp = $imp["productName de_AT"])>1) {
                     echo $tp;
@@ -521,7 +535,9 @@ $media_path = $properties["media_path"];
         
       </div>
       <div id="send-container">
+        <button id="finish_now" class="btn btn-default" data-save_id="">abschließen</button>
         <button id="save_now" class="btn btn-default" data-save_id="">sichern</button>
+        <input type="text" id="custom_state" value="" />
         <div id="message_container"></div>
       </div>
     </div>

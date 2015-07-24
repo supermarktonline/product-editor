@@ -95,6 +95,8 @@ $(document).on('click','*[data-open_edit_id]',function() {
         $('#message_container').html('');
         
         $('#save_now').attr('data-save_id',product["id"]);
+        $('#finish_now').attr('data-save_id',product["id"]);
+        $('#custom_state').val('');
         
         $('#name').val(product["productName de_AT"]);
         $('#description').val(product["productDescription de_AT"]);
@@ -221,12 +223,30 @@ $(document).on('click','*[data-open_edit_id]',function() {
 
 
 // saving a product after editing
-$(document).on('click','#save_now',function() {
+$(document).on('click','#save_now,#finish_now',function() {
     var save_id = $(this).attr('data-save_id');
+    
+    var clicked_id = $(this).attr("id");
+    
+    var status = 5;
+    
+    if(clicked_id==="save_now") {
+        if(isNormalInteger($('#custom_state').val())) {
+            status = parseInt($('#custom_state').val());
+        }
+    }
+    
+    if(clicked_id==="finish_now") {
+        status = 10;
+    }
+    
+    if(status>20) {
+        status = 20;
+    }
     
     var product = {};
     product["id"] = save_id;
-    product["edited"] = true;
+    product["status"] = status;
     product["productName___de_AT"] = $('#name').val();
     product["productDescription___de_AT"] = $('#description').val();
     product["notice"] = $('#notice').val();
@@ -248,7 +268,7 @@ $(document).on('click','#save_now',function() {
     $.ajax({ type:"POST", url: "/?updateproduct", data:product, success: function(result){
        if(result==="success") {
            $('#message_container').html('<div class="umsg success">Article updated successfully.</div>');
-           $('tr[data-open_edit_id="'+save_id+'"] td:nth-child(2)').html('<span class="eds eds-edited"></span>');
+           $('tr[data-open_edit_id="'+save_id+'"] td:nth-child(2)').html('<span class="eds eds-state-'+status+'">'+status+'</span>');
        } else {
            $('#message_container').html('<div class="umsg error">'+result+'</div>');
        }
@@ -326,4 +346,7 @@ $(document).on('click','#save_now',function() {
  });
  
  
- 
+ function isNormalInteger(str) {
+    var n = ~~Number(str);
+    return String(n) === str && n >= 0;
+}
