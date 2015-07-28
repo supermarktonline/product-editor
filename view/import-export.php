@@ -116,7 +116,6 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
             if($_FILES["impfilegpr"]["type"]=="text/csv") {
                 
                 // file is ok, lets try to parse it and insert it into the database
-                
                 $up   = "UPDATE category SET lvl_1 = :lvl1, lvl_2 = :lvl2, lvl_3 = :lvl3, lvl_4 = :lvl4, lvl_5 = :lvl5, lvl_6 = :lvl6, lvl_7 = :lvl7 WHERE gid=:gid";
                 $ins  = "INSERT INTO category (gid,lvl_1,lvl_2,lvl_3,lvl_4,lvl_5,lvl_6,lvl_7) VALUES (:gid,:lvl1,:lvl2,:lvl3,:lvl4,:lvl5,:lvl6,:lvl7)";
                 
@@ -141,16 +140,21 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
                                 return $stmt;
                             };
                             
+                            
                             $stup = $populate($stup,$data);
                             $stins = $populate($stins,$data);
-                            
-                           
 
-                            if(!$stup->execute()) {
-                                if(!$stins->execute()) {
+                            
+                            $stup->execute();
+                            
+                            if(!($stup->rowCount() ? true : false)) {
+                                
+                                $stins->execute();
+                                
+                                if(!($stins->rowCount() ? true : false)) {
                                     array_push($user_messages,array("warning","Row number ".$row." created: SQL Failure: ".$db->errorInfo()[2]));
                                 }
-                            }
+                            } 
                         }
                         
                         $row++;
@@ -329,14 +333,22 @@ $imports = $stmt->fetchAll();
         <?php
         foreach ($imports as $row) {
             ?>
-            <form method="get" action="">
-                <?php echo $row['import_id']; ?> <?php echo ($row['name']) ? "(".$row["name"].")" : ""; ?>
-                <input type="hidden" name="export" value="<?php echo urlencode($row['import_id']); ?>" />
-                | Minstate: <input type="text" size="2" name="minstate" value="10" />
-                Maxstate: <input type="text" size="2" name="maxstate" value="10" />
-                <input type="submit" value="Export now" />
-            </form>
-            <br/>
+            <div class="area_sel_container_row">
+                <form method="get" action="">
+                    <?php echo $row['import_id']; ?> <?php echo ($row['name']) ? "(".$row["name"].")" : ""; ?>
+                    <input type="hidden" name="export" value="<?php echo urlencode($row['import_id']); ?>" />
+                    | Minstate: <input type="text" size="2" name="minstate" value="10" />
+                    Maxstate: <input type="text" size="2" name="maxstate" value="10" />
+                    <input type="submit" value="Export list" />
+                </form>
+                &nbsp;&nbsp;&nbsp;|||&nbsp;&nbsp;&nbsp;
+                <form method="get" action="">
+                    <input type="hidden" name="export-tags" value="<?php echo urlencode($row['import_id']); ?>" />
+                    Minstate: <input type="text" size="2" name="minstate" value="10" />
+                    Maxstate: <input type="text" size="2" name="maxstate" value="10" />
+                    <input type="submit" value="Export tags" />
+                </form>
+            </div>
             <?php
         }
         ?>
