@@ -3,8 +3,16 @@
 
 include("export-functions.php");
 
+
+$stmt = $db->prepare('SELECT * FROM import WHERE id = :id');
+$stmt->bindValue(":id",urldecode($_GET['export']));
+$stmt->execute();
+$import = $stmt->fetch();
+
+
+
 header("Content-type: text/csv");
-header("Content-Disposition: attachment; filename=export-".urldecode($_GET['export']).".csv");
+header("Content-Disposition: attachment; filename=export-".$import['name']."-".$import['id'].".csv");
 header("Pragma: no-cache");
 header("Expires: 0");
  
@@ -49,7 +57,7 @@ foreach($fdata as $row) {
     foreach($row as $key  => $value) {
         if($count > NUM_COLS_BEFORE && $count <= NUM_COLS_BEFORE+NUM_IMPORT_COLS) {
             
-            if($key=="articletagpaths") {
+            if($key=="articleTagPaths") {
                 
                 $tagpath = "";
                 

@@ -32,6 +32,11 @@ var product_simple_properties = [
     "nutrient_snd_bread_unit"
 ];
 
+var product_simple_properties_nofloat = [
+  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional"  
+];
+
+
 var allergene = [
     "a","b","c","d","e","f","g","h","l","m","n","o","p","r"
 ];
@@ -102,7 +107,7 @@ $(document).on('click','*[data-open_edit_id]',function() {
         $('#description').val(product["productDescription de_AT"]);
         $('#notice').val(product["notice"]);
         
-        var images = product["productimages"];
+        var images = product["productImages"];
         var imagesAr = images.split(",");
         
         // populate the simple fields
@@ -190,8 +195,8 @@ $(document).on('click','*[data-open_edit_id]',function() {
         $('#thumb-container').html('');
         $('#current_image_wrapper').html('');
         
-        var images_product = product["productimages"].split(",").map(function(e){return e.trim();});
-        var images_article = product["articleimages"].split(",").map(function(e){return e.trim();});
+        var images_product = product["productImages"].split(",").map(function(e){return e.trim();});
+        var images_article = product["articleImages"].split(",").map(function(e){return e.trim();});
 
         var allImages = images_product.concat(images_article);
 
@@ -252,8 +257,11 @@ $(document).on('click','#save_now,#finish_now',function() {
     product["notice"] = $('#notice').val();
     
     $.each(product_simple_properties,function(key,value) {
-        if($("#" + value).length > 0) {
-          product[value] = $('#'+value).val();
+        
+        if(product_simple_properties_nofloat.indexOf(value) > -1) {
+            product[value] = $('#'+value).val();
+        } else if($("#" + value).length > 0) {
+            product[value] = parseFloat( ($('#'+value).val()).replace(",","."));
         }
     });
     
@@ -335,12 +343,12 @@ $(document).on('click','#save_now,#finish_now',function() {
  $(document).on('click','#generate_nw',function() {
      
      var multiply = parseInt($('#nutrient_snd_amount').val()) || 0;
-     multiply = multiply / 100;
+     multiply = multiply / 100.0;
      
      var nutnames = ["energy","fat_total","fat_saturated","protein","fibers","calcium","carb","sugar","salt","lactose","natrium","bread_unit"];
      
      for(var i = 0;i<nutnames.length;i++) {
-         $('#nutrient_snd_'+nutnames[i]).val( Math.ceil($('#nutrient_100_'+nutnames[i]).val() * multiply));
+         $('#nutrient_snd_'+nutnames[i]).val( (parseFloat((  $('#nutrient_100_'+nutnames[i]).val().replace(",",".")  * multiply).toFixed(3))).toString().replace(".",",") );
      }
      
  });

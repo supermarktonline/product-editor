@@ -63,9 +63,12 @@ function getNutrientExportPath($row) {
 }
 
 function gsnPath($field,$subject) {
-    if(!intval($field>0)) {
+    if($field<=0.0) {
         return "";
     }
+    
+    $field = str_replace(".",",",strval($field));
+    
     return str_replace("%",$field," >> ".$subject);
 }
 
