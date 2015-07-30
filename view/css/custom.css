@@ -248,3 +248,13 @@ main {
 .easyzoom img {
     vertical-align: bottom;
 }
+
+
+.c50 {
+    float:left;
+    width:50%;
+}
+
+.nutrition-container-meta {
+    margin-bottom:15px;
+}

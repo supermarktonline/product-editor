@@ -17,6 +17,7 @@ var product_simple_properties = [
     
     "nutrient_snd_amount",
     "nutrient_snd_additional",
+    "nutrient_snd_additional_de",
 
     "nutrient_snd_energy",
     "nutrient_snd_fat_total",
@@ -33,7 +34,7 @@ var product_simple_properties = [
 ];
 
 var product_simple_properties_nofloat = [
-  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional"  
+  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional","nutrient_snd_additional_de" 
 ];
 
 
@@ -261,7 +262,13 @@ $(document).on('click','#save_now,#finish_now',function() {
         if(product_simple_properties_nofloat.indexOf(value) > -1) {
             product[value] = $('#'+value).val();
         } else if($("#" + value).length > 0) {
-            product[value] = parseFloat( ($('#'+value).val()).replace(",","."));
+            var prval =  parseFloat( ($('#'+value).val()).replace(",","."));
+            
+            if(isNaN(prval)) {
+                product[value] = undefined;
+            } else {
+                product[value] = prval;
+            }
         }
     });
     
@@ -348,7 +355,14 @@ $(document).on('click','#save_now,#finish_now',function() {
      var nutnames = ["energy","fat_total","fat_saturated","protein","fibers","calcium","carb","sugar","salt","lactose","natrium","bread_unit"];
      
      for(var i = 0;i<nutnames.length;i++) {
-         $('#nutrient_snd_'+nutnames[i]).val( (parseFloat((  $('#nutrient_100_'+nutnames[i]).val().replace(",",".")  * multiply).toFixed(3))).toString().replace(".",",") );
+         
+         var origval = $('#nutrient_100_'+nutnames[i]).val().replace(",",".");
+         
+         if(isNaN(origval) || origval==="") {
+             $('#nutrient_snd_'+nutnames[i]).val("");
+         } else {
+             $('#nutrient_snd_'+nutnames[i]).val( ( parseFloat((  origval * multiply).toFixed(3))).toString().replace(".",",") );
+         }
      }
      
  });

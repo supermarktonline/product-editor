@@ -162,100 +162,109 @@ $media_path = $properties["media_path"];
                 
               <div class="nutrition-container">
                 <label class="control-label">Nährwertangaben:</label><br>
+                
+                
+                <div class="nutrition-container-meta">
+                    
+                    <div class="c50">
+                        <label class="control-label">pro 100</label>
+                        <select id="nutrient_unit">
+                          <option>g</option>
+                          <option>ml</option>
+                        </select>
+                        <button type="button" id="generate_nw">Generate right</button>
+                    </div>
+
+                    <div class="c50">
+                        <label class="control-label">pro</label>
+                        <input type="text" class="myTextInput" id="nutrient_snd_amount" >
+                        <span id="nutrient_unit_copy"></span>
+                        <br/>
+                        Zusatz EN: <input type="text" class="myTextInput" id="nutrient_snd_additional" >
+                        Zusatz DE: <input type="text" class="myTextInput" id="nutrient_snd_additional_de" >
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                
+                
+                
                 <div class="nrg-group">
-                  <label class="control-label">pro 100</label>
-                  <select id="nutrient_unit">
-                    <option>g</option>
-                    <option>ml</option>
-                  </select>
-                  <button type="button" id="generate_nw">Generate right</button>
-                  <br><br>
                   
                   
                   <div class="form-group form-group-sm form-horizontal">
-                    <label  class="control-label">Energie (in KJ)</label>
+                    <label  class="control-label">Energie (in kJ)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_energy" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label  class="control-label">Fett (total)</label>
+                    <label  class="control-label">Fett (total) (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_fat_total" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label  class="control-label">Fett (gesättigt)</label>
+                    <label  class="control-label">Fett (gesättigt) (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_fat_saturated" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Proteine</label>
+                    <label  class="control-label">Proteine (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_protein" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Ballaststoffe</label>
+                    <label  class="control-label">Ballaststoffe (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_fibers" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Calcium</label>
+                    <label  class="control-label">Calcium (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_calcium" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label  class="control-label">Kohlenhydrate</label>
+                    <label  class="control-label">Kohlenhydrate (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_carb" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Zucker</label>
+                    <label  class="control-label">Zucker (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_sugar" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Salz</label>
+                    <label  class="control-label">Salz (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_salt" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Lactose</label>
+                    <label  class="control-label">Lactose (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_lactose" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Natrium</label>
+                    <label  class="control-label">Natrium (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_natrium" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Broteinheiten</label>
+                    <label  class="control-label">Broteinheiten (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_bread_unit" class="form-control">
                     </div>
                   </div>
                 </div>
                 <div class="nrg-group">
-                  <label class="control-label">pro</label>
-                  <input type="text" class="myTextInput" id="nutrient_snd_amount" >
-                  <span id="nutrient_unit_copy"></span>
-                  
-                  
-                  <input type="text" class="myTextInput" id="nutrient_snd_additional" >
-                  
-                  
-                  
-                  <br><br>
                   <div class="form-group form-group-sm form-horizontal">
                     <label  class="control-label">Energie (in KJ)</label>
                     <div class="col-sm-5"> 
@@ -263,67 +272,67 @@ $media_path = $properties["media_path"];
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label  class="control-label">Fett (total)</label>
+                    <label  class="control-label">Fett (total) (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_fat_total" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label  class="control-label">Fett (gesättigt)</label>
+                    <label  class="control-label">Fett (gesättigt) (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_fat_saturated" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Proteine</label>
+                    <label  class="control-label">Proteine (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_protein" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Ballaststoffe</label>
+                    <label  class="control-label">Ballaststoffe (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_fibers" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Calcium</label>
+                    <label  class="control-label">Calcium (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_calcium" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
-                    <label  class="control-label">Kohlenhydrate</label>
+                    <label  class="control-label">Kohlenhydrate (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_carb" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Zucker</label>
+                    <label  class="control-label">Zucker (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_sugar" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Salz</label>
+                    <label  class="control-label">Salz (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_salt" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Lactose</label>
+                    <label  class="control-label">Lactose (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_lactose" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Natrium</label>
+                    <label  class="control-label">Natrium (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_natrium" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Broteinheiten</label>
+                    <label  class="control-label">Broteinheiten (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_bread_unit" class="form-control">
                     </div>

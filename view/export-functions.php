@@ -34,30 +34,30 @@ function getNutrientExportPath($row) {
     $snd = $row["nutrient_snd_amount"];
     
     $result .= gsnPath($row["nutrient_100_energy"],"Energy (Nutrient) per 100".$nu." : % kJ");
-    $result .= gsnPath($row["nutrient_100_fat_total"],"Fat total (Nutrient) per 100".$nu." : %");
-    $result .= gsnPath($row["nutrient_100_fat_saturated"],"Fat saturated (Nutrient) per 100".$nu." : %");
-    $result .= gsnPath($row["nutrient_100_protein"],"Protein (Nutrient) per 100".$nu." : %");
-    $result .= gsnPath($row["nutrient_100_fibers"],"Fibers (Nutrient) per 100".$nu." : %");
-    $result .= gsnPath($row["nutrient_100_calcium"],"Calcium (Nutrient) per 100".$nu." : %");
-    $result .= gsnPath($row["nutrient_100_carb"],"Carbohydrate (Nutrient) per 100".$nu." : %");
-    $result .= gsnPath($row["nutrient_100_sugar"],"Sugar (Nutrient) per 100".$nu." : %");
-    $result .= gsnPath($row["nutrient_100_salt"],"Salt (Nutrient) per 100".$nu.": %");
-    $result .= gsnPath($row["nutrient_100_lactose"],"Lactose (Nutrient) per 100".$nu." : %");
-    $result .= gsnPath($row["nutrient_100_natrium"],"Natrium (Nutrient) per 100".$nu." : %");
-    $result .= gsnPath($row["nutrient_100_bread_unit"],"Bread Unit (Nutrient) per 100".$nu." : %");
+    $result .= gsnPath($row["nutrient_100_fat_total"],"Fat total (Nutrient) per 100".$nu." : % g");
+    $result .= gsnPath($row["nutrient_100_fat_saturated"],"Fat saturated (Nutrient) per 100".$nu." : % g");
+    $result .= gsnPath($row["nutrient_100_protein"],"Protein (Nutrient) per 100".$nu." : % g");
+    $result .= gsnPath($row["nutrient_100_fibers"],"Fibers (Nutrient) per 100".$nu." : % g");
+    $result .= gsnPath($row["nutrient_100_calcium"],"Calcium (Nutrient) per 100".$nu." : % g");
+    $result .= gsnPath($row["nutrient_100_carb"],"Carbohydrate (Nutrient) per 100".$nu." : % g");
+    $result .= gsnPath($row["nutrient_100_sugar"],"Sugar (Nutrient) per 100".$nu." : % g");
+    $result .= gsnPath($row["nutrient_100_salt"],"Salt (Nutrient) per 100".$nu.": % g");
+    $result .= gsnPath($row["nutrient_100_lactose"],"Lactose (Nutrient) per 100".$nu." : % g");
+    $result .= gsnPath($row["nutrient_100_natrium"],"Natrium (Nutrient) per 100".$nu." : % g");
+    $result .= gsnPath($row["nutrient_100_bread_unit"],"Bread Unit (Nutrient) per 100".$nu." : % g");
     
     $result .= gsnPath($row["nutrient_snd_energy"],"Energy (Nutrient) per serving: %  kJ (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_fat_total"],"Fat total (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_fat_saturated"],"Fat saturated (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_protein"],"Protein (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_fibers"],"Fibers (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_calcium"],"Calcium (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_carb"],"Carbohydrate (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_sugar"],"Sugar (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_salt"],"Salt (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_lactose"],"Lactose (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_natrium"],"Natrium (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
-    $result .= gsnPath($row["nutrient_snd_bread_unit"],"Bread Unit (Nutrient) per serving : % (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_fat_total"],"Fat total (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_fat_saturated"],"Fat saturated (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_protein"],"Protein (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_fibers"],"Fibers (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_calcium"],"Calcium (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_carb"],"Carbohydrate (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_sugar"],"Sugar (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_salt"],"Salt (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_lactose"],"Lactose (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_natrium"],"Natrium (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
+    $result .= gsnPath($row["nutrient_snd_bread_unit"],"Bread Unit (Nutrient) per serving : % g (per ".$snd.$nu.$add.")");
     
     return $result;
 }

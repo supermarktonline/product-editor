@@ -1,0 +1,1 @@
+DROP TABLE import, fdata, ingredient, fdata_ingredient, category, fdata_category, sealetc, category_sealetc, fdata_sealetc CASCADE;
