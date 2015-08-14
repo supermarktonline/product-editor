@@ -72,13 +72,12 @@ foreach($fdata as $row) {
     $taglist = array_merge($taglist,  getAllTagsForRow($row));
 }
 
-
-// put out the original CSV
-echo '"'.implode('","',$column_headings).'"
-';
-
 // eliminate all duplicate tags
 $taglist = array_map("unserialize", array_unique(array_map("serialize", $taglist)));
+
+// eliminate grouping properties for each grouping which occures more than once
+$taglist = tagGroupingFilterRemoveDuplicate($taglist);
+
 
 $resempty = function($array,$key) {
     if(array_key_exists($key,$array)) {
@@ -86,6 +85,11 @@ $resempty = function($array,$key) {
     }
     return "";
 };
+
+
+// put out the original CSV
+echo '"'.implode('","',$column_headings).'"
+';
 
 
 

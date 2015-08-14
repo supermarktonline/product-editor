@@ -150,7 +150,7 @@ function getNutrientTagColumn($row,$nut) {
     
     $tag_column["tagGroupingName de_DE"] = $nut["tagGroupingPrefixDE"]." pro ".$dgam;
     
-    $tag_column["tagGroupingTagNumericalRequired"] = "true";
+    $tag_column["tagGroupingTagNumericalRequired"] = "Yes";
     
     $tag_column["tagUid"] = $fullgroup." : ".$fullvalue;
     
@@ -203,9 +203,9 @@ function getAllergeneTagColumns($row) {
 }
 
 function getAllergenTagColumn($allergen) {
-    $tag_column["tagGroupingUid"] = "Allergens";
+    $tag_column["tagGroupingUid"] = "Allergen";
     $tag_column["tagGroupingName de_DE"] = "Allergene";
-    $tag_column["tagGroupingTagNumericalRequired"] = "false";
+    $tag_column["tagGroupingTagNumericalRequired"] = "No";
     
     switch($allergen):
         case "a": {
@@ -339,7 +339,7 @@ function getSealetcTagColumn($label) {
     
     $tag_column["tagGroupingUid"] = "Attribute (Food)";
     $tag_column["tagGroupingName de_DE"] = "Attribut (Nahrungsmittel)";
-    $tag_column["tagGroupingTagNumericalRequired"] = "false";
+    $tag_column["tagGroupingTagNumericalRequired"] = "No";
     
     $tag_column["tagUid"] = "Attribute (Food) : ".$label;
     $tag_column["tagName de_DE"] = $label;
@@ -433,7 +433,25 @@ function getTagIDsForRow($row) {
     return $tagids;
 }
 
-
+/**
+ * Get a prepared tag path with connected tags.
+ */
 function getPreparedTagPathForRow($row) {
     return " >> ".implode(" >> ",  getTagIDsForRow($row));
+}
+
+
+function tagGroupingFilterRemoveDuplicate($alltags) {
+    $exists = array();
+    
+    foreach($alltags as $key => $t) {
+        
+        if(in_array($t['tagGroupingUid'],$exists)) {
+            $alltags[$key]["tagGroupingName de_DE"]="";
+            $alltags[$key]["tagGroupingTagNumericalRequired"]="";
+        } else {
+            array_push($exists,$t['tagGroupingUid']);
+        }
+    }
+    return $alltags;
 }
