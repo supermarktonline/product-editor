@@ -180,8 +180,8 @@ $media_path = $properties["media_path"];
                         <input type="text" class="myTextInput" id="nutrient_snd_amount" >
                         <span id="nutrient_unit_copy"></span>
                         <br/>
-                        Zusatz EN: <input type="text" class="myTextInput" id="nutrient_snd_additional" >
-                        Zusatz DE: <input type="text" class="myTextInput" id="nutrient_snd_additional_de" >
+                        with:  <input type="text" class="myTextInput" id="nutrient_snd_additional" >
+                        mit: <input type="text" class="myTextInput" id="nutrient_snd_additional_de" >
                     </div>
                     <div class="clear"></div>
                 </div>

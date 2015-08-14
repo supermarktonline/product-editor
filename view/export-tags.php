@@ -69,56 +69,38 @@ $column_headings = array(
 $taglist = array();
 
 foreach($fdata as $row) {
-
-    // 1. get all the tags for each row
-    $nutrient_path = getNutrientExportPath($row);
-    $allergene_path = getAllergenExportPath($row);
-    $sealetc_path = getSealEtcExportPath($row["id"]);
-
-
-    // 2. Prepare single tag data
-    $nutrient_fulltags = array_map('trim',explode(">>",$nutrient_path));
-    $allergene_fulltags = array_map('trim',explode(">>",$allergene_path));
-    $sealetc_fulltags = array_map('trim',explode(">>",$sealetc_path));
-
-    $all_fulltags = array_filter(array_merge($nutrient_fulltags,$allergene_fulltags,$sealetc_fulltags));
-    
-    // 3. for each tag, generate a line for the output file
-    foreach($all_fulltags as $tag) {
-        
-        $rdtag = array();
-        
-        $split = array_map('trim',explode(":",$tag));
-        $group = $split[0];
-        $val = $split[1];
-        
-        foreach($column_headings as $col) {
-            
-            // not ready
-            if($col==="tagGroupingUid") {
-                $rdtag[$col] = $group;
-            } else if($col==="tagUid") {
-                $rdtag[$col] = $tag;
-            } else if($col==="tagType") {
-                $rdtag[$col] = "ArticleDescribing";
-            } else {
-                $rdtag[$col] = "";
-            }
-            
-        }
-        array_push($taglist,$rdtag);
-    }
+    $taglist = array_merge($taglist,  getAllTagsForRow($row));
 }
+
 
 // put out the original CSV
 echo '"'.implode('","',$column_headings).'"
 ';
 
-// eliminate duplicates
+// eliminate all duplicate tags
 $taglist = array_map("unserialize", array_unique(array_map("serialize", $taglist)));
 
-foreach($taglist as $gath) {
-    echo '"'.implode('","',$gath).'"
+$resempty = function($array,$key) {
+    if(array_key_exists($key,$array)) {
+        return $array[$key];
+    }
+    return "";
+};
+
+
+
+// taglist contains all tags
+foreach($taglist as $tl) {
+    
+    $gather = array();
+    foreach($column_headings as $ch) {
+        $gather[$ch] = $resempty($tl,$ch);
+    }
+
+    echo '"';
+    echo implode('","', $gather);
+    echo '"';
+    echo '
 ';
     
 }

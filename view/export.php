@@ -64,14 +64,7 @@ foreach($fdata as $row) {
                 // Categories
                 $tagpath .= getCategoryExportPath($row["id"]);
                 
-                // Nutrients
-                $tagpath .= getNutrientExportPath($row);
-                
-                // allergene
-                $tagpath .= getAllergenExportPath($row);
-                
-                // gütesiegel etc.
-                $tagpath .= getSealEtcExportPath($row["id"]);
+                $tagpath .= getPreparedTagPathForRow($row);
                 
                 $article[$key] = $tagpath;
                 
