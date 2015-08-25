@@ -1,8 +1,8 @@
 <?php
 
 /* Database connection */
-define('DB_HOST','localhost');
-define('DB_NAME','db_david_product_editor');
+define('DB_HOST','psql1'); // localhost
+define('DB_NAME','postgres'); // db_david_product_editor
 define('DB_CHARSET','utf8');
 define('DB_USER','postgres');
 define('DB_PASSWORD','');
