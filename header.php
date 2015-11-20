@@ -1,6 +1,6 @@
 <head>
     <meta charset="UTF-8">
-    <title>inetcompany Produkteditor</title>
+    <title>supermarktonline.at - Produkteditor</title>
     <link rel="stylesheet" href="<?php echo VIEWPATH; ?>bootstrap-3.3.4-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo VIEWPATH; ?>css/style.css">
     <link rel="stylesheet" href="<?php echo VIEWPATH; ?>css/custom.css">

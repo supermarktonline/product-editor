@@ -1,3 +1,6 @@
 /nbproject/
 /material/
 /.idea/
+/config-local.php
+/config-live.php
+/.htpasswd
