@@ -245,6 +245,9 @@ $(document).on('click','#save_now,#finish_now',function() {
     var save_id = $(this).attr('data-save_id');
     
     var clicked_id = $(this).attr("id");
+
+    $('[data-nfieldu="'+save_id+'"]').text($('#name').val());
+
     
     var status = 5;
     

@@ -194,8 +194,6 @@ $(document).on('click','#ingredient_deleter',function() {
             $.ajax({ type:"POST", url: "/?ingredient=delete&ingredient_id="+cur_ingr+"&fdata_id="+cur_product, data:ingredient, success: function(result){
                     if(result!=="success") {
                         
-                        console.log("you kidding me?");
-                        
                         var res = JSON.parse(result);
                         
                         $('#message_container').html('<div class="umsg error">'+res["error"]+'</div>');

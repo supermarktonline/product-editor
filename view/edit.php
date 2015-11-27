@@ -84,7 +84,7 @@ $media_path = $properties["media_path"];
           <tr data-open_edit_id="<?php echo $imp["id"]; ?>">
               <td><?php echo $imp["id"]; ?></td>
               <td><span class="eds eds-state-<?php echo $imp["status"]; ?>"><?php echo $imp["status"]; ?></span></td>
-              <td><?php
+              <td data-nfieldu="<?php echo $imp["id"]; ?>"><?php
                   if(strlen($tp = $imp["productName de_AT"])>1) {
                       echo $tp;
                   } else if(strlen($tp = $imp["productName de_DE"])>1) {
