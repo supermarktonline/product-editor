@@ -258,3 +258,21 @@ main {
 .nutrition-container-meta {
     margin-bottom:15px;
 }
+
+#table-container-wrapper {
+    height:120px;
+}
+
+#table-container {
+    height:100%;
+}
+
+.ui-resizable-s {
+    bottom: 0;
+    height: 10px
+}
+
+.ui-resizable-handle.ui-resizable-s{
+    height:0;
+    border:4px solid #ddd;
+}

@@ -45,7 +45,6 @@ $media_path = $properties["media_path"];
         <div class="navbar-header"><a class="navbar-brand">Produkteditor</a></div>
         <div id="menu-navbar">
           <ul class="nav navbar-nav">
-            <li><a onclick="toggleList();" class="toggleList-button dropdown-toggle">Produktliste ein/ausblenden</a></li>
             <li><a href="/" class="dropdown-toggle">Import/Export</a></li>
             <li>
                 <form action="" method="get">
@@ -63,59 +62,65 @@ $media_path = $properties["media_path"];
         </div>
       </div>
     </nav>
-      
-      
-    <div id="table-container">
-      <table id="product-table" class="table table-striped">
-        <tr class="head-row">
-          <th>#</th>
-          <th>Status</th>
-          <th>Name</th>
-          <th>EAN Code</th>
-          <th>Marke</th>
-        </tr>
-        
-        <?php
-        // <tr class="row-active">
-        foreach($imports as $imp) { 
-            
-            ?>
-        <tr data-open_edit_id="<?php echo $imp["id"]; ?>">
-            <td><?php echo $imp["id"]; ?></td>
-            <td><span class="eds eds-state-<?php echo $imp["status"]; ?>"><?php echo $imp["status"]; ?></span></td>
-            <td><?php
-                if(strlen($tp = $imp["productName de_AT"])>1) {
-                    echo $tp;
-                } else if(strlen($tp = $imp["productName de_DE"])>1) {
-                    echo $tp;
-                } else if(strlen($tp = $imp["productName en_US"])>1) {
-                    echo $tp;
-                } else if(strlen($tp = $imp["productName es_ES"])>1) {
-                    echo $tp;
-                } else if(strlen($tp = $imp["productName fr_FR"])>1) {
-                    echo $tp;
-                }
-            ?></td>
-            <td><?php echo $imp["articleEanCode"]; ?></td>
-            <td><?php
-                if(strlen($tp = $imp["productBrand de_AT"])>1) {
-                    echo $tp;
-                } else if(strlen($tp = $imp["productBrand de_DE"])>1) {
-                    echo $tp;
-                } else if(strlen($tp = $imp["productBrand en_US"])>1) {
-                    echo $tp;
-                } else if(strlen($tp = $imp["productBrand es_ES"])>1) {
-                    echo $tp;
-                } else if(strlen($tp = $imp["productBrand fr_FR"])>1) {
-                    echo $tp;
-                }
-            ?></td>
-        </tr>
-        <?php
-        }
-        ?>
-      </table>
+
+
+
+    <div id="table-container-wrapper">
+      <div id="table-container">
+        <table id="product-table" class="table table-striped">
+          <tr class="head-row">
+            <th>#</th>
+            <th>Status</th>
+            <th>Name</th>
+            <th>EAN Code</th>
+            <th>Marke</th>
+          </tr>
+
+          <?php
+          // <tr class="row-active">
+          foreach($imports as $imp) {
+
+              ?>
+          <tr data-open_edit_id="<?php echo $imp["id"]; ?>">
+              <td><?php echo $imp["id"]; ?></td>
+              <td><span class="eds eds-state-<?php echo $imp["status"]; ?>"><?php echo $imp["status"]; ?></span></td>
+              <td><?php
+                  if(strlen($tp = $imp["productName de_AT"])>1) {
+                      echo $tp;
+                  } else if(strlen($tp = $imp["productName de_DE"])>1) {
+                      echo $tp;
+                  } else if(strlen($tp = $imp["productName en_US"])>1) {
+                      echo $tp;
+                  } else if(strlen($tp = $imp["productName es_ES"])>1) {
+                      echo $tp;
+                  } else if(strlen($tp = $imp["productName fr_FR"])>1) {
+                      echo $tp;
+                  }
+              ?></td>
+              <td><?php echo $imp["articleEanCode"]; ?></td>
+              <td><?php
+                  if(strlen($tp = $imp["productBrand de_AT"])>1) {
+                      echo $tp;
+                  } else if(strlen($tp = $imp["productBrand de_DE"])>1) {
+                      echo $tp;
+                  } else if(strlen($tp = $imp["productBrand en_US"])>1) {
+                      echo $tp;
+                  } else if(strlen($tp = $imp["productBrand es_ES"])>1) {
+                      echo $tp;
+                  } else if(strlen($tp = $imp["productBrand fr_FR"])>1) {
+                      echo $tp;
+                  }
+              ?></td>
+          </tr>
+          <?php
+          }
+          ?>
+        </table>
+      </div>
     </div>
+
+
+
     <div id="main-container" class="no-show">
         
       <!-- Images -->
