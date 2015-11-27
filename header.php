@@ -9,6 +9,7 @@
     <script src="<?php echo VIEWPATH; ?>bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
     
     <?php if(isset($_GET['edit'])) { ?>
+    <script src="<?php echo VIEWPATH; ?>js/ui-functions.js"></script>
     <script src="<?php echo VIEWPATH; ?>easyzoom/src/easyzoom.js"></script>
     <script src="<?php echo VIEWPATH; ?>js/script.js"></script>
     <script src="<?php echo VIEWPATH; ?>js/ingredient.js"></script>

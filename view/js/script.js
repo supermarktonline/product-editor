@@ -91,6 +91,12 @@ toggleList = function(){
 
 // clicking a product within the list --> get the product via ajax and display the edit fields
 $(document).on('click','*[data-open_edit_id]',function() {
+
+    $('[data-open_edit_id]').removeClass('active');
+
+    $(this).addClass('active');
+
+
    
     $.ajax({url: "/?productjson="+$(this).attr('data-open_edit_id'), success: function(result){
             

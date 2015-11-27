@@ -9,7 +9,7 @@
  */
 
 
-require('config-live.php');
+require('config-local.php');
 require('model/Tool.php');
 require('dal/db.php');
 
