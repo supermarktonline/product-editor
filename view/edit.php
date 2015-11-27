@@ -33,7 +33,6 @@ $properties = $stmt5->fetch();
 
 $name = $properties["name"];
 $media_path = $properties["media_path"];
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -97,7 +96,7 @@ $media_path = $properties["media_path"];
                     echo $tp;
                 }
             ?></td>
-            <td><?php echo $imp["articleeancode"]; ?></td>
+            <td><?php echo $imp["articleEanCode"]; ?></td>
             <td><?php
                 if(strlen($tp = $imp["productBrand de_AT"])>1) {
                     echo $tp;
@@ -177,7 +176,7 @@ $media_path = $properties["media_path"];
 
                     <div class="c50">
                         <label class="control-label">pro</label>
-                        <input type="text" class="myTextInput" id="nutrient_snd_amount" >
+                        <input type="text" class="myTextInput" id="nutrient_snd_amount" value="0" >
                         <span id="nutrient_unit_copy"></span>
                         <br/>
                         with:  <input type="text" class="myTextInput" id="nutrient_snd_additional" >

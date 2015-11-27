@@ -113,8 +113,14 @@ $(document).on('click','*[data-open_edit_id]',function() {
         
         // populate the simple fields
         $.each(product_simple_properties,function(key,value) {
+
             if($("#" + value).length > 0) {
-              $('#'+value).val(product[value]);
+
+                if(!product[value] && value=="nutrient_snd_amount") {
+                    $('#'+value).val("0");
+                } else {
+                    $('#'+value).val(product[value]);
+                }
             }
         });
         
