@@ -214,12 +214,6 @@ $media_path = $properties["media_path"];
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Proteine (in g)</label>
-                    <div class="col-sm-5"> 
-                      <input  type="text"  id="nutrient_100_protein" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-group form-group-sm">
                     <label  class="control-label">Ballaststoffe (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_fibers" class="form-control">
@@ -241,6 +235,12 @@ $media_path = $properties["media_path"];
                     <label  class="control-label">Zucker (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_sugar" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group form-group-sm">
+                    <label  class="control-label">Proteine (in g)</label>
+                    <div class="col-sm-5">
+                      <input  type="text"  id="nutrient_100_protein" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
@@ -288,12 +288,6 @@ $media_path = $properties["media_path"];
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Proteine (in g)</label>
-                    <div class="col-sm-5"> 
-                      <input  type="text"  id="nutrient_snd_protein" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-group form-group-sm">
                     <label  class="control-label">Ballaststoffe (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_fibers" class="form-control">
@@ -315,6 +309,12 @@ $media_path = $properties["media_path"];
                     <label  class="control-label">Zucker (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_sugar" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group form-group-sm">
+                    <label  class="control-label">Proteine (in g)</label>
+                    <div class="col-sm-5">
+                      <input  type="text"  id="nutrient_snd_protein" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
