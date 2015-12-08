@@ -21,30 +21,36 @@
          }
      } 
  }
- 
-// connect ingredient to the currently edited article
-function addCurrentArticleIngredient(ingredient) {
-    
-    $('#ingredients_selector').val('');
-    
-    var exists = false;
-    $('#ingredients_collector > .ic_ing').each(function(key,val) {
-        if($(this).attr('data-id') == ingredient["id"]) {
-            exists = true;
-        }
-    });
-    
-    if(!exists) {
-        $.ajax({url: "/?ingredient_connection=create&fdata_id="+$('#save_now').attr('data-save_id')+"&ingredient_id="+ingredient["id"], success: function(result){
-                if(result==="success") {
-                    appendIngredient(ingredient);
-                } else {
-                    $('#message_container').html('<div class="umsg error">'+result+'</div>');
-                }
-            }
-        });
-    }
-}
+
+ /**
+  *
+  *
+  * @param ingredient
+  * @param collector_id
+  * @param connection_type: One of standard,enthalt,gering
+  */
+ function addIngredientToCollection(ingredient,collector_id,connection_type) {
+     $('#'+collector_id).val('');
+
+     var exists = false;
+     $('#'+collector_id+' > .ic_ing').each(function(key,val) {
+         if($(this).attr('data-id') == ingredient["id"]) {
+             exists = true;
+         }
+     });
+
+     if(!exists) {
+         $.ajax({url: "/?ingredient_connection=create&type="+connection_type+"&fdata_id="+$('#save_now').attr('data-save_id')+"&ingredient_id="+ingredient["id"], success: function(result){
+             if(result==="success") {
+                 appendIngredientToCollection(ingredient,collector_id,connection_type);
+             } else {
+                 $('#message_container').html('<div class="umsg error">'+result+'</div>');
+             }
+         }
+         });
+     }
+ }
+
 
 // find ingredient in cache
 function getIngredientBy(property,value) {
@@ -56,38 +62,53 @@ function getIngredientBy(property,value) {
     return null;
 }
 
-// add ingredient visually
-function appendIngredient(ingredient) {
-    
+function appendIngredientToCollection(ingredient,collector_id,connection_type) {
+
     var exists = false;
-    $('#ingredients_collector > .ic_ing').each(function() {
+
+    $('#'+collector_id+' > .ic_ing').each(function() {
         if($(this).attr("data-id")==ingredient["id"]) {
             exists = true;
         }
     });
-    
+
+    var selector = "ingredients_selector";
+    if(connection_type=="enthalt") {
+        selector = "enthalt_spuren";
+    } else if(connection_type=="gering") {
+        selector = "enthalt_gering";
+    }
+
+    $('#'+selector).val('');
+
     if(!exists) {
-        $('#ingredients_collector').append('<span class="ic_ing" data-id="'+ingredient["id"]+'">'+ingredient["name"]+' <span class="ic_ing_remove">X</span></span>');
-    
-        for(var i = 0;i<allergene.length; i++) {
-            if(ingredient[allergene[i]]) {
-                $('[data-art_ingr="'+allergene[i]+'"]').prop('checked', true);
+        $('#'+collector_id).append('<span class="ic_ing" data-id="'+ingredient["id"]+'">'+ingredient["name"]+' <span class="ic_ing_remove" data-type="'+connection_type+'">X</span></span>');
+
+        if(connection_type=="standard") {
+            for(var i = 0;i<allergene.length; i++) {
+                if(ingredient[allergene[i]]) {
+                    $('[data-art_ingr="'+allergene[i]+'"]').prop('checked', true);
+                }
             }
         }
-    
     }
 }
 
-// delete ingredient
+// delete ingredient from a collection
 $(document).on('click','.ic_ing_remove',function() {
     var remove = $(this);
-    
-    $.ajax({url: "/?ingredient_connection=delete&fdata_id="+$('#save_now').attr('data-save_id')+"&ingredient_id="+$(this).parent().attr('data-id'), success: function(result){
+    var type = $(this).attr('data-type');
+
+    if($(this).parent())
+
+    $.ajax({url: "/?ingredient_connection=delete&type="+type+"&fdata_id="+$('#save_now').attr('data-save_id')+"&ingredient_id="+$(this).parent().attr('data-id'), success: function(result){
             if(result==="success") {
                 $(remove).parent().remove();
-                
-                refreshArticleAllergeneAuto();
-                clearCurrentAllergen();
+
+                if(type=="standard") {
+                    refreshArticleAllergeneAuto();
+                    clearCurrentAllergen();
+                }
             } else {
                 $('#message_container').html('<div class="umsg error">'+result+'</div>');
             }
@@ -106,7 +127,7 @@ $(document).on('click','.ic_ing',function(e) {
 
 
 // create a new ingredient
-$(document).on('keypress','#ingredients_selector',function(e){
+$(document).on('keypress','#ingredients_selector,#enthalt_spuren,#enthalt_gering',function(e){
     
   if(e.keyCode==13) {
       
@@ -114,11 +135,23 @@ $(document).on('keypress','#ingredients_selector',function(e){
     var ingrName = $(this).val();
 
     if(ingrName != "") {
+
          var ingredient = getIngredientBy('name',ingrName);
 
+         var type = $(this).attr("data-type");
+
+         var collector_id = "ingredients_collector";
+         if(type=="enthalt") {
+            collector_id = "enthalt_spuren_collector";
+         } else if(type=="gering") {
+            collector_id = "enthalt_gering_collector";
+         }
+
+
          if(null!==ingredient) {
-             addCurrentArticleIngredient(ingredient)
+             addIngredientToCollection(ingredient,collector_id,type);
          } else {
+
 
              var ingredient = {
                  name: ingrName
@@ -134,7 +167,8 @@ $(document).on('keypress','#ingredients_selector',function(e){
                       } else {
                           ingredients.push(crIngr);
                           ingredient_names.push(crIngr["name"]);
-                          addCurrentArticleIngredient(crIngr);
+
+                          addIngredientToCollection(crIngr,collector_id,type);
                       }
                   }
               });
@@ -142,6 +176,8 @@ $(document).on('keypress','#ingredients_selector',function(e){
      }
   }
 });
+
+
 
 
 // update the current ingredient
@@ -200,7 +236,9 @@ $(document).on('click','#ingredient_deleter',function() {
                     } else {
                         
                         // remove the ingredient also from the interface
-                        $('#ingredients_collector .ic_ing[data-id="'+cur_ingr+'"]').remove();
+                        var remover = ' .ic_ing[data-id="'+cur_ingr+'"]';
+
+                        $('#ingredients_collector'+remover+',#enthalt_spuren_collector '+remover+' ,#enthalt_gering_collector '+remover).remove();
                         
                         for(var i=0;i<ingredients.length; i++) {
                             if(ingredients[i]["id"]==cur_ingr) {
@@ -260,7 +298,7 @@ function refreshArticleAllergeneAuto() {
 
 function clearCurrentAllergen() {
     $('#current_ingredient').attr('data-id','').html("...");
-    $('[data-cur_ingr').each(function() {
+    $('[data-cur_ingr]').each(function() {
        $(this).prop("checked",false); 
     });
 }

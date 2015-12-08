@@ -2,10 +2,17 @@
 
 global $db;
 
+$tablename = "fdata_ingredient";
+
+if($_GET["type"]=="enthalt") {
+    $tablename = "fdata_ingredient_enthalt";
+} else if($_GET["type"]=="gering") {
+    $tablename = "fdata_ingredient_gering";
+}
 
 if($_GET["ingredient_connection"]=="get") {
-    
-    $stmt = $db->prepare("SELECT * FROM fdata_ingredient WHERE fdata_id= :fdata_id");
+
+    $stmt = $db->prepare("SELECT * FROM $tablename WHERE fdata_id= :fdata_id");
     $stmt->bindValue(":fdata_id",$_REQUEST["fdata_id"]);
     $stmt->execute();
     echo json_encode($stmt->fetchAll()); die;
@@ -15,9 +22,9 @@ if($_GET["ingredient_connection"]=="get") {
     $dbstr = "";
 
     if($_GET["ingredient_connection"]=="create") {
-        $dbstr = "INSERT INTO fdata_ingredient (fdata_id,ingredient_id) VALUES (:fdata_id,:ingredient_id)";
+        $dbstr = "INSERT INTO $tablename (fdata_id,ingredient_id) VALUES (:fdata_id,:ingredient_id)";
     } else if($_GET["ingredient_connection"]=="delete") {
-        $dbstr = "DELETE FROM fdata_ingredient WHERE fdata_id = :fdata_id AND ingredient_id = :ingredient_id";
+        $dbstr = "DELETE FROM $tablename WHERE fdata_id = :fdata_id AND ingredient_id = :ingredient_id";
     } else {
         echo "API Failure"; die;
     }

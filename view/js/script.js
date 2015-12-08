@@ -58,8 +58,9 @@ $(document).ready(function() {
    for(var i = 0; i < ingredients.length; i++) {
        ingredient_names.push(ingredients[i]["name"]);
    }
-   
-   $('#ingredients_selector').autocomplete({
+
+    // autocomplete ingredients for ingredients selecotrs
+   $('#ingredients_selector,#enthalt_spuren,#enthalt_gering').autocomplete({
        source: ingredient_names,
        select: function(event,ui) {
            
@@ -67,13 +68,23 @@ $(document).ready(function() {
            
            // 1. get full ingredient data
            var datIngr = getIngredientBy("name",ui["item"]["value"]);
-           
-           setCurrentIngredient(datIngr);
-           addCurrentArticleIngredient(datIngr);
-           
+           var type = $(this).attr('data-type');
+
+           if(type=="standard") {
+                setCurrentIngredient(datIngr);
+           }
+
+           var collector_id = "ingredients_collector";
+           if(type=="enthalt") {
+               collector_id = "enthalt_spuren_collector";
+           } else if(type=="gering") {
+               collector_id = "enthalt_gering_collector";
+           }
+
+           addIngredientToCollection(datIngr,collector_id,type);
        }
    });
-   
+
    
    media_path = $('#media_path').text();
    
@@ -135,27 +146,46 @@ $(document).on('click','*[data-open_edit_id]',function() {
         
         
         // allergene / ingredients
-        $('#ingredients_collector').html('');
+        $('#ingredients_collector,#enthalt_spuren_collector,#enthalt_gering_collector').html('');
 
         // show ingredients
-        $.ajax({url: "/?ingredient_connection=get&fdata_id="+product["id"], success: function(result){
-                var icons = JSON.parse(result);
+        var types = ["standard","enthalt","gering"];
 
-                for(var i = 0; i < icons.length; i++) {
-                    appendIngredient(getIngredientBy("id",icons[i]["ingredient_id"]));
-                }
-                
-                clearCurrentAllergen();
-                
-                for(var i = 0;i<allergene.length; i++) {
-                    if(product["allergen_"+allergene[i]]) {
-                        $('[data-art_ingr="'+allergene[i]+'"]').prop("checked",true);
-                    } else {
-                        $('[data-art_ingr="'+allergene[i]+'"]').prop("checked",false);
+        for(key in types) {
+            var type=types[key];
+
+            (function(type) {
+                $.ajax({url: "/?ingredient_connection=get&type="+type+"&fdata_id="+product["id"], success: function(result){
+                    var icons = JSON.parse(result);
+
+                    var collector_id = "ingredients_collector";
+                    if(type=="enthalt") {
+                        collector_id = "enthalt_spuren_collector";
+                    } else if(type=="gering") {
+                        collector_id = "enthalt_gering_collector";
+                    }
+
+                    for(var i = 0; i < icons.length; i++) {
+                        appendIngredientToCollection(getIngredientBy("id",icons[i]["ingredient_id"]),collector_id,type);
+                    }
+
+                    if(type=="standard") {
+                        clearCurrentAllergen();
+
+                        for(var i = 0;i<allergene.length; i++) {
+                            if(product["allergen_"+allergene[i]]) {
+                                $('[data-art_ingr="'+allergene[i]+'"]').prop("checked",true);
+                            } else {
+                                $('[data-art_ingr="'+allergene[i]+'"]').prop("checked",false);
+                            }
+                        }
                     }
                 }
-            }
-        });
+                });
+            })(type);
+        }
+
+
         
         // show categories
         $('#category_select_wrapper').html('');

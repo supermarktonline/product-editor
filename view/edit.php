@@ -346,19 +346,25 @@ $media_path = $properties["media_path"];
               </div>
             </form>
           </div>
+
+
+
+
           <div id="tab2" role="tabpanel" class="tab-pane">
-            <div class="form-group">
+
+          <div class="form-group">
             <label class="control-label">Inhaltsstoffe</label>
-            
+
             <p>
                 <span id="ingredients_collector"></span>
                 <span id="ingredients_selwrap">
-                    <input type="text" id="ingredients_selector" />
+                    <input type="text" id="ingredients_selector" data-type="standard" />
                     <div id="ingredients_suggestor"></div>
                 </span>
             </p>
-            
           </div>
+
+          <!-- -->
           <div class="form-group"> 
             <div class="div-allergene">  
                 <label class="control-label">Allergene für <span id="current_ingredient" data-id="">...</span>:</label>
@@ -440,6 +446,7 @@ $media_path = $properties["media_path"];
                   
               </div>
             </div>
+
             <div class="div-allergene div-allergene-right">  
               <label class="control-label">Allergene (insgesamt):</label>
               <div id="allergy-select">
@@ -515,7 +522,30 @@ $media_path = $properties["media_path"];
                 </div>
               </div>
             </div>
-            <hr>
+
+
+            <hr/>
+
+            <div>
+              <p>
+                <label class="enthaltwrp">Enthält Spuren von:</label>
+                <span id="enthalt_spuren_collector"></span>
+                <span><input type="text" id="enthalt_spuren" data-type="enthalt" /></span>
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <label class="enthaltwrp">Enthält eine geringe Menge:</label>
+                <span id="enthalt_gering_collector""></span>
+                <span><input type="text" id="enthalt_gering" data-type="gering" /></span>
+                <span></span>
+              </p>
+            </div>
+
+
+            <hr/>
+
             <div id="category-container">
                 <label>Kategorie</label><span id="cat_adder">+</span><br>
               <div id="category_select_wrapper"></div>

@@ -281,3 +281,16 @@ main {
 #product-table tbody tr.active td {
     background-color: #eec !important;
 }
+
+#ingredient_deleter {
+    margin-bottom:15px;
+}
+
+hr {
+    clear:both;
+}
+
+.enthaltwrp {
+    display:inline-block;
+    width:180px;
+}

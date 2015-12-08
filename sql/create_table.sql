@@ -180,6 +180,21 @@ CREATE TABLE fdata_ingredient (
 );
 
 
+CREATE TABLE fdata_ingredient_enthalt (
+      fdata_id    int REFERENCES fdata (id) ON UPDATE CASCADE ON DELETE CASCADE
+    , ingredient_id int REFERENCES ingredient(id) ON UPDATE CASCADE ON DELETE CASCADE
+    -- explicit pk
+    , CONSTRAINT fdata_ingredient_enthalt_pkey PRIMARY KEY (fdata_id, ingredient_id)
+);
+
+CREATE TABLE fdata_ingredient_gering (
+      fdata_id    int REFERENCES fdata (id) ON UPDATE CASCADE ON DELETE CASCADE
+    , ingredient_id int REFERENCES ingredient(id) ON UPDATE CASCADE ON DELETE CASCADE
+    -- explicit pk
+    , CONSTRAINT fdata_ingredient_gering_pkey PRIMARY KEY (fdata_id, ingredient_id)
+);
+
+
 CREATE TABLE category (
     gid integer PRIMARY KEY,
     lvl_1 varchar(255),
