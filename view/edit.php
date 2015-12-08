@@ -199,11 +199,6 @@ $media_path = $properties["media_path"];
                   </div>
                 </div>
 
-                <div class="lit c075">
-                  <label class="control-label">Fangzone</label>
-                  <input type="text" id="fao_zone" value="" class="form-control">
-                </div>
-
 
                 <div class="lit c3">
                   <label class="control-label">Lagerung</label>
