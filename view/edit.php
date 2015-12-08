@@ -151,9 +151,80 @@ $media_path = $properties["media_path"];
         <div id="tab-menu" class="tab-content">
           <div id="tab1" role="tabpanel" class="tab-pane active">
             <form methop="post" action="/save" id="product-form">
-              <div class="form-group">
-                <label class="control-label">Name</label>
-                <input type="text" id="name"   value="" class="form-control">
+              <div class="form-group clearfix">
+                <div class="lit c25">
+                  <label class="control-label">Name</label>
+                  <input type="text" id="name"   value="" class="form-control">
+                </div>
+
+                <div class="lit c25">
+                  <label class="control-label">Firmenname</label>
+                  <input type="text" id="company"   value="" class="form-control">
+                </div>
+
+                <div class="lit c2">
+                  <label class="control-label">Marke</label>
+                  <input type="text" id="brand" value="" class="form-control">
+                </div>
+
+                <div class="lit c2">
+                  <label class="control-label">Herkunftsland</label>
+                  <input type="text" id="origin" value="" class="form-control">
+                </div>
+
+                <div class="lit c15">
+                  <label class="control-label">Gewicht/Menge</label>
+                  <div style="white-space:nowrap">
+                    <input type="text" id="weight_amount" value="" class="form-control" style="width:53px; display:inline">
+                    <select id="weight_amount_unit" class="inline">
+                      <option>g</option>
+                      <option>kg</option>
+                      <option>l</option>
+                      <option>ml</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="lit c25">
+                  <label class="control-label" style="white-space:nowrap">Länge x Breite x Höhe</label>
+                  <div style="white-space:nowrap">
+                    <input type="text" id="length" value="" class="form-control inline c05">
+                    <input type="text" id="width" value="" class="form-control inline c05">
+                    <input type="text" id="height" value="" class="form-control inline c05">
+                    <select id="volume_unit" class="inline">
+                      <option>cm</option>
+                      <option>mm</option>
+                      <option>m</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="lit c075">
+                  <label class="control-label">Fangzone</label>
+                  <input type="text" id="fao_zone" value="" class="form-control">
+                </div>
+
+
+                <div class="lit c3">
+                  <label class="control-label">Lagerung</label>
+                  <input type="text" id="storage" value="" class="form-control">
+                </div>
+
+                <div class="lit c2">
+                  <label class="control-label">Behälter</label>
+                  <input type="text" id="container" value="" class="form-control">
+                </div>
+
+                <div class="lit c075">
+                  <label class="control-label">Stückzahl</label>
+                  <input type="text" id="amount" value="" class="form-control">
+                </div>
+
+                <div class="lit c1">
+                  <label class="control-label">Anwendungen</label>
+                  <input type="text" id="number_of_applications" value="" class="form-control">
+                </div>
+
               </div>
               <div class="form-group">
                 <label class="control-label">Beschreibung</label>

@@ -28,6 +28,18 @@
     clear:both;
 }
 
+.inline {
+    display:inline;
+}
+
+.left {
+    float:left;
+}
+
+.right {
+    float:right;
+}
+
 /* */
 main {
     padding: 10px;
@@ -293,4 +305,43 @@ hr {
 .enthaltwrp {
     display:inline-block;
     width:180px;
+}
+
+.lit {
+    float:left;
+    box-sizing:border-box;
+    padding-right:5px;
+    margin-bottom:8px;
+}
+
+.c05 {
+    width:50px;
+}
+
+.c075 {
+    width:75px;
+}
+
+.c15 {
+    width:150px;
+}
+
+.c2 {
+    width:200px;
+}
+
+.c1 {
+    width:100px;
+}
+
+.c25 {
+    width:250px;
+}
+
+.c3 {
+    width:300px;
+}
+
+.c4 {
+    width:400px;
 }
