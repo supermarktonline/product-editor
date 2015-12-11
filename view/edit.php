@@ -167,42 +167,22 @@ $media_path = $properties["media_path"];
                   <input type="text" id="brand" value="" class="form-control">
                 </div>
 
-                <div class="lit c2">
+                <div class="lit c3">
                   <label class="control-label">Herkunftsland</label>
-                  <input type="text" id="origin" value="" class="form-control">
+                  <select id="origin" class="form-control">
+                    <?php include('includes/country_options.php'); ?>
+                  </select>
                 </div>
+
 
                 <div class="lit c15">
-                  <label class="control-label">Gewicht/Menge</label>
-                  <div style="white-space:nowrap">
-                    <input type="text" id="weight_amount" value="" class="form-control" style="width:53px; display:inline">
-                    <select id="weight_amount_unit" class="inline">
-                      <option>g</option>
-                      <option>kg</option>
-                      <option>l</option>
-                      <option>ml</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="lit c25">
-                  <label class="control-label" style="white-space:nowrap">Länge x Breite x Höhe</label>
-                  <div style="white-space:nowrap">
-                    <input type="text" id="length" value="" class="form-control inline c05">
-                    <input type="text" id="width" value="" class="form-control inline c05">
-                    <input type="text" id="height" value="" class="form-control inline c05">
-                    <select id="volume_unit" class="inline">
-                      <option>cm</option>
-                      <option>mm</option>
-                      <option>m</option>
-                    </select>
-                  </div>
-                </div>
-
-
-                <div class="lit c3">
                   <label class="control-label">Lagerung</label>
-                  <input type="text" id="storage" value="" class="form-control">
+                  <select id="storage" class="form-control">
+                    <option value="normal">Normal</option>
+                    <option value="cooled">Kühl</option>
+                    <option value="frozen">Tiefgekühlt</option>
+                    <option value="not_cooled">Nicht gekühlt</option>
+                  </select>
                 </div>
 
                 <div class="lit c2">
@@ -210,24 +190,33 @@ $media_path = $properties["media_path"];
                   <input type="text" id="container" value="" class="form-control">
                 </div>
 
-                <div class="lit c075">
-                  <label class="control-label">Stückzahl</label>
-                  <input type="text" id="amount" value="" class="form-control">
-                </div>
-
-                <div class="lit c1">
-                  <label class="control-label">Anwendungen</label>
-                  <input type="text" id="number_of_applications" value="" class="form-control">
-                </div>
 
               </div>
-              <div class="form-group">
-                <label class="control-label">Beschreibung</label>
-                <textarea  id="description"  rows="2" class="form-control"></textarea>
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Anmerkung(en) (allg. Anmerkungen zum Einpflegen des Artikels)</label>
-                  <textarea  id="notice"  rows="2" class="form-control"></textarea>
+              <div class="form-group clearfix">
+
+                  <div class="lit" style="width:75%">
+                    <label class="control-label">Beschreibung</label>
+                    <textarea  id="description"  rows="2" class="form-control"></textarea>
+
+                    <label class="control-label">Anmerkung(en) (allg. Anmerkungen zum Einpflegen des Artikels)</label>
+                    <textarea  id="notice"  rows="2" class="form-control"></textarea>
+                  </div>
+
+                  <div class="lit" style="width:25%;">
+                      <label class="control-label">Inhalt (zur Preisberechnung)</label>
+                      <div style="white-space:nowrap">
+                          <input type="text" id="weight_amount" value="" class="form-control" style="width:53px; display:inline">
+                          <select id="weight_amount_unit" class="inline">
+                              <option>g</option>
+                              <option>kg</option>
+                              <option>l</option>
+                              <option>ml</option>
+                              <option>m²</option>
+                              <option>Anwendungen</option>
+                              <option>Stück</option>
+                          </select>
+                      </div>
+                  </div>
               </div>
                 
               <div class="nutrition-container">
@@ -619,7 +608,7 @@ $media_path = $properties["media_path"];
             <hr>
             
             <div class="cfg_row">
-                <label>Gütesiegel, etc.</label>
+                <label>Artikelbeschreibende Information</label>
                 <input type="text" id="seal_new" value="" /><span id="seal_adder">+</span>
                 <input type="text" id="seal_remove" value="" /><span id="seal_remover">-</span>
             </div>
