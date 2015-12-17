@@ -607,25 +607,68 @@ $media_path = $properties["media_path"];
               <div id="category_select_wrapper"></div>
             </div>
             <hr>
-            
+
+
+            <div id="tag-container">
+
+              <div id="admin-area">
+                <div id="tag_group_selector_wrapper">
+                  <p><label>Admin - Tag Creator</label></p>
+                  <p>Gruppe wählen/anlegen: <input type="text" id="tag_group_selector" value="" /></p>
+                </div>
+                <div id="tag_group_selector">
+                  <p>Tag anlegen (Erklärung: ~ ... Platzhalter für numerischen Wert, $ ... Platzhalter für numerischen Value Type)</p>
+                  <p>
+                  UID (EN): <input type="text" id="tag_uid_new" value="" />
+                  Name (DE): <input type="text" id="tag_name_new" value="" />
+                  Name (AT) *: <input type="text" id="tag_name_at_new" value="" />
+                  Numerical Value *: <input type="text" id="tag_numerical_new" value="" />
+                    <select id="tag_numerical_new_type">
+                      <option value="percent">% (percent)</option>
+                      <option value="kilogram">kg (kilogram)</option>
+                      <option value="gramm">g (gram)</option>
+                      <option value="milligram">mg (miligram)</option>
+                      <option value="liter">l (liter)</option>
+                      <option value="milliliter">ml (milliliter)</option>
+                      <option value="seconds">s (seconds)</option>
+                      <option value="minutes">m (minutes)</option>
+                      <option value="hours">h (hours)</option>
+                      <option value="days">d (days)</option>
+                      <option value="permill">‰ (promille)</option>
+                      <option value="squaremeters">m² (square meters)</option>
+                      <option value="cubicmeters">m³ (cubic meters)</option>
+                    </select>
+                  </p>
+                </div>
+              </div>
+
+              <hr>
+
+              <label>Artikelbeschreibende Information</label>
+
+              <div class="cfg_row">
+                Aktive Kategorie:
+                <input type="hidden" id="active_category" value="" />
+                <span id="active_category_display">-- Keine --</span>
+                &nbsp;&nbsp;&nbsp;<button id="active_category_seal_update">Speichere Highlight-Konfiguration</button>
+              </div>
+
+              <div id="attributes-container">
+                <div id="guetesiegel" class="div-attributes"></div>
+                <div class="clear"></div>
+              </div>
+              <hr>
+
+            </div>
+
+            <!-- @ Will DIE
             <div class="cfg_row">
-                <label>Artikelbeschreibende Information</label>
                 <input type="text" id="seal_new" value="" /><span id="seal_adder">+</span>
                 <input type="text" id="seal_remove" value="" /><span id="seal_remover">-</span>
             </div>
+            -->
             
-            <div class="cfg_row">
-                <button id="active_category_seal_update">Speichere Highlight-Konfiguration</button>
-                &nbsp;&nbsp;&nbsp;<label>Aktive Kategorie:</label> 
-                <input type="hidden" id="active_category" value="" /> 
-                <span id="active_category_display"></span>
-            </div>
-            
-            <div id="attributes-container">
-              <div id="guetesiegel" class="div-attributes"></div>
-                <div class="clear"></div>
-            </div>
-            <hr>
+
             
           
           </div>

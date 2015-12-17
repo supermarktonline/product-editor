@@ -221,10 +221,22 @@ CREATE TABLE fdata_category (
 
 
 
---- 
+
+CREATE TABLE taggroup (
+    id SERIAL PRIMARY KEY,
+    muid varchar(255) UNIQUE,
+    name varchar(255)
+);
+
+
 CREATE TABLE sealetc (
     id SERIAL PRIMARY KEY,
-    name varchar(255) UNIQUE
+    taggroup int REFERENCES taggroup(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    muid varchar(255), /* may contain placeholder */
+    name_de varchar(255), /* may contain placeholder */
+    name_at varchar(255), /* may contain placeholder */
+    numerical_value float DEFAULT null,
+    numerical_value_type float DEFAULT null /* may contain numerical value if necessary */
 );
 
 
