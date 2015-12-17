@@ -145,7 +145,15 @@ CREATE TABLE fdata (
     allergen_n boolean DEFAULT false,
     allergen_o boolean DEFAULT false,
     allergen_p boolean DEFAULT false,
-    allergen_r boolean DEFAULT false
+    allergen_r boolean DEFAULT false,
+
+    company varchar(255) DEFAULT '',
+    brand varchar(255) DEFAULT '',
+    origin varchar(3) DEFAULT '',
+    store varchar(255) DEFAULT 'normal',
+    container varchar(255) DEFAULT '',
+    weight_amount float DEFAULT null,
+    weight_amount_unit varchar(255) DEFAULT ''
 
 );
 
