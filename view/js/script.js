@@ -30,11 +30,18 @@ var product_simple_properties = [
     "nutrient_snd_salt",
     "nutrient_snd_lactose",
     "nutrient_snd_natrium",
-    "nutrient_snd_bread_unit"
+    "nutrient_snd_bread_unit",
+
+    "company",
+    "origin",
+    "store",
+    "container",
+    "weight_amount",
+    "weight_amount_unit"
 ];
 
 var product_simple_properties_nofloat = [
-  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional","nutrient_snd_additional_de" 
+  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional","nutrient_snd_additional_de","company","origin","store","container","weight_amount_unit"
 ];
 
 
@@ -123,6 +130,7 @@ $(document).on('click','*[data-open_edit_id]',function() {
         
         $('#name').val(product["productName de_AT"]);
         $('#description').val(product["productDescription de_AT"]);
+        $('#brand').val(product["productBrand de_AT"]);
         $('#notice').val(product["notice"]);
         
         var images = product["productImages"];
@@ -277,6 +285,7 @@ $(document).on('click','#save_now,#finish_now',function() {
     var clicked_id = $(this).attr("id");
 
     $('[data-nfieldu="'+save_id+'"]').text($('#name').val());
+    $('[data-nfieldb="'+save_id+'"]').text($('#brand').val());
 
     
     var status = 5;
@@ -300,6 +309,7 @@ $(document).on('click','#save_now,#finish_now',function() {
     product["status"] = status;
     product["productName___de_AT"] = $('#name').val();
     product["productDescription___de_AT"] = $('#description').val();
+    product["productBrand___de_AT"] = $('#brand').val();
     product["notice"] = $('#notice').val();
     
     $.each(product_simple_properties,function(key,value) {

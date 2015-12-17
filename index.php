@@ -20,4 +20,6 @@ $db = $dbobj->getDB();
 global $user_messages;
 $user_messages = array();
 
+include('view/includes/countries_german.php');
+
 require('view/main.php');

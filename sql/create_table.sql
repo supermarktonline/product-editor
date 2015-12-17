@@ -148,7 +148,6 @@ CREATE TABLE fdata (
     allergen_r boolean DEFAULT false,
 
     company varchar(255) DEFAULT '',
-    brand varchar(255) DEFAULT '',
     origin varchar(3) DEFAULT '',
     store varchar(255) DEFAULT 'normal',
     container varchar(255) DEFAULT '',

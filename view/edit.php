@@ -98,7 +98,7 @@ $media_path = $properties["media_path"];
                   }
               ?></td>
               <td><?php echo $imp["articleEanCode"]; ?></td>
-              <td><?php
+              <td data-nfieldb="<?php echo $imp["id"]; ?>"><?php
                   if(strlen($tp = $imp["productBrand de_AT"])>1) {
                       echo $tp;
                   } else if(strlen($tp = $imp["productBrand de_DE"])>1) {
@@ -170,14 +170,15 @@ $media_path = $properties["media_path"];
                 <div class="lit c3">
                   <label class="control-label">Herkunftsland</label>
                   <select id="origin" class="form-control">
-                    <?php include('includes/country_options.php'); ?>
+                    <option value="">-- Unbekannt --</option>
+                    <?php echo get_german_country_options(); ?>
                   </select>
                 </div>
 
 
                 <div class="lit c15">
                   <label class="control-label">Lagerung</label>
-                  <select id="storage" class="form-control">
+                  <select id="store" class="form-control">
                     <option value="normal">Normal</option>
                     <option value="cooled">Kühl</option>
                     <option value="frozen">Tiefgekühlt</option>
