@@ -57,6 +57,10 @@ var seals;
 
 var media_path = "";
 
+var taggroups;
+
+var taggroup_labels = [];
+
 
 $(document).ready(function() {
     // initialize the ingredients
@@ -91,6 +95,22 @@ $(document).ready(function() {
            addIngredientToCollection(datIngr,collector_id,type);
        }
    });
+
+    // tag groupings
+    taggroups = JSON.parse($('#taggroups').html());
+
+    for(var i = 0; i < taggroups.length; i++) {
+        taggroup_labels.push({label: taggroups[i]["name"]+" ("+taggroups[i]["muid"]+")",value: taggroups[i]["id"]});
+    }
+
+    $('#tag_group_selector').autocomplete({
+        source: taggroup_labels,
+        select: function(event,ui) {
+            event.preventDefault();
+            $('#tag_group_selector').val(ui.item.label);
+            $('#tag_group_selected_id').val(ui.item.value);
+        }
+    });
 
    
    media_path = $('#media_path').text();
@@ -155,6 +175,9 @@ $(document).on('click','*[data-open_edit_id]',function() {
         
         // allergene / ingredients
         $('#ingredients_collector,#enthalt_spuren_collector,#enthalt_gering_collector').html('');
+
+        // taggroups
+        $('#tag_group_selected_id').val(0);
 
         // show ingredients
         var types = ["standard","enthalt","gering"];

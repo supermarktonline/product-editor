@@ -221,7 +221,6 @@ CREATE TABLE fdata_category (
 
 
 
-
 CREATE TABLE taggroup (
     id SERIAL PRIMARY KEY,
     muid varchar(255) UNIQUE,

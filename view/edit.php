@@ -31,6 +31,11 @@ $stmt5->bindValue(":id",urldecode($_GET['edit']));
 $stmt5->execute();
 $properties = $stmt5->fetch();
 
+$stmt6 = $db->prepare('SELECT * FROM taggroup ORDER BY name DESC');
+$stmt6->execute();
+$taggroups = $stmt6->fetchAll();
+
+
 $name = $properties["name"];
 $media_path = $properties["media_path"];
 ?>
@@ -614,7 +619,7 @@ $media_path = $properties["media_path"];
               <div id="admin-area">
                 <div id="tag_group_selector_wrapper">
                   <p><label>Admin - Tag Creator</label></p>
-                  <p>Gruppe wählen/anlegen: <input type="text" id="tag_group_selector" value="" /></p>
+                  <p>Gruppe wählen: <input type="text" id="tag_group_selector" value="" /><input type="hidden" id="tag_group_selected_id" value="0" /></p>
                 </div>
                 <div id="tag_group_selector">
                   <p>Tag anlegen (Erklärung: ~ ... Platzhalter für numerischen Wert, $ ... Platzhalter für numerischen Value Type)</p>
@@ -686,6 +691,8 @@ $media_path = $properties["media_path"];
 
       
       <div class="hidden" id="ingredients"><?php echo json_encode($ingredients); ?></div>
+
+      <div class="hidden" id="taggroups"><?php echo json_encode($taggroups); ?></div>
       
       <div class="hidden" id="categories"><?php echo json_encode($categories); ?></div>
       
