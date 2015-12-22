@@ -619,7 +619,8 @@ $media_path = $properties["media_path"];
               <div id="admin-area">
                 <div id="tag_group_selector_wrapper">
                   <p><label>Admin - Tag Creator</label></p>
-                  <p>Gruppe wählen: <input type="text" id="tag_group_selector" value="" /><input type="hidden" id="tag_group_selected_id" value="0" /></p>
+                  <p>Gruppe wählen: <input type="text" id="tag_group_selector" value="" /><input type="hidden" id="tag_group_selected_id" value="0" />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Neue Tag-Gruppe anlegen:</label>  MUID (en): <input type="text" id="tag_group_new_muid" value="" /> Name (de): <input type="text" id="tag_group_new_name" /> <button id="tag_group_new_create">Gruppe anlegen</button></p>
                 </div>
                 <div id="tag_group_selector">
                   <p>Tag anlegen (Erklärung: ~ ... Platzhalter für numerischen Wert, $ ... Platzhalter für numerischen Value Type)</p>
@@ -643,6 +644,7 @@ $media_path = $properties["media_path"];
                       <option value="squaremeters">m² (square meters)</option>
                       <option value="cubicmeters">m³ (cubic meters)</option>
                     </select>
+                    <button id="tag_new_create">Tag anlegen</button>
                   </p>
                 </div>
               </div>

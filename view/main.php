@@ -22,6 +22,8 @@ if(isset($_REQUEST['edit'])) {
     include("sealetc_connection.php");
 } else if(isset($_REQUEST['category_sealetc_connection'])) {
     include("category_sealetc_connection.php");
+} else if(isset($_REQUEST['taggroup'])) {
+    include("taggroup.php");
 } else {
     include("import-export.php");
 } 
