@@ -9,22 +9,22 @@ if(!isset($_REQUEST["fdata_id"]) || intval($_REQUEST["fdata_id"])<1 ) {
 }
 
 
-if(isset($_REQUEST["sealetc_connection"]) && $_REQUEST["sealetc_connection"]=="update") {
+if(isset($_REQUEST["tag_connection"]) && $_REQUEST["tag_connection"]=="update") {
 
     // 1. Delete the old connections
-    $stmt = $db->prepare("DELETE FROM fdata_sealetc WHERE fdata_id = :fdata_id");
+    $stmt = $db->prepare("DELETE FROM fdata_tag WHERE fdata_id = :fdata_id");
     $stmt->bindValue(":fdata_id",$_REQUEST["fdata_id"]);
 
     if(!$stmt->execute()) {
-        echo "Error recreating seal connections."; die;
+        echo "Error recreating tag connections."; die;
     } else {
 
-        $stmt = $db->prepare("INSERT INTO fdata_sealetc (fdata_id,sealetc_id) VALUES (:fdata_id,:sealetc_id)");
+        $stmt = $db->prepare("INSERT INTO fdata_tag (fdata_id,tag_id) VALUES (:fdata_id,:tag_id)");
 
         foreach($_REQUEST["ids"] as $id) {
 
             $stmt->bindValue(":fdata_id",$_REQUEST["fdata_id"]);
-            $stmt->bindValue(":sealetc_id",intval($id));
+            $stmt->bindValue(":tag_id",intval($id));
 
             if(!$stmt->execute()) {
                 echo "SQL Failure: ".$db->errorInfo()[2]." ";
@@ -34,9 +34,9 @@ if(isset($_REQUEST["sealetc_connection"]) && $_REQUEST["sealetc_connection"]=="u
         echo "success"; die;
 
     }
-} else if(isset($_REQUEST["sealetc_connection"]) && $_REQUEST["sealetc_connection"]=="get") {
+} else if(isset($_REQUEST["tag_connection"]) && $_REQUEST["tag_connection"]=="get") {
     
-    $stmt = $db->prepare("SELECT sealetc_id FROM fdata_sealetc WHERE fdata_id = :fdata_id");
+    $stmt = $db->prepare("SELECT tag_id FROM fdata_tag WHERE fdata_id = :fdata_id");
     $stmt->bindValue(":fdata_id",$_REQUEST["fdata_id"]);
     
     if(!$stmt->execute()) {

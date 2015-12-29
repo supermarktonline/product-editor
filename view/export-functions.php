@@ -322,12 +322,12 @@ function getSealetcTagColumns($row) {
     
     global $db;
     
-    $stmt = $db->prepare('SELECT sealetc.name FROM sealetc, fdata_sealetc as con WHERE con.fdata_id=:id AND con.sealetc_id = sealetc.id');
+    $stmt = $db->prepare('SELECT tag.name FROM tag, fdata_tag as con WHERE con.fdata_id=:id AND con.tag_id = tag.id');
     $stmt->bindValue(":id",$row['id']);
     $stmt->execute();
-    $sealetc = $stmt->fetchAll();
+    $tag = $stmt->fetchAll();
     
-    foreach($sealetc as $s) {
+    foreach($tag as $s) {
         array_push($tagColumns,getSealetcTagColumn($s['name']));
     }
     return $tagColumns;
@@ -411,9 +411,9 @@ function getAllTagsForRow($row) {
 
     $nutrient_columns = getNutrientTagColumns($row);
     $allergene_columns = getAllergeneTagColumns($row);
-    $sealetc_columns = getSealetcTagColumns($row);
+    $tag_columns = getSealetcTagColumns($row);
     
-    return array_merge($nutrient_columns,$allergene_columns,$sealetc_columns);
+    return array_merge($nutrient_columns,$allergene_columns,$tag_columns);
 
 }
 

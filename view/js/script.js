@@ -53,7 +53,9 @@ var ingredients;
 
 var ingredient_names = [];
 
-var seals;
+var tags;
+
+var tag_labels = [];
 
 var media_path = "";
 
@@ -99,8 +101,6 @@ $(document).ready(function() {
     // tag groupings
     taggroups = JSON.parse($('#taggroups').html());
 
-    console.log(taggroups);
-
     for(var i = 0; i < taggroups.length; i++) {
         taggroup_labels.push({label: taggroups[i]["name"]+" ("+taggroups[i]["muid"]+")",value: taggroups[i]["id"]});
     }
@@ -126,10 +126,25 @@ $(document).ready(function() {
    
    media_path = $('#media_path').text();
    
-   // initialize the seals
-   seals = JSON.parse($('#seals').html());
-   
-   initializeSeals(seals);
+   // initialize the tags
+   tags = JSON.parse($('#tags').html());
+
+    for(var i = 0; i < tags.length; i++) {
+        tag_labels.push({label: tags[i]["name_de"]+" ("+tags[i]["muid"]+")",value: tags[i]["id"]});
+    }
+
+
+
+    $('#tag_delete_selector').autocomplete({
+        source: tag_labels,
+        select: function(event,ui) {
+            event.preventDefault();
+            $('#tag_delete_selector').val(ui.item.label);
+            $('#tag_delete_selected_id').val(ui.item.value);
+        }
+    });
+
+   initializeTags(tags);
    
 });
 
@@ -188,8 +203,8 @@ $(document).on('click','*[data-open_edit_id]',function() {
 
         // taggroups
         // clear tag area
-        $('#tag_group_new_muid,#tag_group_new_name,#tag_uid_new,#tag_name_new,#tag_name_at_new,#tag_numerical_new').val('');
-        $('#tag_group_selected_id,#tag_group_delete_selected_id').val(0);
+        $('#tag_group_new_muid,#tag_group_new_name,#tag_uid_new,#tag_name_new,#tag_name_at_new,#tag_numerical_new,#tag_delete_selector,#tag_group_delete_selector').val('');
+        $('#tag_group_selected_id,#tag_group_delete_selected_id,#tag_delete_selected_id').val(0);
 
         // show ingredients
         var types = ["standard","enthalt","gering"];
@@ -243,18 +258,18 @@ $(document).on('click','*[data-open_edit_id]',function() {
                     $('#message_container').html('<div class="umsg error">'+result+'</div>');
                     return;
                 }
-                
+
                 populateCategories(ids);
                 
             }
         });
         
         // Show Gütesiegel etc.
-        $('.seal').each(function() {
+        $('.tag').each(function() {
            $(this).prop('checked', false);  
         });
         
-        $.ajax({url: "/?sealetc_connection=get&fdata_id="+product["id"], success: function(result){
+        $.ajax({url: "/?tag_connection=get&fdata_id="+product["id"], success: function(result){
                 
                 var ids;
                 
@@ -267,9 +282,9 @@ $(document).on('click','*[data-open_edit_id]',function() {
                 
                 for(var i = 0; i < ids.length; i++) {
                    
-                    var sid = ids[i]["sealetc_id"];
+                    var sid = ids[i]["tag_id"];
                     
-                    $('.seal[value="'+sid+'"]').each(function() {
+                    $('.tag[value="'+sid+'"]').each(function() {
                        $(this).prop("checked",true); 
                     });
                 }
@@ -400,12 +415,12 @@ $(document).on('click','#save_now,#finish_now',function() {
     }});
     
     
-    // update all seals
+    // update all tags
     var ids = {};
     
     var tpids = [];
     
-    $('.seal').each(function() {
+    $('.tag').each(function() {
         if($(this).is(":checked")) {
             tpids.push($(this).val());
         }
@@ -413,9 +428,9 @@ $(document).on('click','#save_now,#finish_now',function() {
     
     ids["ids"] = tpids;
     
-    $.ajax({ type:"POST", url: "/?sealetc_connection=update&fdata_id="+save_id, data:ids, success: function(result){
+    $.ajax({ type:"POST", url: "/?tag_connection=update&fdata_id="+save_id, data:ids, success: function(result){
        if(result==="success") {
-           $('#message_container').append('<div class="umsg success">Article seals updated successfully.</div>');
+           $('#message_container').append('<div class="umsg success">Article tags updated successfully.</div>');
        } else {
            $('#message_container').append('<div class="umsg error">'+result+'</div>');
        }

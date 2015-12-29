@@ -22,16 +22,16 @@ $stmt3->execute();
 $categories = $stmt3->fetchAll();
 
 
-$stmt4 = $db->prepare('SELECT * FROM sealetc ORDER BY name');
+$stmt4 = $db->prepare('SELECT * FROM tag ORDER BY name_de');
 $stmt4->execute();
-$seals = $stmt4->fetchAll();
+$tags = $stmt4->fetchAll();
 
 $stmt5 = $db->prepare('SELECT name,media_path FROM import WHERE id = :id');
 $stmt5->bindValue(":id",urldecode($_GET['edit']));
 $stmt5->execute();
 $properties = $stmt5->fetch();
 
-$stmt6 = $db->prepare('SELECT * FROM taggroup ORDER BY name DESC');
+$stmt6 = $db->prepare('SELECT * FROM taggroup ORDER BY name_de DESC');
 $stmt6->execute();
 $taggroups = $stmt6->fetchAll();
 
@@ -617,27 +617,23 @@ $media_path = $properties["media_path"];
             <div id="tag-container">
 
               <div id="admin-area">
-                <div id="tag_group_selector_wrapper">
-                  <p><label>Admin - Tag Creator</label></p>
+                <div id="tag_group_wrapper">
 
-                  <p><label>Tag-Gruppe anlegen:</label>  MUID (en): <input type="text" id="tag_group_new_muid" value="" /> Name (de): <input type="text" id="tag_group_new_name" /> <button id="tag_group_new_create">Gruppe anlegen</button>
+                  <p><label>Admin - Tag-Gruppe anlegen:</label>  MUID (en): <input type="text" id="tag_group_new_muid" value="" /> Name (de): <input type="text" id="tag_group_new_name" /> <button id="tag_group_new_create">Gruppe anlegen</button>
 
                   <label>Tag-Gruppe löschen:</label> <input type="text" id="tag_group_delete_selector" value="" /><input type="hidden" id="tag_group_delete_selected_id" value="0" /> <button id="tag_group_delete">Gruppe löschen</button></p>
                 </div>
 
-
-
-
-                <p>Gruppe wählen: <input type="text" id="tag_group_selector" value="" /><input type="hidden" id="tag_group_selected_id" value="0" /></p>
-
-                <div id="tag_group_selector">
-                  <p>Tag anlegen (Erklärung: ~ ... Platzhalter für numerischen Wert in MUID/Name, $ ... Platzhalter für numerischen Value Type in MUID/Name, wenn nicht numerisch: Numerical value leer lassen)</p>
+                <div id="tag_wrapper">
+                  <p><label>Admin - Tag anlegen</label> (Erklärung: ~ ... Platzhalter für numerischen Wert in MUID/Name, $ ... Platzhalter für numerischen Value Type in MUID/Name, wenn nicht numerisch: keine Placeholder, typ leerlassen)</p>
                   <p>
-                  UID (EN): <input type="text" id="tag_uid_new" value="" />
-                  Name (DE): <input type="text" id="tag_name_new" value="" />
-                  Name (AT) *: <input type="text" id="tag_name_at_new" value="" />
-                  Numerical Value *: <input type="text" id="tag_numerical_new" value="" />
+                    Gruppe wählen: <input type="text" id="tag_group_selector" value="" /><input type="hidden" id="tag_group_selected_id" value="0" />
+                    UID (EN): <input type="text" id="tag_uid_new" value="" />
+                    Name (DE): <input type="text" id="tag_name_new" value="" />
+                    Name (AT) *: <input type="text" id="tag_name_at_new" value="" />
+                    Numerical Typ:
                     <select id="tag_numerical_new_type">
+                      <option value=""></option>
                       <option value="percent">% (percent)</option>
                       <option value="kilogram">kg (kilogram)</option>
                       <option value="gram">g (gram)</option>
@@ -654,6 +650,11 @@ $media_path = $properties["media_path"];
                     </select>
                     <button id="tag_new_create">Tag anlegen</button>
                   </p>
+                  <p>
+                    <label>Admin - Tag löschen:</label> <input type="text" id="tag_delete_selector" value="" /><input type="hidden" id="tag_delete_selected_id" value="0" /> <button id="tag_delete">Tag löschen</button>
+                  </p>
+                </div>
+
                 </div>
               </div>
 
@@ -665,7 +666,7 @@ $media_path = $properties["media_path"];
                 Aktive Kategorie:
                 <input type="hidden" id="active_category" value="" />
                 <span id="active_category_display">-- Keine --</span>
-                &nbsp;&nbsp;&nbsp;<button id="active_category_seal_update">Speichere Highlight-Konfiguration</button>
+                &nbsp;&nbsp;&nbsp;<button id="active_category_tag_update">Speichere Highlight-Konfiguration</button>
               </div>
 
               <div id="attributes-container">
@@ -675,22 +676,10 @@ $media_path = $properties["media_path"];
               <hr>
 
             </div>
-
-            <!-- @ Will DIE
-            <div class="cfg_row">
-                <input type="text" id="seal_new" value="" /><span id="seal_adder">+</span>
-                <input type="text" id="seal_remove" value="" /><span id="seal_remover">-</span>
-            </div>
-            -->
-            
-
-            
           
           </div>
           
         </div>
-        
-      </div>
       <div id="send-container">
         <button id="finish_now" class="btn btn-default" data-save_id="">abschließen</button>
         <button id="save_now" class="btn btn-default" data-save_id="">sichern</button>
@@ -706,7 +695,7 @@ $media_path = $properties["media_path"];
       
       <div class="hidden" id="categories"><?php echo json_encode($categories); ?></div>
       
-      <div class="hidden" id="seals"><?php echo json_encode($seals); ?></div>
+      <div class="hidden" id="tags"><?php echo json_encode($tags); ?></div>
       
       <div class="hidden" id="media_path"><?php echo $media_path; ?></div>
     

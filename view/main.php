@@ -16,12 +16,12 @@ if(isset($_REQUEST['edit'])) {
     include("ingredient_connection.php");
 } else if(isset($_REQUEST['ingredient'])) {
     include("ingredient.php");
-} else if(isset($_REQUEST['sealetc'])) {
-    include("sealetc.php");
-} else if(isset($_REQUEST['sealetc_connection'])) {
-    include("sealetc_connection.php");
-} else if(isset($_REQUEST['category_sealetc_connection'])) {
-    include("category_sealetc_connection.php");
+} else if(isset($_REQUEST['tag'])) {
+    include("tag.php");
+} else if(isset($_REQUEST['tag_connection'])) {
+    include("tag_connection.php");
+} else if(isset($_REQUEST['category_tag_connection'])) {
+    include("category_tag_connection.php");
 } else if(isset($_REQUEST['taggroup'])) {
     include("taggroup.php");
 } else {

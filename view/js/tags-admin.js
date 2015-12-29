@@ -38,7 +38,6 @@ $(document).on('click','#tag_group_delete',function(e) {
 
             // remove tag group from selectors
             for(var i = taggroups.length-1; i>=0;i--) {
-                console.log(taggroups[i]);
                 if(taggroups[i]["id"] == delid){
                     taggroups.splice(i, 1);
                     taggroup_labels.splice(i,1); // order should be the same
@@ -67,11 +66,10 @@ $(document).on('click','#tag_new_create',function(e) {
         muid:   $('#tag_uid_new').val(),
         name_de:   $('#tag_name_new').val(),
         name_at:   $('#tag_name_at_new').val(),
-        numerical_value: $('#tag_numerical_new').val(),
-        numerical_value_type: $('#tag_numerical_new_type').val()
+        type: $('#tag_numerical_new_type').val()
     };
 
-    $.ajax({ type:"POST", url: "/?sealetc=create", data:tag, success: function(result){
+    $.ajax({ type:"POST", url: "/?tag=create", data:tag, success: function(result){
 
         var dec = JSON.parse(result);
 
@@ -86,4 +84,34 @@ $(document).on('click','#tag_new_create',function(e) {
         }
     }});
 
+});
+
+
+
+$(document).on('click','#tag_delete',function(e) {
+    e.preventDefault();
+
+    var delid = $('#tag_delete_selected_id').val();
+
+    $.ajax({ type:"GET", url: "/?tag=delete&id="+delid, success: function(result){
+        if(result=="success") {
+
+            // remove tag group from selectors
+            for(var i = tags.length-1; i>=0;i--) {
+                if(tags[i]["id"] == delid){
+                    tags.splice(i, 1);
+                    tag_labels.splice(i,1); // order should be the same
+                    $('#tag_delete_selector').val('');
+                    $('#tag_delete_selected_id').val('0');
+                    break;
+                }
+            }
+
+            $('#message_container').html('<div class="umsg success">Tag successfully deleted.</div>');
+
+        } else {
+            var dec = JSON.parse(result);
+            $('#message_container').html('<div class="umsg error">'+dec["error"]+'</div>');
+        }
+    }});
 });

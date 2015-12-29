@@ -1,24 +1,24 @@
 
-// add a new sealetc
-$(document).on('click','#seal_adder',function() {
-    var new_seal = $('#seal_new').val();
+// add a new tag
+$(document).on('click','#tag_adder',function() {
+    var new_tag = $('#tag_new').val();
 
-    var seal = {
-        name: new_seal
+    var tag = {
+        name: new_tag
     };
 
     // create ingredient
-     $.ajax({ type:"POST", url: "/?sealetc=create", data:seal, success: function(result){
+     $.ajax({ type:"POST", url: "/?tag=create", data:tag, success: function(result){
 
              var nSeal = JSON.parse(result);
 
              if(!nSeal["id"]) {
                  $('#message_container').html('<div class="umsg error">'+nSeal["error"]+'</div>');
              } else {
-                 seals.push(nSeal);
+                 tags.push(nSeal);
                  appendSeal(nSeal,true);
                  $('#message_container').html('<div class="umsg success">Gütesiegel (etc.) '+nSeal["name"]+' erfolgreich gespeichert.</div>');
-                 $('#seal_new').val('');
+                 $('#tag_new').val('');
              }
          }
      });
@@ -26,24 +26,24 @@ $(document).on('click','#seal_adder',function() {
 });
 
 
-// remove a seal (only possible if not used)
-$(document).on('click','#seal_remover',function() {
-    var old_seal = $('#seal_remove').val();
+// remove a tag (only possible if not used)
+$(document).on('click','#tag_remover',function() {
+    var old_tag = $('#tag_remove').val();
 
-    var seal = {
-        name: old_seal
+    var tag = {
+        name: old_tag
     };
 
     // create ingredient
-     $.ajax({ type:"POST", url: "/?sealetc=delete", data:seal, success: function(result){
+     $.ajax({ type:"POST", url: "/?tag=delete", data:tag, success: function(result){
              
              if(result!=="success") {
                  var error = JSON.parse(result);
                 $('#message_container').html('<div class="umsg error">'+error["error"]+'</div>');
-                $('#seal_remove').val('');
+                $('#tag_remove').val('');
              } else {
                  $('#message_container').html('<div class="umsg success">Gütesiegel (etc.) erfolgreich gelöscht.</div>');
-                 removeSealByName(old_seal);
+                 removeSealByName(old_tag);
              }
          }
      });
@@ -55,10 +55,10 @@ function removeSealByName(name) {
     // remove from list
     var id = -1;
     
-    for(var i = 0; i < seals.length; i++) {
-        if(seals[i]["name"]==name) {
-            id=seals[i]["id"];
-            seals.splice(i,1);
+    for(var i = 0; i < tags.length; i++) {
+        if(tags[i]["name"]==name) {
+            id=tags[i]["id"];
+            tags.splice(i,1);
         }
     }
     
@@ -70,14 +70,14 @@ function removeSealByName(name) {
 }
 
 
-function initializeSeals(seals) {
+function initializeTags(tags) {
     
-    for(var i = 0; i < seals.length; i++) {
-        appendSeal(seals[i]);
+    for(var i = 0; i < tags.length; i++) {
+        appendTag(tags[i]);
     }
 }
 
-function appendSeal(seal,checked) {
+function appendTag(tag,checked) {
     checked  = checked || false;
     
     var dochk = "";
@@ -85,8 +85,8 @@ function appendSeal(seal,checked) {
         dochk = 'checked="checked"';
     }
     
-    var html = '<div class="gs" data-id="'+seal["id"]+'">';
-    html += '<label><input type="checkbox" '+dochk+' class="seal" value="'+seal["id"]+'" />'+seal["name"]+'</label>';
+    var html = '<div class="gs" data-id="'+tag["id"]+'">';
+    html += '<label><input type="checkbox" '+dochk+' class="tag" value="'+tag["id"]+'" />'+tag["name_de"]+'</label>';
     html += '</div>';
 
     $('#guetesiegel').append(html);
@@ -95,13 +95,13 @@ function appendSeal(seal,checked) {
 
 
 /* Seal category highlighting */
-$(document).on('click','#active_category_seal_update',function() {
+$(document).on('click','#active_category_tag_update',function() {
    
     var ids = {};
     
     var tpids = [];
     
-    $('.seal').each(function() {
+    $('.tag').each(function() {
         if($(this).is(":checked")) {
             tpids.push($(this).val());
         }
@@ -109,9 +109,9 @@ $(document).on('click','#active_category_seal_update',function() {
     
     ids["ids"] = tpids;
     
-    $.ajax({ type:"POST", url: "/?category_sealetc_connection=update&category_id="+$('#active_category').val(), data:ids, success: function(result){
+    $.ajax({ type:"POST", url: "/?category_tag_connection=update&category_id="+$('#active_category').val(), data:ids, success: function(result){
        if(result==="success") {
-           $('#message_container').html('<div class="umsg success">Category / seal configuration updated successfully.</div>');
+           $('#message_container').html('<div class="umsg success">Category / tag configuration updated successfully.</div>');
            setGlobalCurrentCat($('#active_category').val());
        } else {
            $('#message_container').html('<div class="umsg error">'+result+'</div>');

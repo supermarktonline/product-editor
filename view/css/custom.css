@@ -173,7 +173,7 @@ main {
     margin:3px 7px;
 }
 
-#cat_adder, #seal_adder, #seal_remover {
+#cat_adder, #tag_adder, #tag_remover {
     padding:0 5px;
     margin-left:10px;
     font-size:20px;
@@ -184,7 +184,7 @@ main {
     color:#fff;
 }
 
-#seal_remover {
+#tag_remover {
     
 }
 
@@ -202,7 +202,7 @@ main {
     margin:3px;
 }
 
-#seal_new {
+#tag_new {
     margin-left:10px;
 }
 

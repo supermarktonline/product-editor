@@ -14,7 +14,7 @@
     <script src="<?php echo VIEWPATH; ?>js/script.js"></script>
     <script src="<?php echo VIEWPATH; ?>js/ingredient.js"></script>
     <script src="<?php echo VIEWPATH; ?>js/category.js"></script>
-    <script src="<?php echo VIEWPATH; ?>js/sealetc.js"></script>
+    <script src="<?php echo VIEWPATH; ?>js/tag.js"></script>
     <script src="<?php echo VIEWPATH; ?>js/image.js"></script>
     <script src="<?php echo VIEWPATH; ?>js/tags-admin.js"></script>
     <?php } ?>

@@ -52,14 +52,14 @@ $(document).on('change','.cat-selector',function() {
 
 
 /*
- * Sets the global current cat AND the seal relationships.
+ * Sets the global current cat AND the tag relationships.
  */
 function setGlobalCurrentCat(catid) {
     
     // set id to hidden element
     $('#active_category').val(catid);
     
-    // remove seal highlighting
+    // remove tag highlighting
     $('.gs label').each(function() {
        $(this).attr('class','');
     });
@@ -83,7 +83,7 @@ function setGlobalCurrentCat(catid) {
         var parents = getParentIds(cat);
         
         
-        $.ajax({url: "/?category_sealetc_connection=get&category_id="+catid+"&parent_ids="+JSON.stringify(parents), success: function(result){
+        $.ajax({url: "/?category_tag_connection=get&category_id="+catid+"&parent_ids="+JSON.stringify(parents), success: function(result){
 
                 var decoded;
 
@@ -99,7 +99,7 @@ function setGlobalCurrentCat(catid) {
                 var parentcon = decoded["parent"];
 
                 for(var i = 0; i < parentcon.length; i++) {
-                    $('.gs[data-id="'+parentcon[i]["sealetc_id"]+'"] label').each(function() {
+                    $('.gs[data-id="'+parentcon[i]["tag_id"]+'"] label').each(function() {
                        $(this).addClass('rec-parent'); 
                     });
                 }
@@ -107,7 +107,7 @@ function setGlobalCurrentCat(catid) {
                 var directcon = decoded["direct"];
                 
                 for(var i = 0; i < directcon.length; i++) {
-                    $('.gs[data-id="'+directcon[i]["sealetc_id"]+'"] label').each(function() {
+                    $('.gs[data-id="'+directcon[i]["tag_id"]+'"] label').each(function() {
                        $(this).addClass('rec-direct'); 
                     });
                 }
@@ -245,7 +245,7 @@ function buildCategorySelector(cats,level,id,preselect) {
 }
 
 function getCategoriesForLevel(level,parent) {
-    
+
     var cats = [];
     
     if(level===1) {

@@ -220,43 +220,34 @@ CREATE TABLE fdata_category (
 );
 
 
-
 CREATE TABLE taggroup (
     id SERIAL PRIMARY KEY,
     muid varchar(255) UNIQUE,
     name varchar(255)
 );
 
-CREATE TABLE metatag_numerical (
-    id SERIAL PRIMARY KEY,
-    muid varchar(255) UNIQUE,
-    name_de varchar(255),
-    name_at varchar(255),
-    numerical_value_type VARCHAR(255)
-);
-
-
-CREATE TABLE sealetc (
+CREATE TABLE tag (
     id SERIAL PRIMARY KEY,
     taggroup int REFERENCES taggroup(id) ON UPDATE CASCADE ON DELETE RESTRICT NOT NULL,
-    metatag_numerical int REFERENCES metatag_numerical ON UPDATE CASCADE ON DELETE RESTRICT DEFAULT null, /* if metatag numerical is set, muid and names are ignored */
     muid varchar(255) UNIQUE,
     name_de varchar(255),
     name_at varchar(255),
-    numerical_value float DEFAULT null
+    type VARCHAR(255) /* if type is set, this is a numerical tag */
 );
 
 
--- saves default suggestions of seal etc for a given category
-CREATE TABLE category_sealetc (
+/* saves suggestions for a certain category */
+CREATE TABLE category_tag (
   category_id    int REFERENCES category(gid) ON UPDATE CASCADE ON DELETE CASCADE
-, sealetc_id int REFERENCES sealetc(id) ON UPDATE CASCADE ON DELETE CASCADE
-, CONSTRAINT category_sealetc_pkey PRIMARY KEY (category_id, sealetc_id)
+, tag_id int REFERENCES tag(id) ON UPDATE CASCADE ON DELETE RESTRICT
+, CONSTRAINT category_tag_pkey PRIMARY KEY (category_id, tag_id)
 );
 
 
-CREATE TABLE fdata_sealetc (
-  fdata_id    int REFERENCES fdata(id) ON UPDATE CASCADE ON DELETE CASCADE
-, sealetc_id int REFERENCES sealetc(id) ON UPDATE CASCADE ON DELETE CASCADE
-, CONSTRAINT fdata_sealetc_pkey PRIMARY KEY (fdata_id, sealetc_id)
+CREATE TABLE fdata_tag (
+      fdata_id int REFERENCES fdata(id) ON UPDATE CASCADE ON DELETE CASCADE
+    , tag_id int REFERENCES tag(id) ON UPDATE CASCADE ON DELETE RESTRICT
+    , numerical_value float DEFAULT null
+    , CONSTRAINT fdata_tag_pkey PRIMARY KEY (fdata_id, tag_id) /* because there is only one constraing possible? */
 );
+
