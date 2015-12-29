@@ -29,4 +29,18 @@ if($_REQUEST["taggroup"]=="create") {
         echo json_encode($stmt->fetch());
     }
 
+} else if($_REQUEST["taggroup"]=="delete") {
+
+    // if a taggroup is already connected deletion should be impossible because of "on delete restrict" in the database
+    $stmt = $db->prepare("DELETE FROM taggroup WHERE id=:id");
+    $stmt->bindValue(":id",$_REQUEST["id"],PDO::PARAM_INT);
+    $stmt->execute();
+
+    if(!$stmt->execute()) {
+        echo json_encode(array("error"=>"SQL Failure: ".$db->errorInfo()[2])); die;
+    } else {
+        echo "success"; die;
+    }
+
+    echo json_encode(array("error"=>"Taggroup deletion is not allowed. The Object is connected to some article.")); die;
 }

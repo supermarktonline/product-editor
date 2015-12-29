@@ -99,9 +99,20 @@ $(document).ready(function() {
     // tag groupings
     taggroups = JSON.parse($('#taggroups').html());
 
+    console.log(taggroups);
+
     for(var i = 0; i < taggroups.length; i++) {
         taggroup_labels.push({label: taggroups[i]["name"]+" ("+taggroups[i]["muid"]+")",value: taggroups[i]["id"]});
     }
+
+    $('#tag_group_delete_selector').autocomplete({
+        source: taggroup_labels,
+        select: function(event,ui) {
+            event.preventDefault();
+            $('#tag_group_delete_selector').val(ui.item.label);
+            $('#tag_group_delete_selected_id').val(ui.item.value);
+        }
+    });
 
     $('#tag_group_selector').autocomplete({
         source: taggroup_labels,
@@ -133,12 +144,11 @@ $(document).on('click','*[data-open_edit_id]',function() {
     $('[data-open_edit_id]').removeClass('active');
 
     $(this).addClass('active');
-
-
    
     $.ajax({url: "/?productjson="+$(this).attr('data-open_edit_id'), success: function(result){
             
         $('#main-container').show();
+
             
         var product = JSON.parse(result);
         
@@ -177,7 +187,9 @@ $(document).on('click','*[data-open_edit_id]',function() {
         $('#ingredients_collector,#enthalt_spuren_collector,#enthalt_gering_collector').html('');
 
         // taggroups
-        $('#tag_group_selected_id').val(0);
+        // clear tag area
+        $('#tag_group_new_muid,#tag_group_new_name,#tag_uid_new,#tag_name_new,#tag_name_at_new,#tag_numerical_new').val('');
+        $('#tag_group_selected_id,#tag_group_delete_selected_id').val(0);
 
         // show ingredients
         var types = ["standard","enthalt","gering"];

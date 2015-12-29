@@ -227,15 +227,23 @@ CREATE TABLE taggroup (
     name varchar(255)
 );
 
+CREATE TABLE metatag_numerical (
+    id SERIAL PRIMARY KEY,
+    muid varchar(255) UNIQUE,
+    name_de varchar(255),
+    name_at varchar(255),
+    numerical_value_type VARCHAR(255)
+);
+
 
 CREATE TABLE sealetc (
     id SERIAL PRIMARY KEY,
-    taggroup int REFERENCES taggroup(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    muid varchar(255), /* may contain placeholder */
-    name_de varchar(255), /* may contain placeholder */
-    name_at varchar(255), /* may contain placeholder */
-    numerical_value float DEFAULT null,
-    numerical_value_type float DEFAULT null /* may contain numerical value if necessary */
+    taggroup int REFERENCES taggroup(id) ON UPDATE CASCADE ON DELETE RESTRICT NOT NULL,
+    metatag_numerical int REFERENCES metatag_numerical ON UPDATE CASCADE ON DELETE RESTRICT DEFAULT null, /* if metatag numerical is set, muid and names are ignored */
+    muid varchar(255) UNIQUE,
+    name_de varchar(255),
+    name_at varchar(255),
+    numerical_value float DEFAULT null
 );
 
 

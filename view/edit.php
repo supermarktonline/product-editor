@@ -619,11 +619,19 @@ $media_path = $properties["media_path"];
               <div id="admin-area">
                 <div id="tag_group_selector_wrapper">
                   <p><label>Admin - Tag Creator</label></p>
-                  <p>Gruppe wählen: <input type="text" id="tag_group_selector" value="" /><input type="hidden" id="tag_group_selected_id" value="0" />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Neue Tag-Gruppe anlegen:</label>  MUID (en): <input type="text" id="tag_group_new_muid" value="" /> Name (de): <input type="text" id="tag_group_new_name" /> <button id="tag_group_new_create">Gruppe anlegen</button></p>
+
+                  <p><label>Tag-Gruppe anlegen:</label>  MUID (en): <input type="text" id="tag_group_new_muid" value="" /> Name (de): <input type="text" id="tag_group_new_name" /> <button id="tag_group_new_create">Gruppe anlegen</button>
+
+                  <label>Tag-Gruppe löschen:</label> <input type="text" id="tag_group_delete_selector" value="" /><input type="hidden" id="tag_group_delete_selected_id" value="0" /> <button id="tag_group_delete">Gruppe löschen</button></p>
                 </div>
+
+
+
+
+                <p>Gruppe wählen: <input type="text" id="tag_group_selector" value="" /><input type="hidden" id="tag_group_selected_id" value="0" /></p>
+
                 <div id="tag_group_selector">
-                  <p>Tag anlegen (Erklärung: ~ ... Platzhalter für numerischen Wert, $ ... Platzhalter für numerischen Value Type)</p>
+                  <p>Tag anlegen (Erklärung: ~ ... Platzhalter für numerischen Wert in MUID/Name, $ ... Platzhalter für numerischen Value Type in MUID/Name, wenn nicht numerisch: Numerical value leer lassen)</p>
                   <p>
                   UID (EN): <input type="text" id="tag_uid_new" value="" />
                   Name (DE): <input type="text" id="tag_name_new" value="" />
@@ -632,7 +640,7 @@ $media_path = $properties["media_path"];
                     <select id="tag_numerical_new_type">
                       <option value="percent">% (percent)</option>
                       <option value="kilogram">kg (kilogram)</option>
-                      <option value="gramm">g (gram)</option>
+                      <option value="gram">g (gram)</option>
                       <option value="milligram">mg (miligram)</option>
                       <option value="liter">l (liter)</option>
                       <option value="milliliter">ml (milliliter)</option>
