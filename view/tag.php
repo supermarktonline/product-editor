@@ -24,9 +24,14 @@ if($_REQUEST["tag"]=="create") {
             echo json_encode(array("error"=>"Error: Numerical value type is unknown.")); die;
         } else {
 
-            if(strpos($_REQUEST["muid"],"~")===false || strpos($_REQUEST["muid"],"$")===false
-                || strpos($_REQUEST["name_de"],"~")===false || strpos($_REQUEST["name_de"],"$")===false) {
-                echo json_encode(array("error"=>"Error: Numerical value type is unknown.")); die;
+            if( strpos($_REQUEST["muid"],"$")===false || strpos($_REQUEST["name_de"],"$")===false) {
+
+                echo json_encode(array("error"=>"Error: Numerical Placeholders missing.")); die;
+
+                if( (strpos($_REQUEST["muid"],"~")===false || strpos($_REQUEST["name_de"],"~")===false) && $_REQUEST["type"]!="numeric") {
+                    echo json_encode(array("error"=>"Error: Numerical Unit Placeholders missing.")); die;
+                }
+
             } else {
                 $type = $_REQUEST["type"];
             }

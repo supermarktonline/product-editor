@@ -19,15 +19,16 @@ if(isset($_REQUEST["tag_connection"]) && $_REQUEST["tag_connection"]=="update") 
         echo "Error recreating tag connections."; die;
     } else {
 
-        $stmt = $db->prepare("INSERT INTO fdata_tag (fdata_id,tag_id) VALUES (:fdata_id,:tag_id)");
+        $stmt = $db->prepare("INSERT INTO fdata_tag (fdata_id,tag_id,numerical_value) VALUES (:fdata_id,:tag_id,:numerical_value)");
 
-        foreach($_REQUEST["ids"] as $id) {
+        foreach($_REQUEST["cons"] as $con) {
 
             $stmt->bindValue(":fdata_id",$_REQUEST["fdata_id"]);
-            $stmt->bindValue(":tag_id",intval($id));
+            $stmt->bindValue(":tag_id",intval($con["tag_id"]));
+            $stmt->bindValue(":numerical_value",($con["numerical_value"]!="" && !is_null($con["numerical_value"])) ? floatval($con["numerical_value"]) : NULL);
 
             if(!$stmt->execute()) {
-                echo "SQL Failure: ".$db->errorInfo()[2]." ";
+                echo "SQL Failure (Maybe numerical tag is not numeric?): ".$db->errorInfo()[2]." ";
             }
         }
 
@@ -36,7 +37,7 @@ if(isset($_REQUEST["tag_connection"]) && $_REQUEST["tag_connection"]=="update") 
     }
 } else if(isset($_REQUEST["tag_connection"]) && $_REQUEST["tag_connection"]=="get") {
     
-    $stmt = $db->prepare("SELECT tag_id FROM fdata_tag WHERE fdata_id = :fdata_id");
+    $stmt = $db->prepare("SELECT * FROM fdata_tag WHERE fdata_id = :fdata_id");
     $stmt->bindValue(":fdata_id",$_REQUEST["fdata_id"]);
     
     if(!$stmt->execute()) {

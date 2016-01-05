@@ -184,8 +184,14 @@ main {
     color:#fff;
 }
 
-#tag_remover {
-    
+
+
+#tags_numerical div.gs {
+    background:#eee;
+    padding:2px;
+    float:left;
+    display:inline-block;
+    margin:5px;
 }
 
 #guetesiegel > div.gs {
@@ -194,8 +200,12 @@ main {
     margin:5px;
 }
 
-#guetesiegel > div.gs label {
+#guetesiegel > div.gs label, #tags_numerical div.gs label {
     font-weight:400;
+}
+
+#tags_numerical div.gs label {
+    margin-bottom:0;
 }
 
 #guetesiegel > div.gs input[type="checkbox"] {

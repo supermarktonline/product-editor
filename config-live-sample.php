@@ -19,4 +19,4 @@ define('VIEWPATH','view/');
 
 define('APP_URL',((strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,4))=='http') ? "http://" : "https://").$_SERVER['HTTP_HOST']."/");
 
-define('NUMERICAL_VALUE_TYPES',serialize(array('percent','kilogram','gram','milligram','liter','milliliter','seconds','minutes','hours','days','permill','squaremeters','cubicmeters')));
+define('NUMERICAL_VALUE_TYPES',serialize(array('numeric','percent','kilogram','gram','milligram','liter','milliliter','seconds','minutes','hours','days','permill','squaremeters','cubicmeters')));

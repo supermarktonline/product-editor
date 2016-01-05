@@ -70,10 +70,16 @@ function removeSealByName(name) {
 }
 
 
-function initializeTags(tags) {
+function initializeStandardTags(tags) {
     
     for(var i = 0; i < tags.length; i++) {
         appendTag(tags[i]);
+    }
+}
+
+function initializeNumericalTags(tags) {
+    for(var i = 0; i < tags.length; i++) {
+        appendNumericalTag(tags[i]);
     }
 }
 
@@ -92,6 +98,23 @@ function appendTag(tag,checked) {
     $('#guetesiegel').append(html);
 }
 
+function appendNumericalTag(tag,value) {
+    value = value || "";
+
+    var html = '<div class="gs" data-id="'+tag["id"]+'">';
+
+    var input = '<input size="4" type="text" class="numerical-tag" data-tagid="'+tag["id"]+'" value="'+value+'" />';
+
+    var name = tag["name_de"];
+
+    var prep = (name.replace("$",input)).replace("~",numerical_tags_map[tag["type"]]);
+
+
+    html += '<label>'+prep+'</label>';
+    html += '</div>';
+
+    $('#tags_numerical').append(html);
+}
 
 
 /* Seal category highlighting */

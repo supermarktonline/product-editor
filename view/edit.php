@@ -31,7 +31,8 @@ $stmt5->bindValue(":id",urldecode($_GET['edit']));
 $stmt5->execute();
 $properties = $stmt5->fetch();
 
-$stmt6 = $db->prepare('SELECT * FROM taggroup ORDER BY name_de DESC');
+
+$stmt6 = $db->prepare('SELECT * FROM taggroup ORDER BY name DESC');
 $stmt6->execute();
 $taggroups = $stmt6->fetchAll();
 
@@ -633,7 +634,8 @@ $media_path = $properties["media_path"];
                     Name (AT) *: <input type="text" id="tag_name_at_new" value="" />
                     Numerical Typ:
                     <select id="tag_numerical_new_type">
-                      <option value=""></option>
+                      <option value="">-- nicht numerisch --</option>
+                      <option value="numeric">(Zahl ohne Einheit)</option>
                       <option value="percent">% (percent)</option>
                       <option value="kilogram">kg (kilogram)</option>
                       <option value="gram">g (gram)</option>
@@ -670,7 +672,11 @@ $media_path = $properties["media_path"];
               </div>
 
               <div id="attributes-container">
+                <p><label>Tags</label></p>
                 <div id="guetesiegel" class="div-attributes"></div>
+                <div class="clear"></div>
+                <p><label>Numerische Tags</label> (0 ist ein Wert)</p>
+                <div id="tags_numerical" class="div-attributes"></div>
                 <div class="clear"></div>
               </div>
               <hr>

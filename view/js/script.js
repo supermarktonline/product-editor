@@ -1,3 +1,20 @@
+var numerical_tags_map = {
+    numeric: "",
+    percent: "%",
+    kilogram: "kg",
+    gram: "g",
+    milligram: "mg",
+    liter: "l",
+    milliliter: "ml",
+    seconds: "s",
+    minutes: "m",
+    hours: "h",
+    days: "d",
+    permill: "‰",
+    squaremeters: "m²",
+    cubicmeters: "m³"
+};
+
 var product_simple_properties = [
     "notice",
     "nutrient_unit",
@@ -133,8 +150,6 @@ $(document).ready(function() {
         tag_labels.push({label: tags[i]["name_de"]+" ("+tags[i]["muid"]+")",value: tags[i]["id"]});
     }
 
-
-
     $('#tag_delete_selector').autocomplete({
         source: tag_labels,
         select: function(event,ui) {
@@ -144,7 +159,23 @@ $(document).ready(function() {
         }
     });
 
-   initializeTags(tags);
+    // for the interface, seperate numerical tags and standard tags
+
+    var standard_tags = [];
+    var numerical_tags = [];
+
+    for(var i = 0; i < tags.length; i++) {
+
+        if(tags[i]["type"]) {
+            numerical_tags.push(tags[i]);
+        } else {
+            standard_tags.push(tags[i]);
+        }
+    }
+
+    initializeStandardTags(standard_tags);
+
+    initializeNumericalTags(numerical_tags);
    
 });
 
@@ -264,32 +295,44 @@ $(document).on('click','*[data-open_edit_id]',function() {
             }
         });
         
-        // Show Gütesiegel etc.
+        // Show Tags
         $('.tag').each(function() {
            $(this).prop('checked', false);  
+        });
+
+
+        // Show numerical Tags
+        $('.numerical-tag').each(function() {
+            $(this).val("");
         });
         
         $.ajax({url: "/?tag_connection=get&fdata_id="+product["id"], success: function(result){
                 
-                var ids;
+                var cons;
                 
                 try {
-                    ids = JSON.parse(result);
+                    cons = JSON.parse(result);
                 } catch(e) {
                     $('#message_container').html('<div class="umsg error">'+result+'</div>');
                     return;
                 }
                 
-                for(var i = 0; i < ids.length; i++) {
+                for(var i = 0; i < cons.length; i++) {
                    
-                    var sid = ids[i]["tag_id"];
+                    var sid = cons[i]["tag_id"];
                     
                     $('.tag[value="'+sid+'"]').each(function() {
                        $(this).prop("checked",true); 
                     });
+
+                    $('.numerical-tag[data-tagid="'+sid+'"]').each(function() {
+                       $(this).val(cons[i]["numerical_value"]);
+                    });
                 }
             }
-        }); 
+        });
+
+
 
         // the images
         
@@ -416,19 +459,31 @@ $(document).on('click','#save_now,#finish_now',function() {
     
     
     // update all tags
-    var ids = {};
-    
-    var tpids = [];
+
+    // standard tags
+    var ntags = [];
     
     $('.tag').each(function() {
         if($(this).is(":checked")) {
-            tpids.push($(this).val());
+            var ar = {};
+            ar["tag_id"] = $(this).val();
+            ar["numerical_value"] = null;
+            ntags.push(ar);
         }
     });
-    
-    ids["ids"] = tpids;
-    
-    $.ajax({ type:"POST", url: "/?tag_connection=update&fdata_id="+save_id, data:ids, success: function(result){
+
+    // numerical tags
+    $('.numerical-tag').each(function() {
+       var tv = ($(this).val()).trim();
+        if(tv!="") {
+            var ar = {};
+            ar["tag_id"] = $(this).attr('data-tagid');
+            ar["numerical_value"] = tv;
+            ntags.push(ar);
+        }
+    });
+
+    $.ajax({ type:"POST", url: "/?tag_connection=update&fdata_id="+save_id, data: {cons: ntags}, success: function(result){
        if(result==="success") {
            $('#message_container').append('<div class="umsg success">Article tags updated successfully.</div>');
        } else {
