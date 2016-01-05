@@ -129,6 +129,13 @@ $(document).on('click','#active_category_tag_update',function() {
             tpids.push($(this).val());
         }
     });
+
+    $('.numerical-tag').each(function() {
+        var tv = ($(this).val()).trim();
+        if(tv!="") {
+            tpids.push($(this).attr('data-tagid'));
+        }
+    });
     
     ids["ids"] = tpids;
     
