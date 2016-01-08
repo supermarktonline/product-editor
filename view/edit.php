@@ -669,6 +669,7 @@ $media_path = $properties["media_path"];
                 <input type="hidden" id="active_category" value="" />
                 <span id="active_category_display">-- Keine --</span>
                 &nbsp;&nbsp;&nbsp;<button id="active_category_tag_update">Speichere Highlight-Konfiguration</button>
+                &nbsp;&nbsp;&nbsp;<button data-ishidden="0" id="switch_show_recommended">Empfohlene einblenden/ausblenden</button>
               </div>
 
               <div id="attributes-container">

@@ -119,7 +119,7 @@ function appendNumericalTag(tag,value) {
 
 /* Seal category highlighting */
 $(document).on('click','#active_category_tag_update',function() {
-   
+
     var ids = {};
     
     var tpids = [];
@@ -148,4 +148,15 @@ $(document).on('click','#active_category_tag_update',function() {
        }
     }});
     
+});
+
+
+$(document).on('click','#switch_show_recommended',function() {
+    if($(this).attr('data-ishidden')=="0") {
+        $('.gs:not(.rec-parent):not(.rec-direct)').hide();
+        $(this).attr('data-ishidden',1);
+    } else {
+        $('.gs').show();
+        $(this).attr('data-ishidden',0);
+    }
 });

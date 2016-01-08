@@ -225,6 +225,10 @@ main {
     font-weight:700 !important;
 }
 
+#guetesiegel > div.gs.rec-direct label, #tags_numerical div.gs.rec-direct label {
+    font-weight:700;
+}
+
 .rec-parent {
     color:#f77;
 }

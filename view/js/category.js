@@ -61,7 +61,7 @@ function setGlobalCurrentCat(catid) {
     
     // remove tag highlighting
     $('.gs label').each(function() {
-       $(this).attr('class','');
+       $(this).parent().attr('class','gs');
     });
     
     // set the label
@@ -100,7 +100,7 @@ function setGlobalCurrentCat(catid) {
 
                 for(var i = 0; i < parentcon.length; i++) {
                     $('.gs[data-id="'+parentcon[i]["tag_id"]+'"] label').each(function() {
-                       $(this).addClass('rec-parent'); 
+                       $(this).parent().addClass('rec-parent');
                     });
                 }
                 
@@ -108,7 +108,7 @@ function setGlobalCurrentCat(catid) {
                 
                 for(var i = 0; i < directcon.length; i++) {
                     $('.gs[data-id="'+directcon[i]["tag_id"]+'"] label').each(function() {
-                       $(this).addClass('rec-direct'); 
+                       $(this).parent().addClass('rec-direct');
                     });
                 }
                 
