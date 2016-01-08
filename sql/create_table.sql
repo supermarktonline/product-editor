@@ -203,15 +203,23 @@ CREATE TABLE fdata_ingredient_gering (
 
 
 CREATE TABLE category (
-    gid integer PRIMARY KEY,
-    lvl_1 varchar(255),
-    lvl_2 varchar(255),
-    lvl_3 varchar(255),
-    lvl_4 varchar(255),
-    lvl_5 varchar(255),
-    lvl_6 varchar(255),
-    lvl_7 varchar(255)
+    gid SERIAL PRIMARY KEY,
+    segment_code int,
+    family_code int,
+    class_code int,
+    brick_code int,
+    segment_description_en varchar(255) NOT NULL default '',
+    family_description_en varchar(255) NOT NULL default '',
+    class_description_en varchar(255) NOT NULL default '',
+    brick_description_en varchar(255) NOT NULL default '',
+    segment_description_de varchar(255) NOT NULL default '',
+    family_description_de varchar(255) NOT NULL default '',
+    class_description_de varchar(255) NOT NULL default '',
+    brick_description_de varchar(255) NOT NULL default '',
+    CONSTRAINT gs1_unique UNIQUE (segment_code,family_code,class_code,brick_code)
 );
+
+CREATE INDEX index_name ON category (segment_code, family_code, class_code,brick_code);
 
 CREATE TABLE fdata_category (
   fdata_id    int REFERENCES fdata (id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -222,16 +230,18 @@ CREATE TABLE fdata_category (
 
 CREATE TABLE taggroup (
     id SERIAL PRIMARY KEY,
-    muid varchar(255) UNIQUE,
+    gs1_attribute_type_code int DEFAULT NULL,
+    muid varchar(255) UNIQUE, /* = Name EN */
     name varchar(255)
 );
 
 CREATE TABLE tag (
     id SERIAL PRIMARY KEY,
+    gs1_attribute_value_code int DEFAULT NULL,
     taggroup int REFERENCES taggroup(id) ON UPDATE CASCADE ON DELETE RESTRICT NOT NULL,
-    muid varchar(255) UNIQUE,
-    name_de varchar(255),
-    name_at varchar(255),
+    muid varchar(255) UNIQUE, /* = Name EN */
+    name_de varchar(255) DEFAULT '',
+    name_at varchar(255) DEFAULT '',
     type VARCHAR(255) /* if type is set, this is a numerical tag */
 );
 
