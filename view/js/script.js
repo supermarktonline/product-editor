@@ -277,23 +277,10 @@ $(document).on('click','*[data-open_edit_id]',function() {
 
         
         // show categories
-        $('#category_select_wrapper').html('');
+        $('#cs_segment,#cs_family,#cs_class,#cs_brick').html('');
         
-        $.ajax({url: "/?category_connection=get&fdata_id="+product["id"], success: function(result){
-                
-                var ids;
-                
-                try {
-                    ids = JSON.parse(result);
-                } catch(e) {
-                    $('#message_container').html('<div class="umsg error">'+result+'</div>');
-                    return;
-                }
+        setCategorySelector(product["category"]);
 
-                populateCategories(ids);
-                
-            }
-        });
         
         // Show Tags
         $('.tag').each(function() {

@@ -17,7 +17,7 @@ $stmt2->execute();
 $ingredients = $stmt2->fetchAll();
 
 
-$stmt3 = $db->prepare('SELECT * FROM category ORDER BY gid');
+$stmt3 = $db->prepare('SELECT * FROM category ORDER BY segment_description_en,family_description_en,class_description_en,brick_description_en');
 $stmt3->execute();
 $categories = $stmt3->fetchAll();
 
@@ -609,8 +609,13 @@ $media_path = $properties["media_path"];
             <hr/>
 
             <div id="category-container">
-                <label>Kategorie</label><span id="cat_adder">+</span><br>
-              <div id="category_select_wrapper"></div>
+                <label>Kategorie</label><br>
+              <div id="category_select_wrapper">
+                <div id="cs_segment"></div>
+                <div id="cs_family"></div>
+                <div id="cs_class"></div>
+                <div id="cs_brick"></div>
+              </div>
             </div>
             <hr>
 

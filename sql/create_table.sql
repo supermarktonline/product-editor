@@ -152,7 +152,8 @@ CREATE TABLE fdata (
     store varchar(255) DEFAULT 'normal',
     container varchar(255) DEFAULT '',
     weight_amount float DEFAULT null,
-    weight_amount_unit varchar(255) DEFAULT ''
+    weight_amount_unit varchar(255) DEFAULT '',
+    category int DEFAULT null
 
 );
 
@@ -221,11 +222,7 @@ CREATE TABLE category (
 
 CREATE INDEX index_name ON category (segment_code, family_code, class_code,brick_code);
 
-CREATE TABLE fdata_category (
-  fdata_id    int REFERENCES fdata (id) ON UPDATE CASCADE ON DELETE CASCADE
-, category_id int REFERENCES category(gid) ON UPDATE CASCADE ON DELETE CASCADE
-, CONSTRAINT fdata_category_pkey PRIMARY KEY (fdata_id, category_id)
-);
+ALTER TABLE fdata ADD FOREIGN KEY (category) REFERENCES category(gid);
 
 
 CREATE TABLE taggroup (

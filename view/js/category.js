@@ -1,9 +1,47 @@
 var categories = [];
 
+var gs_tree = {};
+
 $(document).ready(function() {
    
    categories = JSON.parse($('#categories').text());
    $('#categories').html('');
+
+    // build a tree, which is much nicer to work with
+    for(i=0;i<categories.length;i++) {
+
+        var segment_code = categories[i]["segment_code"];
+        var family_code = categories[i]["family_code"];
+        var class_code = categories[i]["class_code"];
+        var brick_code = categories[i]["brick_code"];
+        var category_id = categories[i]["gid"];
+
+        if(!(segment_code in gs_tree)) {
+            gs_tree[segment_code] = {};
+            gs_tree[segment_code]["label"] = categories[i]["segment_description_en"];
+            gs_tree[segment_code]["family_codes"] = {};
+        }
+
+        if(!(family_code in gs_tree[segment_code]["family_codes"] )) {
+            gs_tree[segment_code]["family_codes"][family_code] = {};
+            gs_tree[segment_code]["family_codes"][family_code]["label"] = categories[i]["family_description_en"];
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"] = {};
+        }
+
+        if(!(class_code in gs_tree[segment_code]["family_codes"][family_code]["class_codes"] )) {
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code] = {};
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["label"] = categories[i]["class_description_en"];
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"] = {};
+        }
+
+        // we assume that the brick codes are also unique identifiers for now
+        if(!(brick_code in gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"] )) {
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"][brick_code] = {};
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"][brick_code]["label"] = categories[i]["brick_description_en"];
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"][brick_code]["category_id"] = category_id;
+        }
+
+    }
     
 });
 
@@ -121,152 +159,71 @@ function setGlobalCurrentCat(catid) {
 }
 
 
-function getParentIds(cat) {
-    
-    var parents = [];
-    
-    for(var i = 0; i < categories.length; i++) {
-        for(var a = 1; a < 7; a++) {
-            if((categories[i]["lvl_"+a] === cat["lvl_"+a]) && (cat["lvl_"+a] !== "") && (categories[i]["lvl_"+(a+1)] === "") && (categories[i]["gid"] !== cat["gid"])) {
-                parents.push(categories[i]["gid"]);
-            }
-        }
-    }
-    
-    return parents;
+function setCategorySelector(category_id) {
+
+    var id = parseInt(category_id) || 0;
+
+    $('#cs_segment').html(buildSelector(1));
+
 }
 
+$(document).on('change','.catsel',function() {
+    var level = $(this).attr('data-level');
+    var segment = $("#cs_segment .catsel").first().val();
+    var family = $('#cs_family .catsel').first().val();
+    var _class = $('#cs_class .catsel').first().val();
+    var brick = $('#cs_brick .catsel').first().val();
 
-$(document).on('click','#cat_adder',function() {
-    createCatRow(0);
+    if(level==1) {
+        $('#cs_family,#cs_class,#cs_brick').html('');
+
+        if(segment!="") {
+            $('#cs_family').html(buildSelector(2,segment));
+        }
+    } else if(level==2) {
+        $('#cs_class,#cs_brick').html('');
+
+        if(family!="") {
+            $('#cs_class').html(buildSelector(3,segment,family));
+        }
+    } else if(level==3) {
+        $('#cs_brick').html('');
+
+        if(_class!="") {
+            $('#cs_brick').html(buildSelector(4, segment,family,_class));
+        }
+    } else if(level==4) {
+        // TODO: Set active cat etc.
+    }
+
+
 });
 
 
-function populateCategories(category_ids) {
-    
-    if(category_ids.length>0) {
-        
-        for(var i = 0; i < category_ids.length;i++) {
-            createCatRow(category_ids[i]["category_id"]);
-        }
-        
+function buildSelector(level,segment,family,_class,brick) {
+
+    var html = '<select class="catsel" data-level="'+level+'">';
+    html += '<option value=""> - </option>';
+
+    var base = gs_tree;
+
+    if(level==2) {
+        base = gs_tree[segment]["family_codes"];
+    } else if(level==3) {
+        base = gs_tree[segment]["family_codes"][family]["class_codes"];
+    } else if(level==4) {
+        base = gs_tree[segment]["family_codes"][family]["class_codes"][_class]["brick_codes"];
     }
-    
-    createCatRow(0);
-}
 
-function eraseLevelsForRow(row_id,level) {
-    
-    $('.csw-row[data-row_number="'+row_id+'"]').children().each(function() {
-        
-        if(parseInt($(this).attr("data-level"))>level) {
-            
-            $('#'+$(this).attr('id')).remove();
-        }
-    });
-}
+    Object.keys(base).forEach(function(key, index) {
+        html += '<option value="'+key+'">'+this[key]["label"]+'</option>';
+    }, base);
 
-// cat_id = 0 for new row
-function createCatRow(cat_id) {
-    
-    var numrows = parseInt($("#category_select_wrapper .csw-row:last-child").attr('data-row_number')) || 0;
-    numrows++;
-    
-    var rowHTML = '<div id="csw_row_'+numrows+'" class="csw-row" data-row_number="'+numrows+'" data-current_cat="'+cat_id+'">';
-    
-    if(cat_id==0) {
-        rowHTML += getCategorySelector(1,"","sel-l1-"+numrows,"");
-    } else {
-        rowHTML += getRecursiveSelectors(cat_id,numrows);
-    }
-    
-    rowHTML += '</div>';
-    
-    $('#category_select_wrapper').append(rowHTML);
-}
+    html += '</select>';
 
-function getRecursiveSelectors(cat_id,numrows) {
-    
-    var html="";
-    
-    // 1. Find the row within the categories
-    var category = null;
-    
-    for(var i = 0; i < categories.length; i++) {
-        if(categories[i]["gid"]===cat_id) {
-            category = categories[i];
-            break;
-        }
-    }
-    
-    // 2. For each non empty level build a pre-selected selector, also build a selector for the level after
-    
-    for(var i = 1; i <= 7; i++) {
-        if(category["lvl_"+i] !== "") {
-            html += getCategorySelector(i,category["lvl_"+(i-1)],"sel-l"+i+"-"+numrows,category["lvl_"+i]);
-        } else {
-            html += getCategorySelector(i,category["lvl_"+(i-1)],"sel-l"+i+"-"+numrows,"");
-            break;
-        }
-    }
-    
-    return html;
-    
-}
-
-function getCategorySelector(level,parent,id,preselect) {
-    
-    return buildCategorySelector(getCategoriesForLevel(level,parent),level,id,preselect);
-}
-
-
-function buildCategorySelector(cats,level,id,preselect) {
-    
-    if(cats.length>0) {
-
-        var html = '<select data-level="'+level+'" class="cat-selector cat-selector-l'+level+'" name="'+id+'" id="'+id+'">';
-
-        html += '<option value="">-- not selected --</option>';
-
-        for(var i=0;i<cats.length;i++) {
-            
-            var selected = "";
-            
-            if(cats[i]["lvl_"+level] === preselect) {
-                selected = 'selected="selected"';
-            }
-            
-            html += '<option '+selected+' value="'+cats[i]["gid"]+'">'+cats[i]["lvl_"+level]+'</option>';
-        }
-
-        html += '</select>';
-    }
     return html;
 }
 
-function getCategoriesForLevel(level,parent) {
-
-    var cats = [];
-    
-    if(level===1) {
-        for(var i=0;i<categories.length;i++) {
-            if(categories[i]["lvl_2"] == "") {
-                cats.push(categories[i]);
-            }
-        }
-    } else {
-    
-        for(var i=0;i<categories.length;i++) {
-            if((categories[i]["lvl_"+(level-1)] === parent) 
-                    && (categories[i]["lvl_"+level] != "")
-                    && (categories[i]["lvl_"+(level+1)] == "")) {
-                cats.push(categories[i]);
-            }
-        }
-    }
-    
-    return cats;
-}
 
 function getCategoryById(catid) {
     for(var i = 0; i < categories.length; i++) {
