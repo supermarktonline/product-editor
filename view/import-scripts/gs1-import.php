@@ -19,16 +19,32 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
 
             if($_FILES["impfilegpr"]["type"]=="text/csv") {
 
-                $already_existed = 0;
-                $didnt_exist = 0;
-                $errors = 0;
-                $tgerrors = 0;
-                $terrors = 0;
-                $conerrors = 0;
+                $updates = false; // set this to false, if you want to insert only
+
+
+                $category_already_existed = 0;
+                $category_didnt_exist = 0;
+                $category_insert_errors = 0;
+                $category_update_errors = 0;
+
+                $taggroup_already_existed = 0;
+                $taggroup_didnt_exist = 0;
+                $taggroup_insert_errors = 0;
+                $taggroup_update_errors = 0;
+
+                $tag_already_existed = 0;
+                $tag_didnt_exist = 0;
+                $tag_insert_errors = 0;
+                $tag_update_errors = 0;
+
+                $connection_already_existed = 0;
+                $connection_created = 0;
 
 
                 if (($handle = fopen($_FILES["impfilegpr"]["tmp_name"], "r")) !== FALSE) {
                     while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+
+
 
 
                         // category specific
@@ -64,22 +80,24 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
 
                         if($id>0) {
                             // this gs1 category exists already - update the english names
-                            $already_existed++;
+                            $category_already_existed++;
 
-                            $up = $db->prepare("UPDATE category SET segment_description_en=:segment_description_en, family_description_en=:family_description_en, class_description_en=:class_description_en, brick_description_en=:brick_description_en WHERE gid=:id");
-                            $up->bindValue(":segment_description_en",$segment_description_en);
-                            $up->bindValue(":family_description_en",$family_description_en);
-                            $up->bindValue(":class_description_en",$class_description_en);
-                            $up->bindValue(":brick_description_en",$brick_description_en);
-                            $up->bindValue(":id",$id);
+                            if($updates) {
+                                $up = $db->prepare("UPDATE category SET segment_description_en=:segment_description_en, family_description_en=:family_description_en, class_description_en=:class_description_en, brick_description_en=:brick_description_en WHERE gid=:id");
+                                $up->bindValue(":segment_description_en",$segment_description_en);
+                                $up->bindValue(":family_description_en",$family_description_en);
+                                $up->bindValue(":class_description_en",$class_description_en);
+                                $up->bindValue(":brick_description_en",$brick_description_en);
+                                $up->bindValue(":id",$id);
 
-                            $upsuc = $up->execute();
+                                $upsuc = $up->execute();
 
-                            if(!$upsuc) {
-                                $errors++;
+                                if(!$upsuc) {
+                                    $category_update_errors++;
+                                }
                             }
                         } else {
-                            $didnt_exist++;
+                            $category_didnt_exist++;
 
                             $in = $db->prepare("INSERT INTO category(segment_code,family_code,class_code,brick_code,segment_description_en,family_description_en,class_description_en,brick_description_en)
                               VALUES (:segment_code,:family_code,:class_code,:brick_code,:segment_description_en,:family_description_en,:class_description_en,:brick_description_en)");
@@ -95,7 +113,7 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
                             $insuc = $in->execute();
 
                             if(!$insuc) {
-                                $errors++;
+                                $category_insert_errors++;
                             }
                             $id= intval($db->lastInsertId());
                         }
@@ -109,16 +127,20 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
                         $tgid = intval($tgid->fetchColumn(0));
 
                         if($tgid>0) {
-                            $up = $db->prepare("UPDATE taggroup SET muid=:muid WHERE id=:id");
-                            $up->bindValue(":muid",$tg_muid);
-                            $up->bindValue(":id",$tgid);
+                            $taggroup_already_existed++;
+                            if($updates) {
+                                $up = $db->prepare("UPDATE taggroup SET muid=:muid WHERE id=:id");
+                                $up->bindValue(":muid",$tg_muid);
+                                $up->bindValue(":id",$tgid);
 
-                            $upsuc = $up->execute();
+                                $upsuc = $up->execute();
 
-                            if(!$upsuc) {
-                                $tgerrors++;
+                                if(!$upsuc) {
+                                    $taggroup_update_errors++;
+                                }
                             }
                         } else {
+                            $taggroup_didnt_exist++;
                             $in = $db->prepare("INSERT INTO taggroup(gs1_attribute_type_code,muid) VALUES (:gs1_attribute_type_code,:muid)");
                             $in->bindValue(":gs1_attribute_type_code",$tg_gs1_attribute_type_code);
                             $in->bindValue(":muid",$tg_muid);
@@ -126,29 +148,35 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
                             $insuc = $in->execute();
 
                             if(!$insuc) {
-                                $tgerrors++;
+                                $taggroup_insert_errors++;
                             }
                             $tgid= intval($db->lastInsertId());
                         }
 
                         // if not exists insert tag, otherwise get its id
-                        $tid = $db->prepare("SELECT id FROM tag WHERE gs1_attribute_value_code=:gs1_attribute_value_code");
+                        $tid = $db->prepare("SELECT id FROM tag WHERE gs1_attribute_value_code=:gs1_attribute_value_code AND muid=:muid AND taggroup=:taggroup");
                         $tid->bindValue(":gs1_attribute_value_code",$t_gs1_attribute_value_code);
+                        $tid->bindValue(":muid",$t_muid);
+                        $tid->bindValue(":taggroup",$tgid);
                         $tid->execute();
 
                         $tid = intval($tid->fetchColumn(0));
 
                         if($tid>0) {
-                            $up = $db->prepare("UPDATE tag SET muid=:muid WHERE id=:id");
-                            $up->bindValue(":muid",$t_muid);
-                            $up->bindValue(":id",$tgid);
+                            $tag_already_existed++;
+                            if($updates) {
+                                $up = $db->prepare("UPDATE tag SET muid=:muid WHERE id=:id");
+                                $up->bindValue(":muid",$t_muid);
+                                $up->bindValue(":id",$tgid);
 
-                            $upsuc = $up->execute();
+                                $upsuc = $up->execute();
 
-                            if(!$upsuc) {
-                                $terrors++;
+                                if(!$upsuc) {
+                                    $tag_update_errors++;
+                                }
                             }
                         } else {
+                            $tag_didnt_exist++;
                             $in = $db->prepare("INSERT INTO tag(gs1_attribute_value_code,taggroup,muid,type) VALUES (:gs1_attribute_value_code,:taggroup,:muid,:type)");
                             $in->bindValue(":gs1_attribute_value_code",$t_gs1_attribute_value_code);
                             $in->bindValue(":taggroup",$tgid);
@@ -158,7 +186,7 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
                             $insuc = $in->execute();
 
                             if(!$insuc) {
-                                $terrors++;
+                                $tag_insert_errors++;
                             }
                             $tid= intval($db->lastInsertId());
                         }
@@ -171,18 +199,19 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
                         $consuc = $connect->execute();
 
                         if(!$consuc) {
-                            $conerrors++;
+                            $connection_already_existed++;
+                        } else {
+                            $connection_created++;
                         }
                     }
                 }
 
-                $already_existed = 0;
-                $didnt_exist = 0;
-                $errors = 0;
-                $tgerrors = 0;
-                $terrors = 0;
-                $conerrors = 0;
-                array_push($user_messages,"success","IMPORT REPORT: Bereits existierend: $already_existed, Neu: $didnt_exist, Kategorie Upsert: $errors Fehler, Taggroup Upsert: $tgerrors Fehler, Tag Upsert: $terrors Fehler, Tag/Kategorie Insert: $conerrors (Fehler oder besteht bereits");
+                echo "IMPORT REPORT:
+                  Kategorie existierend: $category_already_existed, Kategorie neu: $category_didnt_exist, Kategorie Insert Fehler: $category_insert_errors, Kategorie Update Fehler: $category_update_errors,<br/>
+                  Taggroup existierend: $taggroup_already_existed, Taggroup neu: $taggroup_didnt_exist, Taggroup Insert Fehler/keine Taggroup angegeben: $taggroup_insert_errors, Taggroup Update Fehler: $taggroup_update_errors<br/>
+                  Tag existierend: $tag_already_existed, Tag neu: $tag_didnt_exist, Tag Insert Fehler/kein Tag angegeben: $tag_insert_errors, Tag Update Fehler: $tag_update_errors<br/>
+                  Tag/Kategorie Verbindung besteht bereits: $connection_already_existed, Neue Connection: $connection_created
+                  ";
 
 
             } else {

@@ -236,11 +236,14 @@ CREATE TABLE tag (
     id SERIAL PRIMARY KEY,
     gs1_attribute_value_code int DEFAULT NULL,
     taggroup int REFERENCES taggroup(id) ON UPDATE CASCADE ON DELETE RESTRICT NOT NULL,
-    muid varchar(255) UNIQUE, /* = Name EN */
+    muid varchar(255) NOT NULL, /* = Name EN */
     name_de varchar(255) DEFAULT '',
     name_at varchar(255) DEFAULT '',
-    type VARCHAR(255) /* if type is set, this is a numerical tag */
+    type VARCHAR(255) /* if type is set, this is a numerical tag */,
+    CONSTRAINT tag_unique_cbd UNIQUE(gs1_attribute_value_code,muid,taggroup)
 );
+
+CREATE INDEX tag_unique ON tag (gs1_attribute_value_code,muid,taggroup);
 
 
 /* saves suggestions for a certain category */
