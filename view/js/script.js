@@ -173,13 +173,14 @@ $(document).ready(function() {
         }
     }
 
-    /*      @TODO Refactor the tags
-            1. Tags are only displayed if the lowest level category is selected
-            2. GS1 Tags can not be reconnnected / interconnected - they are always suggested as they are predefined
+    /*
+        @TODO Refactor the tags
+        1. Tags are only displayed if the lowest level category is selected
+        2. GS1 Tags can not be reconnnected / interconnected - they are always suggested as they are predefined
 
-            Tags normal: Connections
+        Tags normal: Connections
 
-            Tags numerical: Connections
+        Tags numerical: Connections
 
      */
     // initializeStandardTags(standard_tags);

@@ -193,7 +193,12 @@ $(document).on('change','.catsel',function() {
             $('#cs_brick').html(buildSelector(4, segment,family,_class));
         }
     } else if(level==4) {
-        // TODO: Set active cat etc.
+
+        //  Populate GS1 Tags for this category (including their taggroups)
+        populateGS1TagsForCategory(brick);
+
+        // TODO other tags
+
     }
 
 

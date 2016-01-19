@@ -678,6 +678,9 @@ $media_path = $properties["media_path"];
               </div>
 
               <div id="attributes-container">
+                <p><label>GS1 Tags</label></p>
+                <div id="tags_gs1" class="div-attributes"></div>
+                <div class="clear"></div>
                 <p><label>Tags</label></p>
                 <div id="guetesiegel" class="div-attributes"></div>
                 <div class="clear"></div>

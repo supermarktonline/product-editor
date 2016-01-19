@@ -70,6 +70,7 @@ function removeSealByName(name) {
 }
 
 
+
 function initializeStandardTags(tags) {
     
     for(var i = 0; i < tags.length; i++) {
@@ -160,3 +161,40 @@ $(document).on('click','#switch_show_recommended',function() {
         $(this).attr('data-ishidden',0);
     }
 });
+
+
+function populateGS1TagsForCategory(brick) {
+
+    // 1. Query all tags for brick including their taggroup
+    $.ajax({ type:"GET", url: "/?action=bricktree&brick_code="+brick, success: function(result){
+        var parsed = JSON.parse(result);
+
+        if(typeof parsed == 'object' ) {
+
+            for(var tagsel in parsed) {
+                appendGS1Selector(parsed[tagsel]);
+            }
+
+        } else {
+            $('#tags_gs1').html('Error: GS1 Tags could not be queried.');
+        }
+
+    }});
+}
+
+function appendGS1Selector(tagsel) {
+
+    var html = "";
+    '<div class="gs1tag" data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'" >';
+    html += '<label>'+tagsel["muid"]+'</label>';
+    html += '<select data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'">';
+
+    for(var tag in tagsel["tags"]) {
+     html += '<option value="'+tagsel["tags"][tag]["tag_id"]+'">'+tagsel["tags"][tag]["tag_muid"]+'</option>';
+    }
+    html += '</select></div>';
+    $('#tags_gs1').append(html);
+}
+
+
+

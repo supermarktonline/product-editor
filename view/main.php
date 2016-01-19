@@ -24,6 +24,8 @@ if(isset($_REQUEST['edit'])) {
     include("category_tag_connection.php");
 } else if(isset($_REQUEST['taggroup'])) {
     include("taggroup.php");
+} else if(isset($_REQUEST['action']) && $_REQUEST['action']=="bricktree") {
+    include("bricktree.php");
 } else {
     include("import-export.php");
 } 
