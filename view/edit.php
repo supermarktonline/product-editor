@@ -22,7 +22,7 @@ $stmt3->execute();
 $categories = $stmt3->fetchAll();
 
 
-$stmt4 = $db->prepare('SELECT * FROM tag ORDER BY name_de');
+$stmt4 = $db->prepare('SELECT * FROM tag WHERE gs1_attribute_value_code IS NULL ORDER BY name_de');
 $stmt4->execute();
 $tags = $stmt4->fetchAll();
 
@@ -627,7 +627,7 @@ $media_path = $properties["media_path"];
 
                   <p><label>Admin - Tag-Gruppe anlegen:</label>  MUID (en): <input type="text" id="tag_group_new_muid" value="" /> Name (de): <input type="text" id="tag_group_new_name" /> <button id="tag_group_new_create">Gruppe anlegen</button>
 
-                  <label>Tag-Gruppe löschen:</label> <input type="text" id="tag_group_delete_selector" value="" /><input type="hidden" id="tag_group_delete_selected_id" value="0" /> <button id="tag_group_delete">Gruppe löschen</button></p>
+                  <label>Admin - Tag-Gruppe löschen:</label> <input type="text" id="tag_group_delete_selector" value="" /><input type="hidden" id="tag_group_delete_selected_id" value="0" /> <button id="tag_group_delete">Gruppe löschen</button></p>
                 </div>
 
                 <div id="tag_wrapper">
@@ -674,14 +674,14 @@ $media_path = $properties["media_path"];
                 <input type="hidden" id="active_category" value="" />
                 <span id="active_category_display">-- Keine --</span>
                 &nbsp;&nbsp;&nbsp;<button id="active_category_tag_update">Speichere Highlight-Konfiguration</button>
-                &nbsp;&nbsp;&nbsp;<button data-ishidden="0" id="switch_show_recommended">Empfohlene einblenden/ausblenden</button>
+                &nbsp;&nbsp;&nbsp;<button data-ishidden="0" id="switch_show_recommended">Alle Tags einblenden/ausblenden</button>
               </div>
 
               <div id="attributes-container">
                 <p><label>GS1 Tags</label></p>
                 <div id="tags_gs1" class="div-attributes"></div>
                 <div class="clear"></div>
-                <p><label>Tags</label></p>
+                <p><label>Eigene Tags</label></p>
                 <div id="guetesiegel" class="div-attributes"></div>
                 <div class="clear"></div>
                 <p><label>Numerische Tags</label> (0 ist ein Wert)</p>

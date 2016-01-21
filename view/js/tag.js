@@ -137,13 +137,12 @@ $(document).on('click','#active_category_tag_update',function() {
             tpids.push($(this).attr('data-tagid'));
         }
     });
-    
+
     ids["ids"] = tpids;
     
     $.ajax({ type:"POST", url: "/?category_tag_connection=update&category_id="+$('#active_category').val(), data:ids, success: function(result){
        if(result==="success") {
            $('#message_container').html('<div class="umsg success">Category / tag configuration updated successfully.</div>');
-           setGlobalCurrentCat($('#active_category').val());
        } else {
            $('#message_container').html('<div class="umsg error">'+result+'</div>');
        }
@@ -163,7 +162,9 @@ $(document).on('click','#switch_show_recommended',function() {
 });
 
 
-function populateGS1TagsForCategory(brick) {
+function populateGS1TagsForCategory(brick,tag_connections) {
+
+    $('#tags_gs1').html('');
 
     // 1. Query all tags for brick including their taggroup
     $.ajax({ type:"GET", url: "/?action=bricktree&brick_code="+brick, success: function(result){
@@ -171,8 +172,9 @@ function populateGS1TagsForCategory(brick) {
 
         if(typeof parsed == 'object' ) {
 
+
             for(var tagsel in parsed) {
-                appendGS1Selector(parsed[tagsel]);
+                appendGS1Selector(parsed[tagsel],tag_connections);
             }
 
         } else {
@@ -182,15 +184,23 @@ function populateGS1TagsForCategory(brick) {
     }});
 }
 
-function appendGS1Selector(tagsel) {
+function appendGS1Selector(tagsel,tag_connections) {
 
-    var html = "";
-    '<div class="gs1tag" data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'" >';
-    html += '<label>'+tagsel["muid"]+'</label>';
+    var html = '<div class="gs1tag" data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'" >';
+    html += '<label>'+tagsel["muid"]+'</label> ';
     html += '<select data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'">';
 
     for(var tag in tagsel["tags"]) {
-     html += '<option value="'+tagsel["tags"][tag]["tag_id"]+'">'+tagsel["tags"][tag]["tag_muid"]+'</option>';
+        selected ="";
+
+        for(var con in tag_connections) {
+            if(tag_connections[con]["tag_id"] == tagsel["tags"][tag]["tag_id"]) {
+                selected="selected";
+                break;
+            }
+        }
+
+      html += '<option '+selected+' value="'+tagsel["tags"][tag]["tag_id"]+'">'+tagsel["tags"][tag]["tag_muid"]+'</option>';
     }
     html += '</select></div>';
     $('#tags_gs1').append(html);

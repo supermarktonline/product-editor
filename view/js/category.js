@@ -110,18 +110,12 @@ function setGlobalCurrentCat(catid) {
         // set the label
         var cat = getCategoryById(catid);
 
-        for(var i = 7; i > 0; i--) {
-            if(cat["lvl_"+i]!="") {
-                $('#active_category_display').text(cat["lvl_"+i]);
-                break;
-            }
-        }
-        
+        $('#active_category_display').text(cat["brick_description_en"]);
+
+
+
         // lets calculate this client side, less stress for the poor server
-        var parents = getParentIds(cat);
-        
-        
-        $.ajax({url: "/?category_tag_connection=get&category_id="+catid+"&parent_ids="+JSON.stringify(parents), success: function(result){
+        $.ajax({url: "/?category_tag_connection=get&category_id="+catid+"&parent_ids="+JSON.stringify([]), success: function(result){
 
                 var decoded;
 
@@ -149,25 +143,58 @@ function setGlobalCurrentCat(catid) {
                        $(this).parent().addClass('rec-direct');
                     });
                 }
-                
 
+
+                // after all tags are populated we hide non-suggested tags at first, otherwise its nasty
+                $('.gs:not(.rec-parent):not(.rec-direct)').hide();
+                $("#switch_show_recommended").attr('data-ishidden',1);
             }
         });
-        
+
         
     }
 }
 
 
-function setCategorySelector(category_id) {
+function getCatIdByBrickCode(brick_code) {
+    for(var key in categories) {
+        if (categories[key]["brick_code"] == brick_code) {
+            return categories[key]["gid"];
+        }
+    }
+}
+
+function setCategorySelectorAndGS1Tags(category_id,tag_connections) {
 
     var id = parseInt(category_id) || 0;
 
-    $('#cs_segment').html(buildSelector(1));
+    if(id > 0) {
+        // get the category
+        for(var key in categories) {
+
+          if(categories[key]["gid"]==id) {
+
+              $('#cs_segment').html(buildSelector(1,"","","","",categories[key]["segment_code"] ));
+              $('#cs_family').html(buildSelector(2,categories[key]["segment_code"],"","","",categories[key]["family_code"]));
+              $('#cs_class').html(buildSelector(3,categories[key]["segment_code"],categories[key]["family_code"],"","",categories[key]["class_code"]));
+              $('#cs_brick').html(buildSelector(4,categories[key]["segment_code"],categories[key]["family_code"],categories[key]["class_code"],categories[key]["brick_code"],categories[key]["brick_code"]));
+
+              populateGS1TagsForCategory(categories[key]["brick_code"],tag_connections);
+
+              setGlobalCurrentCat(id);
+
+              break;
+          }
+        }
+
+    } else {
+        $('#cs_segment').html(buildSelector(1));
+    }
 
 }
 
 $(document).on('change','.catsel',function() {
+
     var level = $(this).attr('data-level');
     var segment = $("#cs_segment .catsel").first().val();
     var family = $('#cs_family .catsel').first().val();
@@ -176,7 +203,6 @@ $(document).on('change','.catsel',function() {
 
     if(level==1) {
         $('#cs_family,#cs_class,#cs_brick').html('');
-
         if(segment!="") {
             $('#cs_family').html(buildSelector(2,segment));
         }
@@ -195,9 +221,8 @@ $(document).on('change','.catsel',function() {
     } else if(level==4) {
 
         //  Populate GS1 Tags for this category (including their taggroups)
-        populateGS1TagsForCategory(brick);
-
-        // TODO other tags
+        populateGS1TagsForCategory(brick,[]);
+        setGlobalCurrentCat(getCatIdByBrickCode(brick));
 
     }
 
@@ -205,7 +230,7 @@ $(document).on('change','.catsel',function() {
 });
 
 
-function buildSelector(level,segment,family,_class,brick) {
+function buildSelector(level,segment,family,_class,brick,preselect) {
 
     var html = '<select class="catsel" data-level="'+level+'">';
     html += '<option value=""> - </option>';
@@ -221,7 +246,13 @@ function buildSelector(level,segment,family,_class,brick) {
     }
 
     Object.keys(base).forEach(function(key, index) {
-        html += '<option value="'+key+'">'+this[key]["label"]+'</option>';
+
+        var selected="";
+        if(key==preselect) {
+            selected = 'selected="selected"';
+        }
+
+        html += '<option '+selected+' data-categoryid="'+this[key]["category_id"]+'" value="'+key+'">'+this[key]["label"]+'</option>';
     }, base);
 
     html += '</select>';

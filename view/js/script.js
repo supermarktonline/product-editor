@@ -183,7 +183,7 @@ $(document).ready(function() {
         Tags numerical: Connections
 
      */
-    // initializeStandardTags(standard_tags);
+    initializeStandardTags(standard_tags);
 
     initializeNumericalTags(numerical_tags);
    
@@ -284,15 +284,7 @@ $(document).on('click','*[data-open_edit_id]',function() {
             })(type);
         }
 
-
-        
-        // show categories
-        $('#cs_segment,#cs_family,#cs_class,#cs_brick').html('');
-        
-        setCategorySelector(product["category"]);
-
-        
-        // Show Tags
+        // Show Categories and Tags
         $('.tag').each(function() {
            $(this).prop('checked', false);  
         });
@@ -313,7 +305,14 @@ $(document).on('click','*[data-open_edit_id]',function() {
                     $('#message_container').html('<div class="umsg error">'+result+'</div>');
                     return;
                 }
-                
+
+                // set the categories and populate the GS1 Tags
+                $('#cs_segment,#cs_family,#cs_class,#cs_brick').html('');
+
+                setCategorySelectorAndGS1Tags(product["category"],cons);
+
+
+                // populate the custom and the numerical tags
                 for(var i = 0; i < cons.length; i++) {
                    
                     var sid = cons[i]["tag_id"];
@@ -326,6 +325,7 @@ $(document).on('click','*[data-open_edit_id]',function() {
                        $(this).val(cons[i]["numerical_value"]);
                     });
                 }
+
             }
         });
 
@@ -401,6 +401,19 @@ $(document).on('click','#save_now,#finish_now',function() {
     product["productDescription___de_AT"] = $('#description').val();
     product["productBrand___de_AT"] = $('#brand').val();
     product["notice"] = $('#notice').val();
+
+
+    // category
+
+    if($('#cs_brick select').length > 0 ) {
+
+        var id = parseInt($('#cs_brick select:first-child option:selected').attr("data-categoryid"));
+
+        if(!isNaN(id) && id > 0) {
+            product["category"] = id;
+        }
+    }
+
     
     $.each(product_simple_properties,function(key,value) {
         
@@ -433,33 +446,22 @@ $(document).on('click','#save_now,#finish_now',function() {
            $('#message_container').html('<div class="umsg error">'+result+'</div>');
        }
     }});
-
-    // update all categories
-    var categories = {};
-    categories["categories"]=[];
-    
-    $('#category_select_wrapper').children('.csw-row').each(function() {
-        var catid = parseInt($(this).attr('data-current_cat')) || 0;
-        
-        if(catid>0) {
-            categories["categories"].push(catid);
-        }
-    });
-    
-    $.ajax({ type:"POST", url: "/?category_connection=update&fdata_id="+save_id, data:categories, success: function(result){
-       if(result==="success") {
-           $('#message_container').append('<div class="umsg success">Article categories updated successfully.</div>');
-       } else {
-           $('#message_container').append('<div class="umsg error">'+result+'</div>');
-       }
-    }});
     
     
     // update all tags
 
-    // standard tags
+    // gs1 tags
     var ntags = [];
-    
+
+    $('.gs1tag select').each(function() {
+       var ar = {};
+        ar["tag_id"] = $(this).val();
+        ar["numerical_value"] = null;
+        ntags.push(ar);
+    });
+
+
+    // standard tags
     $('.tag').each(function() {
         if($(this).is(":checked")) {
             var ar = {};

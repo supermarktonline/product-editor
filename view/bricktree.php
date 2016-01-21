@@ -7,7 +7,7 @@
  */
 
 
-$stmt = $db->prepare("select tg.id as group_id,tg.gs1_attribute_type_code as group_code,tg.muid as group_muid, tg.name as group_name, t.id as tag_id, t.gs1_attribute_value_code as tag_code, t.muid as tag_muid, t.name_de as tag_name_de, t.name_at as tag_name_at from category as c,category_tag as ct, tag as t INNER JOIN taggroup as tg ON t.taggroup=tg.id where c.brick_code = :brick_code and ct.category_id = c.gid and t.id = ct.tag_id");
+$stmt = $db->prepare("select tg.id as group_id,tg.gs1_attribute_type_code as group_code,tg.muid as group_muid, tg.name as group_name, t.id as tag_id, t.gs1_attribute_value_code as tag_code, t.muid as tag_muid, t.name_de as tag_name_de, t.name_at as tag_name_at from category as c,category_tag as ct, tag as t INNER JOIN taggroup as tg ON t.taggroup=tg.id where c.brick_code = :brick_code and ct.category_id = c.gid and t.id = ct.tag_id AND t.gs1_attribute_value_code IS NOT NULL");
 $stmt->bindValue(":brick_code",$_REQUEST["brick_code"]);
 
 if(!$stmt->execute()) {

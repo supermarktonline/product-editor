@@ -233,6 +233,25 @@ main {
     color:#f77;
 }
 
+#tags_gs1 {
+    margin-bottom:10px;
+}
+
+.gs1tag {
+    padding:5px;
+    float:left;
+}
+
+.gs1tag label {
+    font-weight:400;
+}
+
+#category_select_wrapper > div {
+    float:left;
+    padding:5px 5px 5px 0;
+}
+
+
 /* Images */
 
 #current_image_wrapper {
@@ -363,3 +382,4 @@ hr {
 #tag-container {
     margin-bottom:20px;
 }
+
