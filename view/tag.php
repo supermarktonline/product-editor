@@ -62,7 +62,7 @@ if($_REQUEST["tag"]=="create") {
 } else if($_REQUEST["tag"]=="delete") {
 
     // there should be an sql restrict on connections with tags which are in use
-    $stmt = $db->prepare("DELETE FROM tag WHERE id=:id");
+    $stmt = $db->prepare("DELETE FROM tag WHERE id=:id AND gs1_attribute_value_code IS NULL");
     $stmt->bindValue(":id",$_REQUEST["id"]);
     $stmt->execute();
 
