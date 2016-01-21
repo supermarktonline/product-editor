@@ -195,6 +195,9 @@ function setCategorySelectorAndGS1Tags(category_id,tag_connections) {
 
 $(document).on('change','.catsel',function() {
 
+    // unset globalCurrentCat
+    setGlobalCurrentCat(0);
+
     var level = $(this).attr('data-level');
     var segment = $("#cs_segment .catsel").first().val();
     var family = $('#cs_family .catsel').first().val();

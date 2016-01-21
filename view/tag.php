@@ -72,5 +72,5 @@ if($_REQUEST["tag"]=="create") {
         echo "success"; die;
     }
 
-    echo json_encode(array("error"=>"Tag deletion is not allowed. The Object is connected to some article.")); die;
+    echo json_encode(array("error"=>"Tag deletion is not allowed. The Object is connected to some article or you tried to delete a GS1 Tag.")); die;
 }
