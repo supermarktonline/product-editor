@@ -333,7 +333,6 @@ function getSealetcTagColumns($row) {
     return $tagColumns;
 }
 
-
 function getSealetcTagColumn($label) {
     $tag_column = array();
     
@@ -348,6 +347,29 @@ function getSealetcTagColumn($label) {
     return $tag_column;
 }
 
+function getFakeAllergenTagColumns($row) {
+    $cols = array();
+
+    if($row["allergen_honig"]) {
+        array_push($cols,getFakeAllergenColumn("Contains Honey","Enthält Honig"));
+    }
+    if($row["allergen_fleisch"]) {
+        array_push($cols,getFakeAllergenColumn("Contains Meat","Enthält Fleisch"));
+    }
+    return $cols;
+}
+
+function getFakeAllergenColumn($label_en,$label_de) {
+    $tag_column["tagGroupingUid"] = "Attribute (Food)";
+    $tag_column["tagGroupingName de_DE"] = "Attribut (Nahrungsmittel)";
+    $tag_column["tagGroupingTagNumericalRequired"] = "No";
+
+    $tag_column["tagUid"] = "Attribute (Food) : ".$label_en;
+    $tag_column["tagName de_DE"] = $label_de;
+    $tag_column["tagType"] = "ArticleDescribing";
+
+    return $tag_column;
+}
 
 
 /************ CATEGORIES: Category Path **********/
@@ -412,8 +434,9 @@ function getAllTagsForRow($row) {
     $nutrient_columns = getNutrientTagColumns($row);
     $allergene_columns = getAllergeneTagColumns($row);
     $tag_columns = getSealetcTagColumns($row);
-    
-    return array_merge($nutrient_columns,$allergene_columns,$tag_columns);
+    $special_allergenes = getFakeAllergenTagColumns($row);
+
+    return array_merge($nutrient_columns,$allergene_columns,$tag_columns,$special_allergenes);
 
 }
 

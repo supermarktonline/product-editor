@@ -147,6 +147,9 @@ CREATE TABLE fdata (
     allergen_p boolean DEFAULT false,
     allergen_r boolean DEFAULT false,
 
+    allergen_honig boolean DEFAULT false,
+    allergen_fleisch boolean DEFAULT false,
+
     company varchar(255) DEFAULT '',
     origin varchar(3) DEFAULT '',
     store varchar(255) DEFAULT 'normal',
@@ -175,7 +178,9 @@ CREATE TABLE ingredient (
     n boolean DEFAULT false,
     o boolean DEFAULT false,
     p boolean DEFAULT false,
-    r boolean DEFAULT false
+    r boolean DEFAULT false,
+    honig boolean DEFAULT false,
+    fleisch boolean DEFAULT false
 );
 
 

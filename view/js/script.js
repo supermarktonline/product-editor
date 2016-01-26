@@ -63,7 +63,7 @@ var product_simple_properties_nofloat = [
 
 
 var allergene = [
-    "a","b","c","d","e","f","g","h","l","m","n","o","p","r"
+    "a","b","c","d","e","f","g","h","l","m","n","o","p","r","honig","fleisch"
 ];
 
 var ingredients;

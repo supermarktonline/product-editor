@@ -150,7 +150,7 @@ $media_path = $properties["media_path"];
       <div id="input-container">
         <ul id="tab-list" class="nav nav-tabs nav-justified" role="tablist">
           <li role="presentation" id="li-tab1" class="active"><a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Allgemein & Nährwerte</a></li>
-          <li role="presentation" id="li-tab2"><a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">Inhaltsstoffe, etc.</a></li>
+          <li role="presentation" id="li-tab2"><a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">Inhaltsstoffe, Kategorisierung, Tagging</a></li>
         </ul>  
           
           
@@ -501,7 +501,16 @@ $media_path = $properties["media_path"];
                     <input type="checkbox"  id="cur_ingr_r"  data-cur_ingr="r">R - Weichtiere
                   </label>
                 </div>
-                
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="cur_ingr_honig" data-cur_ingr="honig">Honig (für Vegan Berechnung)
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="cur_ingr_fleisch" data-cur_ingr="fleisch">Fleisch (für Vegetarisch Berechnung)
+                  </label>
+                </div>
                   <div>
                       <button id="ingredient_deleter">Inhaltsstoff komplett löschen</button>
                   </div>
@@ -580,6 +589,16 @@ $media_path = $properties["media_path"];
                 <div class="checkbox"> 
                   <label>
                     <input type="checkbox" id="art_ingr_r" data-art_ingr="r">R - Weichtiere
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="art_ingr_honig" data-art_ingr="honig">Honig (für Vegan Berechnung)
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="art_ingr_fleisch" data-art_ingr="fleisch">Fleisch (für Vegetarisch Berechnung)
                   </label>
                 </div>
               </div>
