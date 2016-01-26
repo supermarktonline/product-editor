@@ -51,13 +51,11 @@ var product_simple_properties = [
 
     "origin",
     "store",
-    "container",
-    "weight_amount",
-    "weight_amount_unit"
+    "container"
 ];
 
 var product_simple_properties_nofloat = [
-  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional","nutrient_snd_additional_de","origin","store","container","weight_amount_unit"
+  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional","nutrient_snd_additional_de","origin","store","container"
 ];
 
 
@@ -172,16 +170,6 @@ $(document).ready(function() {
         }
     }
 
-    /*
-        @TODO Refactor the tags
-        1. Tags are only displayed if the lowest level category is selected
-        2. GS1 Tags can not be reconnnected / interconnected - they are always suggested as they are predefined
-
-        Tags normal: Connections
-
-        Tags numerical: Connections
-
-     */
     initializeStandardTags(standard_tags);
 
     initializeNumericalTags(numerical_tags);
@@ -218,6 +206,33 @@ $(document).on('click','*[data-open_edit_id]',function() {
         $('#brand').val(product["productBrand de_AT"]);
         $('#notice').val(product["notice"]);
         $('#company').val(product["productCorporation de_AT"]);
+
+
+        // weight amount and weight amount unit calculations
+        var pcSets = ["articleWeight","articleVolume","articleArea","articleLength","articleUses"];
+
+        var did = false;
+
+        for(st in pcSets) {
+            var val = product[pcSets[st]];
+            if(val!="") {
+                var parts = val.split(" ");
+                $('#weight_amount').val(parts[0]);
+
+                did=true;
+
+                if(typeof parts[1] !== 'undefined') {
+                    $('#weight_amount_unit').val(parts[1]);
+                } else {
+                    $('#weight_amount_unit').val("uses");
+                }
+            }
+        }
+
+        if(!did) {
+            $('#weight_amount').val('');
+        }
+
 
         
         var images = product["productImages"];
@@ -405,8 +420,50 @@ $(document).on('click','#save_now,#finish_now',function() {
     product["productCorporation___de_AT"] = $('#company').val();
 
 
-    // category
 
+    product["articleWeight"]="";
+    product["articleVolume"]="";
+    product["articleArea"]="";
+    product["articleLength"]="";
+    product["articleUses"]="";
+
+    // weight amount and weight amount unit calculations
+    var weight_amount = parseFloat($('#weight_amount').val());
+    var weight_amount_unit = $('#weight_amount_unit').val();
+
+    if(!isNaN(weight_amount)) {
+        switch(weight_amount_unit) {
+            case "g": {
+                product["articleWeight"] = (weight_amount * 0.001)+" kg";
+                break;
+            }
+            case "kg": {
+                product["articleWeight"] = weight_amount + " kg";
+                break;
+            }
+            case "l": {
+                product["articleVolume"] = weight_amount + " l";
+            }
+            case "ml": {
+                product["articleVolume"] = (weight_amount * 0.001)+" l";
+            }
+            case "m³": {
+                product["articleVolume"] = weight_amount+" m³";
+            }
+            case "m²": {
+                product["articleArea"] = weight_amount+" m²";
+            }
+            case "m": {
+                product["articleLength"] = weight_amount+" m";
+            }
+            case "uses": {
+                product["articleUses"] = parseInt(weight_amount);
+            }
+        }
+    }
+
+
+    // category
     if($('#cs_brick select').length > 0 ) {
 
         var id = parseInt($('#cs_brick select:first-child option:selected').attr("data-categoryid"));

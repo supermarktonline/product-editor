@@ -153,8 +153,6 @@ CREATE TABLE fdata (
     origin varchar(3) DEFAULT '',
     store varchar(255) DEFAULT 'normal',
     container varchar(255) DEFAULT '',
-    weight_amount float DEFAULT null,
-    weight_amount_unit varchar(255) DEFAULT '',
     category int DEFAULT null
 
 );
