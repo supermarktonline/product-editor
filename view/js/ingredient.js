@@ -126,6 +126,20 @@ $(document).on('click','.ic_ing',function(e) {
 });
 
 
+ // a + d + m to toggle admin area
+ var map = []; // Or you could call it "key"
+ onkeyup = onkeydown = function(e){
+     e = e || event; // to deal with IE
+     map[e.keyCode] = e.type == 'keydown';
+
+     if(map[65]==true && map[68]==true && map[77] ==true) {
+         $('#admin-area').toggle();
+     }
+
+ }
+
+
+
 // create a new ingredient
 $(document).on('keypress','#ingredients_selector,#enthalt_spuren,#enthalt_gering',function(e){
     

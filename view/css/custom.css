@@ -383,3 +383,6 @@ hr {
     margin-bottom:20px;
 }
 
+#admin-area {
+    display:none;
+}

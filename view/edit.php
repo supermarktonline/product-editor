@@ -681,10 +681,12 @@ $media_path = $properties["media_path"];
                   </p>
                 </div>
 
+                <hr>
+
                 </div>
               </div>
 
-              <hr>
+
 
               <label>Artikelbeschreibende Information</label>
 
