@@ -150,7 +150,6 @@ CREATE TABLE fdata (
     allergen_honig boolean DEFAULT false,
     allergen_fleisch boolean DEFAULT false,
 
-    company varchar(255) DEFAULT '',
     origin varchar(3) DEFAULT '',
     store varchar(255) DEFAULT 'normal',
     container varchar(255) DEFAULT '',

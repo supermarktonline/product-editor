@@ -49,7 +49,6 @@ var product_simple_properties = [
     "nutrient_snd_natrium",
     "nutrient_snd_bread_unit",
 
-    "company",
     "origin",
     "store",
     "container",
@@ -58,7 +57,7 @@ var product_simple_properties = [
 ];
 
 var product_simple_properties_nofloat = [
-  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional","nutrient_snd_additional_de","company","origin","store","container","weight_amount_unit"
+  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional","nutrient_snd_additional_de","origin","store","container","weight_amount_unit"
 ];
 
 
@@ -218,6 +217,8 @@ $(document).on('click','*[data-open_edit_id]',function() {
         $('#description').val(product["productDescription de_AT"]);
         $('#brand').val(product["productBrand de_AT"]);
         $('#notice').val(product["notice"]);
+        $('#company').val(product["productCorporation de_AT"]);
+
         
         var images = product["productImages"];
         var imagesAr = images.split(",");
@@ -401,6 +402,7 @@ $(document).on('click','#save_now,#finish_now',function() {
     product["productDescription___de_AT"] = $('#description').val();
     product["productBrand___de_AT"] = $('#brand').val();
     product["notice"] = $('#notice').val();
+    product["productCorporation___de_AT"] = $('#company').val();
 
 
     // category
