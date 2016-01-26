@@ -360,6 +360,7 @@ function getFakeAllergenTagColumns($row) {
 }
 
 function getFakeAllergenColumn($label_en,$label_de) {
+    $tag_column=array();
     $tag_column["tagGroupingUid"] = "Attribute (Food)";
     $tag_column["tagGroupingName de_DE"] = "Attribut (Nahrungsmittel)";
     $tag_column["tagGroupingTagNumericalRequired"] = "No";
@@ -369,6 +370,81 @@ function getFakeAllergenColumn($label_en,$label_de) {
     $tag_column["tagType"] = "ArticleDescribing";
 
     return $tag_column;
+}
+
+/******************* Special Tags ****************/
+function getSpecialTags($row) {
+    $cols = array();
+
+    $ger = get_countries_german();
+    $en = get_countries_english();
+
+    if($row["origin"]!="") {
+        $tag_column = array();
+        $tag_column["tagGroupingUid"] = "Country of origin";
+        $tag_column["tagGroupingName de_DE"] = "Herkunftsland";
+        $tag_column["tagGroupingTagNumericalRequired"] = "No";
+
+        $tag_column["tagUid"] = "Country of origin : ".$en[$row["origin"]];
+        $tag_column["tagName de_DE"] = $ger[$row["origin"]];
+        $tag_column["tagType"] = "ArticleDescribing";
+
+        array_push($cols,$tag_column);
+    }
+
+
+    if($row["store"]!="") {
+
+        $tag_column=array();
+
+        $label_de = "Normal";
+        $label_en = "Normal";
+
+        switch($row["store"]):
+            case "cooled": {
+                $label_de = "Kühl";
+                $label_en = "Cooled";
+                break;
+            }
+            case "frozen": {
+                $label_de = "Tiefgekühlt";
+                $label_en = "Deep frozen";
+                break;
+            }
+            case "not_cooled": {
+                $label_de = "Zimmertemperatur";
+                $label_en = "Room temperature";
+                break;
+            }
+        endswitch;
+
+        $tag_column["tagGroupingUid"] = "Storage";
+        $tag_column["tagGroupingName de_DE"] = "Lagerung";
+        $tag_column["tagGroupingTagNumericalRequired"] = "No";
+
+        $tag_column["tagUid"] = "Storage : ".$label_de;
+        $tag_column["tagName de_DE"] = $label_en;
+        $tag_column["tagType"] = "ArticleDescribing";
+
+        array_push($cols,$tag_column);
+    }
+
+    if($row["container"]!="") {
+
+        $tag_column=array();
+
+        $tag_column["tagGroupingUid"] = "Packaging";
+        $tag_column["tagGroupingName de_DE"] = "Verpackung";
+        $tag_column["tagGroupingTagNumericalRequired"] = "No";
+
+        $tag_column["tagUid"] = "Packaging : ".$row["container"];
+        $tag_column["tagName de_DE"] = $row["container"];
+        $tag_column["tagType"] = "ArticleDescribing";
+
+        array_push($cols,$tag_column);
+    }
+
+    return $cols;
 }
 
 
@@ -431,12 +507,15 @@ function getIngredientExport($id) {
  */
 function getAllTagsForRow($row) {
 
-    $nutrient_columns = getNutrientTagColumns($row);
-    $allergene_columns = getAllergeneTagColumns($row);
-    $tag_columns = getSealetcTagColumns($row);
-    $special_allergenes = getFakeAllergenTagColumns($row);
+    $nutrient_columns = getNutrientTagColumns($row); // nährwerte
+    $allergene_columns = getAllergeneTagColumns($row); // allergene
+    $tag_columns = getSealetcTagColumns($row); // normale tags
 
-    return array_merge($nutrient_columns,$allergene_columns,$tag_columns,$special_allergenes);
+    $special_allergenes = getFakeAllergenTagColumns($row); // fake allergene wie honig, fleisch
+
+    $special_tags = getSpecialTags($row);
+
+    return array_merge($nutrient_columns,$allergene_columns,$tag_columns,$special_allergenes,$special_tags);
 
 }
 
