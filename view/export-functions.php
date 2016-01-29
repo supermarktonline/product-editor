@@ -492,24 +492,18 @@ function getSpecialTags($row) {
 function getCategoryExportPath($id) {
     global $db;
     
-    $stmt = $db->prepare('SELECT c.* FROM category AS c, fdata_category as con, fdata WHERE fdata.id = :id AND con.fdata_id = fdata.id AND c.gid = con.category_id');
+    $stmt = $db->prepare('SELECT category.* FROM category,fdata WHERE fdata.id = :id AND category.gid = fdata.category');
     $stmt->bindValue(":id",$id);
     $stmt->execute();
-    $cats = $stmt->fetchAll();
-    
-    $result = "";
-    
-    foreach($cats as $cat) {
-        $catgath = array();
-        for($i=1;$i<=7; $i++) {
-            if($cat["lvl_".$i]!="") {
-                array_push($catgath,$cat['lvl_'.$i]);
-            }
-        }
-        $result = implode(" >> ",$catgath);
-        break; // ONLY AS LONG AS ONE SINGLE CAT IS USED
-    }
-    return $result;
+    $cat = $stmt->fetch();
+
+    $catgath = array();
+    array_push($catgath,$cat["segment_description_en"]);
+    array_push($catgath,$cat["family_description_en"]);
+    array_push($catgath,$cat["class_description_en"]);
+    array_push($catgath,$cat["brick_description_en"]);
+
+    return implode(" >> ",$catgath);
 }
 
 
@@ -550,10 +544,7 @@ function getAllTagsForRow($row) {
     $nutrient_columns = getNutrientTagColumns($row); // nährwerte
     $allergene_columns = getAllergeneTagColumns($row); // allergene
 
-
-    // gs1 tags
-
-    $tag_columns = getSealetcTagColumns($row); // normale tags
+    $tag_columns = getSealetcTagColumns($row); // gs1 / normale / numeric tags
 
     $special_allergenes = getFakeAllergenTagColumns($row); // fake allergene wie honig, fleisch
 

@@ -8,13 +8,6 @@ $stmt = $db->prepare('SELECT * FROM import WHERE id = :id');
 $stmt->bindValue(":id",urldecode($_GET['export']));
 $stmt->execute();
 $import = $stmt->fetch();
-
-
-
-header("Content-type: text/csv");
-header("Content-Disposition: attachment; filename=export-".$import['name']."-".$import['id'].".csv");
-header("Pragma: no-cache");
-header("Expires: 0");
  
 $minstate = intval((isset($_GET['minstate'])) ? $_GET['minstate']:"0");
 $maxstate = intval((isset($_GET['maxstate'])) ? $_GET['maxstate']:"20");
@@ -78,6 +71,12 @@ foreach($fdata as $row) {
     }
     array_push($column_gatherer,$article);
 }
+
+header("Content-type: text/csv");
+header("Content-Disposition: attachment; filename=export-".$import['name']."-".$import['id'].".csv");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 
 // put out the original CSV
 echo '"'.implode('","',$column_headings).'"
