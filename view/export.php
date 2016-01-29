@@ -62,7 +62,7 @@ foreach($fdata as $row) {
                 $article[$key] = $tagpath;
                 
             } else if(strtolower($key)==strtolower("productdescription de_at")) {
-                $article[$key] = $value.getIngredientExport($row["id"]);
+                $article[$key] = $value.getDescriptionAppendix($row["id"]);
             } else {
                 $article[$key] = $value;
             }

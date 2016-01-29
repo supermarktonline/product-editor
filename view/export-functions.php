@@ -507,7 +507,12 @@ function getCategoryExportPath($id) {
 }
 
 
-/********** INGREDIENTS (Only used in description) ***********/
+/********** INGREDIENTS & Co. ***********/
+
+function getDescriptionAppendix($id) {
+    return getIngredientExport($id).getSpurenExport($id).getGeringeMengeExport($id);
+}
+
 function getIngredientExport($id) {
     // get all Ingredients and add them to description
     global $db;
@@ -524,9 +529,58 @@ function getIngredientExport($id) {
     }
     
     if(!empty($ingrs)) {
-        return "
+return
+"
 
-        Inhaltsstoffe: ".implode(", ",$ingrs);
+Inhaltsstoffe: ".implode(", ",$ingrs);
+    }
+    return "";
+}
+
+function getSpurenExport($id) {
+    // get all Ingredients and add them to description
+    global $db;
+
+    $stmt = $db->prepare('SELECT ingredient.name FROM ingredient, fdata_ingredient_enthalt as con WHERE con.fdata_id=:id AND con.ingredient_id = ingredient.id');
+    $stmt->bindValue(":id",$id);
+    $stmt->execute();
+    $ingredients = $stmt->fetchAll();
+
+    $ingrs = array();
+
+    foreach($ingredients as $i) {
+        array_push($ingrs,$i['name']);
+    }
+
+    if(!empty($ingrs)) {
+        return
+"
+
+Kann Spuren von ".implode(", ",$ingrs)." enthalten.";
+    }
+    return "";
+}
+
+function getGeringeMengeExport($id) {
+    // get all Ingredients and add them to description
+    global $db;
+
+    $stmt = $db->prepare('SELECT ingredient.name FROM ingredient, fdata_ingredient_gering as con WHERE con.fdata_id=:id AND con.ingredient_id = ingredient.id');
+    $stmt->bindValue(":id",$id);
+    $stmt->execute();
+    $ingredients = $stmt->fetchAll();
+
+    $ingrs = array();
+
+    foreach($ingredients as $i) {
+        array_push($ingrs,$i['name']);
+    }
+
+    if(!empty($ingrs)) {
+        return
+"
+
+Enthält eine geringe Menge ".implode(", ",$ingrs).".";
     }
     return "";
 }
