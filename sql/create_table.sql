@@ -231,7 +231,8 @@ CREATE TABLE taggroup (
     id SERIAL PRIMARY KEY,
     gs1_attribute_type_code int DEFAULT NULL,
     muid varchar(255) UNIQUE, /* = Name EN */
-    name varchar(255)
+    name varchar(255),
+    numerical_required boolean DEFAULT FALSE
 );
 
 CREATE TABLE tag (

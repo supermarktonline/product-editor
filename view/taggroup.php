@@ -13,9 +13,10 @@ if($_REQUEST["taggroup"]=="create") {
         echo json_encode(array("error"=>"Error: MUID must be ASCII and not empty, name must not be empty.")); die;
     }
 
-    $stmt = $db->prepare("INSERT INTO taggroup (muid,name) VALUES (:muid,:name)");
+    $stmt = $db->prepare("INSERT INTO taggroup (muid,name,numerical_required) VALUES (:muid,:name,:numerical_required)");
     $stmt->bindValue(":muid",ucfirst($_REQUEST["muid"]));
     $stmt->bindValue(":name",ucfirst($_REQUEST["name"]));
+    $stmt->bindValue(":numerical_required",$_REQUEST["numerical_required"],PDO::PARAM_BOOL);
 
     if(!$stmt->execute()) {
         echo json_encode(array("error"=>"SQL Failure: ".$db->errorInfo()[2]." (possibly duplicate?)")); die;

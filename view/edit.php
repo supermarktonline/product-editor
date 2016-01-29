@@ -646,7 +646,10 @@ $media_path = $properties["media_path"];
               <div id="admin-area">
                 <div id="tag_group_wrapper">
 
-                  <p><label>Admin - Tag-Gruppe anlegen:</label>  MUID (en): <input type="text" id="tag_group_new_muid" value="" /> Name (de): <input type="text" id="tag_group_new_name" /> <button id="tag_group_new_create">Gruppe anlegen</button>
+                  <p><label>Admin - Tag-Gruppe anlegen:</label>  MUID (en): <input type="text" id="tag_group_new_muid" value="" /> Name (de): <input type="text" id="tag_group_new_name" />
+                    Numerical required: <input type="checkbox" id="tag_group_new_numerical_required" value="" />
+
+                    <button id="tag_group_new_create">Gruppe anlegen</button>
 
                   <label>Admin - Tag-Gruppe löschen:</label> <input type="text" id="tag_group_delete_selector" value="" /><input type="hidden" id="tag_group_delete_selected_id" value="0" /> <button id="tag_group_delete">Gruppe löschen</button></p>
                 </div>

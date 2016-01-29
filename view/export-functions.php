@@ -322,30 +322,70 @@ function getSealetcTagColumns($row) {
     
     global $db;
     
-    $stmt = $db->prepare('SELECT tag.name FROM tag, fdata_tag as con WHERE con.fdata_id=:id AND con.tag_id = tag.id');
+    $stmt = $db->prepare('SELECT tg.gs1_attribute_type_code as group_gs1, tg.muid as group_muid, tg.name as group_name, tg.numerical_required, tag.gs1_attribute_value_code, tag.muid, tag.name_de, tag.name_at, tag.type, con.numerical_value FROM taggroup as tg, tag, fdata_tag as con WHERE con.fdata_id=:id AND con.tag_id = tag.id AND tag.taggroup = tg.id');
     $stmt->bindValue(":id",$row['id']);
     $stmt->execute();
-    $tag = $stmt->fetchAll();
+    $connected_tags = $stmt->fetchAll();
     
-    foreach($tag as $s) {
-        array_push($tagColumns,getSealetcTagColumn($s['name']));
+    foreach($connected_tags as $ct) {
+
+        $tag_column = array();
+
+        $numerical = floatval($ct["numerical_value"]);
+
+        if($numerical>0.0) {
+
+            $tag_column["tagGroupingUid"] = $ct["group_muid"];
+            $tag_column["tagGroupingName de_DE"] = strval($ct["group_name"]);
+
+            if(intval($ct["group_gs1"]) > 0 ) {
+                $tag_column["tagGroupingGpcId"] = $ct["group_gs1"];
+            }
+
+            $tag_column["tagUid"] = $ct["group_muid"].": ".numericTag($ct["muid"],$ct["numerical_value"],$ct["type"],"en");
+            $tag_column["tagName de_DE"] = numericTag(strval($ct["name_de"]),$ct["numerical_value"],$ct["type"],"de",",");
+            $tag_column["tagName de_AT"] = numericTag(strval($ct["name_at"]),$ct["numerical_value"],$ct["type"],"de",",");
+            $tag_column["tagType"] = "ArticleDescribing";
+
+            $tag_column["tagNumericalValueRangeStart"] = $numerical;
+            $tag_column["tagNumericalValueRangeEnd"] = $numerical;
+
+            if(intval($ct["gs1_attribute_value_code"]) > 0 ) {
+                $tag_column["gpcId"] = $ct["gs1_attribute_value_code"];
+            }
+
+            $tag_column["tagGroupingTagNumericalRequired"] = ($ct["numerical_required"]) ? "Yes" : "No";
+        } else {
+            $tag_column["tagGroupingUid"] = $ct["group_muid"];
+            $tag_column["tagGroupingName de_DE"] = strval($ct["group_name"]);
+
+            if(intval($ct["group_gs1"]) > 0 ) {
+                $tag_column["tagGroupingGpcId"] = $ct["group_gs1"];
+            }
+
+            $tag_column["tagUid"] = $ct["group_muid"].": ".$ct["muid"];
+            $tag_column["tagName de_DE"] = strval($ct["name_de"]);
+            $tag_column["tagName de_AT"] = strval($ct["name_at"]);
+            $tag_column["tagType"] = "ArticleDescribing";
+
+            if(intval($ct["gs1_attribute_value_code"]) > 0 ) {
+                $tag_column["gpcId"] = $ct["gs1_attribute_value_code"];
+            }
+            $tag_column["tagGroupingTagNumericalRequired"] = "No";
+        }
+
+        array_push($tagColumns,$tag_column);
+
     }
+
     return $tagColumns;
 }
 
-function getSealetcTagColumn($label) {
-    $tag_column = array();
-    
-    $tag_column["tagGroupingUid"] = "Attribute (Food)";
-    $tag_column["tagGroupingName de_DE"] = "Attribut (Nahrungsmittel)";
-    $tag_column["tagGroupingTagNumericalRequired"] = "No";
-    
-    $tag_column["tagUid"] = "Attribute (Food) : ".$label;
-    $tag_column["tagName de_DE"] = $label;
-    $tag_column["tagType"] = "ArticleDescribing";
-    
-    return $tag_column;
+function numericTag($label,$value,$type,$lang="en",$seperator=".") {
+    $unsmap = unserialize(NUMERICAL_VALUE_TYPES_MAP);
+    return str_replace("~",str_replace(".",$seperator,strval($value)),str_replace("$",$unsmap[$type][$lang],$label));
 }
+
 
 function getFakeAllergenTagColumns($row) {
     $cols = array();
@@ -509,6 +549,10 @@ function getAllTagsForRow($row) {
 
     $nutrient_columns = getNutrientTagColumns($row); // nährwerte
     $allergene_columns = getAllergeneTagColumns($row); // allergene
+
+
+    // gs1 tags
+
     $tag_columns = getSealetcTagColumns($row); // normale tags
 
     $special_allergenes = getFakeAllergenTagColumns($row); // fake allergene wie honig, fleisch

@@ -19,4 +19,21 @@ define('VIEWPATH','view/');
 
 define('APP_URL',((strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,4))=='http') ? "http://" : "https://").$_SERVER['HTTP_HOST']."/");
 
-define('NUMERICAL_VALUE_TYPES',serialize(array('numeric','percent','kilogram','gram','milligram','liter','milliliter','seconds','minutes','hours','days','permill','squaremeters','cubicmeters')));
+define('NUMERICAL_VALUE_TYPES_MAP',serialize(
+    array(
+        'numeric'=> array('en'=>'','de'=>''),
+        'percent'=> array('en'=>'%','de'=>'%'),
+        'kilogram'=> array('en'=>'kg','de'=>'kg'),
+        'gram'=> array('en'=>'g','de'=>'g'),
+        'milligram'=> array('en'=>'mg','de'=>'mg'),
+        'liter'=> array('en'=>'l','de'=>'l'),
+        'milliliter'=> array('en'=>'l','de'=>'l'),
+        'seconds'=> array('en'=>'s','de'=>'s'),
+        'minutes'=> array('en'=>'m','de'=>'m'),
+        'hours'=> array('en'=>'h','de'=>'Stunden'),
+        'days'=> array('en'=>'d','de'=>'Tage'),
+        'permill'=> array('en'=>'‰','de'=>'‰'),
+        'squaremeters'=> array('en'=>'m²','de'=>'m²'),
+        'cubicmeters'=> array('en'=>'m³','de'=>'m³')
+    )
+));

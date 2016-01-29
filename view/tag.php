@@ -17,11 +17,25 @@ if($_REQUEST["tag"]=="create") {
     }
 
 
+    // if the tag group requires numerical tags, the tag must be numerical ;-)
+    $tag_group_requires_numerical = false;
+
+    $stmt = $db->prepare("SELECT COUNT(*) FROM taggroup WHERE id=:id and numerical_required=:numerical_required");
+    $stmt->bindValue(":id",intval($_REQUEST["taggroup"]));
+    $stmt->bindValue(":numerical_required",true,PDO::PARAM_BOOL);
+    $stmt->execute();
+
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($res) {
+        $tag_group_requires_numerical = true;
+    }
+
+
     // check if it is a numerical type
     $type = null;
-    if(strlen($_REQUEST["type"])>0) {
-        if(!in_array($_REQUEST["type"],unserialize(NUMERICAL_VALUE_TYPES))) {
-            echo json_encode(array("error"=>"Error: Numerical value type is unknown.")); die;
+    if(strlen($_REQUEST["type"])>0 || $tag_group_requires_numerical) {
+        if(!array_key_exists($_REQUEST["type"],unserialize(NUMERICAL_VALUE_TYPES_MAP))) {
+            echo json_encode(array("error"=>"Error: Numerical value type is unknown or the tag group allows only numerical tags.")); die;
         } else {
 
             if( strpos($_REQUEST["muid"],"$")===false || strpos($_REQUEST["name_de"],"$")===false) {

@@ -39,6 +39,7 @@ $column_headings = array(
     "tagGroupingAutoTagNameCreation es_ES",
     "tagGroupingAutoTagNameCreation fr_FR",
     "tagGroupingTagNumericalRequired",
+    "tagGroupingGpcId",
     "tagUid",
     "tagName de_AT",
     "tagName de_DE",
@@ -57,7 +58,8 @@ $column_headings = array(
     "tagSearchText fr_FR",
     "tagNumericalValueRangeStart",
     "tagNumericalValueRangeEnd",
-    "tagType"
+    "tagType",
+    "gpcId"
 );
 
 $taglist = array();

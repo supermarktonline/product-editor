@@ -7,7 +7,8 @@ $(document).on('click','#tag_group_new_create',function(e) {
 
     var taggroup = {
         muid:   $('#tag_group_new_muid').val(),
-        name:   $('#tag_group_new_name').val()
+        name:   $('#tag_group_new_name').val(),
+        numerical_required: (($('#tag_group_new_numerical_required').is(":checked")) ? true : false)
     };
 
     $.ajax({ type:"POST", url: "/?taggroup=create", data:taggroup, success: function(result){
@@ -18,6 +19,7 @@ $(document).on('click','#tag_group_new_create',function(e) {
         if(dec["id"]>0) {
             $('#message_container').html('<div class="umsg success">New Tag group successfully created.</div>');
             $('#tag_group_new_muid,#tag_group_new_name').val('');
+            $('#tag_group_new_numerical_required').attr('checked',false);
             taggroups.push(dec);
             taggroup_labels.push({label: dec["name"]+" ("+dec["muid"]+")",value: dec["id"]});
 
