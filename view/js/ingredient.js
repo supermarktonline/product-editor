@@ -164,6 +164,11 @@ $(document).on('keypress','#ingredients_selector,#enthalt_spuren,#enthalt_gering
 
          if(null!==ingredient) {
              addIngredientToCollection(ingredient,collector_id,type);
+
+             if(type=="standard") {
+                 setCurrentIngredient(ingredient);
+             }
+             $('#ingredients_selector,#enthalt_spuren,#enthalt_gering').autocomplete("close");
          } else {
 
 
@@ -183,6 +188,11 @@ $(document).on('keypress','#ingredients_selector,#enthalt_spuren,#enthalt_gering
                           ingredient_names.push(crIngr["name"]);
 
                           addIngredientToCollection(crIngr,collector_id,type);
+
+                          if(type=="standard") {
+                              setCurrentIngredient(crIngr);
+                          }
+                          $('#ingredients_selector,#enthalt_spuren,#enthalt_gering').autocomplete("close");
                       }
                   }
               });
