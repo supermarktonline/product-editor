@@ -21,7 +21,7 @@ if(isset($_REQUEST["tag_connection"]) && $_REQUEST["tag_connection"]=="update") 
 
         $stmt = $db->prepare("INSERT INTO fdata_tag (fdata_id,tag_id,numerical_value) VALUES (:fdata_id,:tag_id,:numerical_value)");
 
-        foreach($_REQUEST["cons"] as $con) {
+        foreach((isset($_REQUEST["cons"]) ? $_REQUEST["cons"] : array()) as $con) {
 
             $stmt->bindValue(":fdata_id",$_REQUEST["fdata_id"]);
             $stmt->bindValue(":tag_id",intval($con["tag_id"]));

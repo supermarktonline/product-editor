@@ -8,6 +8,7 @@ CREATE TABLE import (
 CREATE TABLE fdata (
     id SERIAL PRIMARY KEY,
     import_id timestamp REFERENCES import (id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+
     "productMuid" varchar(255),
     "productNumber" varchar(255),
     "productOverrideInsertNew" varchar(255),
