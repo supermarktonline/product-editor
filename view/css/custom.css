@@ -383,6 +383,27 @@ hr {
     margin-bottom:20px;
 }
 
-#admin-area {
+#admin-area, #custom_state_wrapper {
     display:none;
 }
+
+.bold {
+    font-weight:700;
+}
+
+#custom_state_wrapper {
+    margin-top:10px;
+}
+
+#send-container {
+    margin-top:10px;
+}
+
+#save_now {
+    background-color:#ffffcc;
+}
+
+#finish_now {
+    background-color:#ccffcc;
+}
+

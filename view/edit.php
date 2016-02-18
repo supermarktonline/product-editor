@@ -722,9 +722,14 @@ $media_path = $properties["media_path"];
           
         </div>
       <div id="send-container">
-        <button id="finish_now" class="btn btn-default" data-save_id="">abschließen</button>
-        <button id="save_now" class="btn btn-default" data-save_id="">sichern</button>
-        <input type="text" id="custom_state" value="" />
+        <div id="save_id" data-save_id=""></div>
+        <button id="save_now" class="btn btn-default save_current_product" data-state="5">Speichern</button>
+        <button id="finish_now" class="btn btn-default save_current_product" data-state="10">Abschließen</button><br/><br/>
+        <button id="state7_now" class="btn btn-default save_current_product" data-state="7">Speichern (für später)</button>
+        <button id="state8_now" class="btn btn-default save_current_product" data-state="8">Speichern (Problemfall)</button>
+        <button id="exported_now" class="btn btn-default save_current_product" data-state="15">Speichern (bereits exportiert)</button>
+
+        <div id="custom_state_wrapper"><span class="bold">Admin: Benutzerdefinierter Status</span> <input type="text" id="custom_state" value="" /></div>
         <div id="message_container"></div>
       </div>
     </div>

@@ -40,7 +40,7 @@
      });
 
      if(!exists) {
-         $.ajax({url: "/?ingredient_connection=create&type="+connection_type+"&fdata_id="+$('#save_now').attr('data-save_id')+"&ingredient_id="+ingredient["id"], success: function(result){
+         $.ajax({url: "/?ingredient_connection=create&type="+connection_type+"&fdata_id="+$('#save_id').attr('data-save_id')+"&ingredient_id="+ingredient["id"], success: function(result){
              if(result==="success") {
                  appendIngredientToCollection(ingredient,collector_id,connection_type);
              } else {
@@ -101,7 +101,7 @@ $(document).on('click','.ic_ing_remove',function() {
 
     if($(this).parent())
 
-    $.ajax({url: "/?ingredient_connection=delete&type="+type+"&fdata_id="+$('#save_now').attr('data-save_id')+"&ingredient_id="+$(this).parent().attr('data-id'), success: function(result){
+    $.ajax({url: "/?ingredient_connection=delete&type="+type+"&fdata_id="+$('#save_id').attr('data-save_id')+"&ingredient_id="+$(this).parent().attr('data-id'), success: function(result){
             if(result==="success") {
                 $(remove).parent().remove();
 
@@ -133,7 +133,7 @@ $(document).on('click','.ic_ing',function(e) {
      map[e.keyCode] = e.type == 'keydown';
 
      if(map[65]==true && map[68]==true && map[77] ==true) {
-         $('#admin-area').toggle();
+         $('#admin-area,#custom_state_wrapper').toggle();
      }
 
  }
@@ -243,7 +243,7 @@ $(document).on('change','*[data-cur_ingr]',function() {
 $(document).on('click','#ingredient_deleter',function() {
     
         var cur_ingr = parseInt($('#current_ingredient').attr('data-id')) || 0;
-        var cur_product = $('#save_now').attr('data-save_id');
+        var cur_product = $('#save_id').attr('data-save_id');
 
         if(cur_ingr>0) {
 

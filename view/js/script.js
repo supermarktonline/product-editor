@@ -197,8 +197,7 @@ $(document).on('click','*[data-open_edit_id]',function() {
         
         $('#message_container').html('');
         
-        $('#save_now').attr('data-save_id',product["id"]);
-        $('#finish_now').attr('data-save_id',product["id"]);
+        $('#save_id').attr('data-save_id',product["id"]);
         $('#custom_state').val('');
         
         $('#name').val(product["productName de_AT"]);
@@ -386,8 +385,8 @@ $(document).on('click','*[data-open_edit_id]',function() {
 
 
 // saving a product after editing
-$(document).on('click','#save_now,#finish_now',function() {
-    var save_id = $(this).attr('data-save_id');
+$(document).on('click','.save_current_product',function() {
+    var save_id = $('#save_id').attr('data-save_id');
     
     var clicked_id = $(this).attr("id");
 
@@ -395,16 +394,10 @@ $(document).on('click','#save_now,#finish_now',function() {
     $('[data-nfieldb="'+save_id+'"]').text($('#brand').val());
 
     
-    var status = 5;
-    
-    if(clicked_id==="save_now") {
-        if(isNormalInteger($('#custom_state').val())) {
-            status = parseInt($('#custom_state').val());
-        }
-    }
-    
-    if(clicked_id==="finish_now") {
-        status = 10;
+    var status = $(this).attr("data-state");
+
+    if(isNormalInteger($('#custom_state').val())) {
+        status = parseInt($('#custom_state').val());
     }
     
     if(status>20) {
