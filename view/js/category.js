@@ -2,6 +2,8 @@ var categories = [];
 
 var gs_tree = {};
 
+var latest_select = {};
+
 $(document).ready(function() {
    
    categories = JSON.parse($('#categories').text());

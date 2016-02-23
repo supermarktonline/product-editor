@@ -461,3 +461,7 @@ hr {
     width:60px;
     font-size:15px;
 }
+
+#ingredients_selector, #enthalt_spuren, #enthalt_gering {
+    width:200px;
+}

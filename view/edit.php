@@ -302,7 +302,7 @@ $media_path = $properties["media_path"];
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Proteine (in g)</label>
+                    <label  class="control-label">Proteine/Eiweiß (in g)</label>
                     <div class="col-sm-5">
                       <input  type="text"  id="nutrient_100_protein" class="form-control">
                     </div>
@@ -376,7 +376,7 @@ $media_path = $properties["media_path"];
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Proteine (in g)</label>
+                    <label  class="control-label">Proteine/Eiweiß (in g)</label>
                     <div class="col-sm-5">
                       <input  type="text"  id="nutrient_snd_protein" class="form-control">
                     </div>
