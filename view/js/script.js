@@ -348,11 +348,11 @@ $(document).on('click','*[data-open_edit_id]',function() {
 
 
         // the images
-        
         $('#thumb-container').html('');
         $('#current_image_wrapper').html('');
         
         var images_product = product["productImages"].split(",").map(function(e){return e.trim();});
+
         var images_article = product["articleImages"].split(",").map(function(e){return e.trim();});
 
         var allImages = images_product.concat(images_article);
