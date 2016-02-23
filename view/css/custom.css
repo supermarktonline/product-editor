@@ -407,3 +407,42 @@ hr {
     background-color:#ccffcc;
 }
 
+#image_frame {
+    width:100%;
+    height:790px;
+    overflow:hidden;
+    position:relative;
+}
+
+#image_frame img{
+    cursor:all-scroll;
+    border:1px dotted #ccc;
+}
+
+#image_frame_controls {
+    position:absolute;
+    right:0;
+    bottom:0;
+}
+
+#image_frame_controls > div {
+    border-radius:5px;
+    font-size:30px;
+    font-weight:700;
+    font-family:Monospaced,sans-serif;
+    line-height:30px;
+    margin:5px;
+    background-color:rgba(200,200,200,0.7);
+    height:30px;
+    width:30px;
+    display:inline-block;
+    text-align:center;
+    vertical-align:middle;
+    cursor:pointer;
+
+}
+
+#image_frame_controls #ifc_100, #image_frame_controls #ifc_fit, #image_frame_controls #ifc_center {
+    width:60px;
+    font-size:15px;
+}
