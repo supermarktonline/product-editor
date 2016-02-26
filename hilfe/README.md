@@ -39,14 +39,21 @@ Beispiel:
 ### Name
 Der Name soll ohne Marke und ohne zusätzlich Beitexte sein.
 `Kaiser Teller Gourmet Cremesuppe von erlesenen Waldpilzen`
-Die Faustregel: die Bezeichnung, die ich jemanden geben würde, 
-der Einkaufen geht um sicher das richtige zu bekommen.
+Die Faustregel: wenn jemand zum Einkaufen geht, sage ich ihm, er soll mir eine Packung Kaiser Teller Gourmet Cremesuppe von erlesenen Waldpilzen von Knorr mitbringen, damit er sicher das richtige findet. Genau das soll dann der Name sein, `Knorr` ist später im Feld `Marke` einzutragen. Bei Schokoladen würde man jemandem zum Beispiel "Bring mir eine Tafel Nuss-Splitter von Ritter Sport mit!" sagen, deshalb wäre der Name hier `Nuss-Splitter` und die Marke `Ritter Sport` (bei Behälter, siehe auch weiter unten, wäre in diesem Fall `Tafel` einzutragen). Wenn die Kombination aus Behälter, Name und Marke nicht intuitiv klingt, dann stimmt etwas nicht oder sie kann abgeändert werden, z.B. "~~eine Packung Rittersport Nuss-Splitter von Rittersport~~" wäre falsch.
 
 Groß und Kleinschreibung anpassen (also nicht WALDPILZEN)
 
 ### Konzern (bzw. alte Version Firmenname)
-`Unilever` (anderer bedeutender Konzern: Nestle)  
-Nestle ohne Akzent ist ok.
+Hier soll der Name des Konzerns eingetragen werden, also sozusagen der des Besitzers der Marke. Hier einige Beispiele:
+* `Unilever`
+* `Mondelez International`
+* `Nestle`
+* `Procter & Gamble`
+* `Tchibo`
+* `Henkel`
+* u.v.a.
+
+Akzents wie bei Nestlé und Mondelēz sowie die Rechtsform wie GmbH oder ähnliches können weggelassen werden.
 
 ### Marke
 `Knorr`  
@@ -60,7 +67,7 @@ Wird in der Regel extra beworben, dann z.B. `Österreich` auswählen.
 sollte klar sein.
 
 ### Behälter
-`Packung`, `Beutel`, `Karton`, `Dose`, `Glasflasche`, `Kunststoffflasche`, `Riegel`,...
+`Packung`, `Beutel`, `Karton`, `Dose`, `Glas`, `Glasflasche`, `Kunststoffflasche`, `Riegel`, `Tafel`...
 (Neue Version sollte ein Drop-down haben).
 
 ### Beschreibung
