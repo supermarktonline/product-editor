@@ -407,6 +407,10 @@ hr {
     background-color:#ccffcc;
 }
 
+#claim_now {
+    background-color:#ccccff;
+}
+
 #image_frame {
     width:100%;
     height:790px;
@@ -464,4 +468,12 @@ hr {
 
 #ingredients_selector, #enthalt_spuren, #enthalt_gering {
     width:200px;
+}
+
+.div-allergene-right {
+    width:400px;
+}
+
+#check_no_honey, #check_no_meat {
+
 }

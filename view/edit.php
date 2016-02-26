@@ -61,6 +61,9 @@ $media_path = $properties["media_path"];
                     (0=new,5=edited,10=finished,15=exported once,other=custom)
                 </form>
             </li>
+            <li>
+              &nbsp;&nbsp;&nbsp;<input type="text" id="claim_name" placeholder="Benutzername" value="" />
+            </li>
           </ul>
         </div>
         <div class="navbar-right-label">
@@ -77,6 +80,7 @@ $media_path = $properties["media_path"];
           <tr class="head-row">
             <th>#</th>
             <th>Status</th>
+            <th>Reservierung</th>
             <th>Name</th>
             <th>EAN Code</th>
             <th>Marke</th>
@@ -90,6 +94,7 @@ $media_path = $properties["media_path"];
           <tr data-open_edit_id="<?php echo $imp["id"]; ?>">
               <td><?php echo $imp["id"]; ?></td>
               <td><span class="eds eds-state-<?php echo $imp["status"]; ?>"><?php echo $imp["status"]; ?></span></td>
+              <td class="reserve"><input type="checkbox" data-res="<?php echo $imp["id"]; ?>" <?php echo ($imp["reserved_by"]) ? 'checked="checked"':''; ?> /> <span class="reserved_by"><?php echo $imp["reserved_by"]; ?></span></td>
               <td data-nfieldu="<?php echo $imp["id"]; ?>"><?php
                   if(strlen($tp = $imp["productName de_AT"])>1) {
                       echo $tp;
@@ -260,7 +265,7 @@ $media_path = $properties["media_path"];
                   
                   
                   <div class="form-group form-group-sm form-horizontal">
-                    <label  class="control-label">Energie (in kJ)</label>
+                    <label  class="control-label">Energie / Brennwert (in kJ)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_energy" class="form-control">
                     </div>
@@ -275,18 +280,6 @@ $media_path = $properties["media_path"];
                     <label  class="control-label">Fett (gesättigt) (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_fat_saturated" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-group form-group-sm">
-                    <label  class="control-label">Ballaststoffe (in g)</label>
-                    <div class="col-sm-5"> 
-                      <input  type="text"  id="nutrient_100_fibers" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-group form-group-sm">
-                    <label  class="control-label">Calcium (in g)</label>
-                    <div class="col-sm-5"> 
-                      <input  type="text"  id="nutrient_100_calcium" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
@@ -314,6 +307,18 @@ $media_path = $properties["media_path"];
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
+                    <label  class="control-label">Ballaststoffe (in g)</label>
+                    <div class="col-sm-5">
+                      <input  type="text"  id="nutrient_100_fibers" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group form-group-sm">
+                    <label  class="control-label">Calcium (in g)</label>
+                    <div class="col-sm-5">
+                      <input  type="text"  id="nutrient_100_calcium" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group form-group-sm">
                     <label  class="control-label">Lactose (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_lactose" class="form-control">
@@ -326,7 +331,7 @@ $media_path = $properties["media_path"];
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Broteinheiten (in g)</label>
+                    <label  class="control-label">Broteinheiten</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_100_bread_unit" class="form-control">
                     </div>
@@ -334,7 +339,7 @@ $media_path = $properties["media_path"];
                 </div>
                 <div class="nrg-group">
                   <div class="form-group form-group-sm form-horizontal">
-                    <label  class="control-label">Energie (in KJ)</label>
+                    <label  class="control-label">Energie / Brennwert (in KJ)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_energy" class="form-control">
                     </div>
@@ -349,18 +354,6 @@ $media_path = $properties["media_path"];
                     <label  class="control-label">Fett (gesättigt) (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_fat_saturated" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-group form-group-sm">
-                    <label  class="control-label">Ballaststoffe (in g)</label>
-                    <div class="col-sm-5"> 
-                      <input  type="text"  id="nutrient_snd_fibers" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-group form-group-sm">
-                    <label  class="control-label">Calcium (in g)</label>
-                    <div class="col-sm-5"> 
-                      <input  type="text"  id="nutrient_snd_calcium" class="form-control">
                     </div>
                   </div>
                   <div class="form-group form-group-sm form-horizontal">
@@ -388,6 +381,18 @@ $media_path = $properties["media_path"];
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
+                    <label  class="control-label">Ballaststoffe (in g)</label>
+                    <div class="col-sm-5">
+                      <input  type="text"  id="nutrient_snd_fibers" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group form-group-sm">
+                    <label  class="control-label">Calcium (in g)</label>
+                    <div class="col-sm-5">
+                      <input  type="text"  id="nutrient_snd_calcium" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group form-group-sm">
                     <label  class="control-label">Lactose (in g)</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_lactose" class="form-control">
@@ -400,7 +405,7 @@ $media_path = $properties["media_path"];
                     </div>
                   </div>
                   <div class="form-group form-group-sm">
-                    <label  class="control-label">Broteinheiten (in g)</label>
+                    <label  class="control-label">Broteinheiten</label>
                     <div class="col-sm-5"> 
                       <input  type="text"  id="nutrient_snd_bread_unit" class="form-control">
                     </div>
@@ -503,6 +508,9 @@ $media_path = $properties["media_path"];
                     <input type="checkbox"  id="cur_ingr_r"  data-cur_ingr="r">R - Weichtiere
                   </label>
                 </div>
+                <div>
+                  <label>-</label>
+                </div>
                 <div class="checkbox">
                   <label>
                     <input type="checkbox" id="cur_ingr_honig" data-cur_ingr="honig">Honig (für Vegan Berechnung)
@@ -510,7 +518,7 @@ $media_path = $properties["media_path"];
                 </div>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" id="cur_ingr_fleisch" data-cur_ingr="fleisch">Fleisch (für Vegetarisch Berechnung)
+                    <input type="checkbox" id="cur_ingr_fleisch" data-cur_ingr="fleisch">Fleisch/Gelatine/Tierprodukt (wg. vegetarisch)
                   </label>
                 </div>
                   <div>
@@ -593,15 +601,18 @@ $media_path = $properties["media_path"];
                     <input type="checkbox" id="art_ingr_r" data-art_ingr="r">R - Weichtiere
                   </label>
                 </div>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" id="art_ingr_honig" data-art_ingr="honig">Honig (für Vegan Berechnung)
-                  </label>
+                <div>
+                  <label>-</label>
                 </div>
                 <div class="checkbox">
-                  <label>
-                    <input type="checkbox" id="art_ingr_fleisch" data-art_ingr="fleisch">Fleisch (für Vegetarisch Berechnung)
-                  </label>
+                  <label><input type="checkbox" id="art_ingr_honig" data-art_ingr="honig">Honig</label>
+                  <label><input type="checkbox" id="check_no_honey" /> Kein Honig (wg. vegan)</label>
+
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" id="art_ingr_fleisch" data-art_ingr="fleisch">Fleisch/Gelatine/Tierprodukt (wg. vegetarisch)</label>
+                  <label><input type="checkbox" id="check_no_meat" /> Vegetarisch</label>
+
                 </div>
               </div>
             </div>
@@ -699,7 +710,7 @@ $media_path = $properties["media_path"];
                 Aktive Kategorie:
                 <input type="hidden" id="active_category" value="" />
                 <span id="active_category_display">-- Keine --</span>
-                &nbsp;&nbsp;&nbsp;<button id="active_category_tag_update">Speichere Highlight-Konfiguration</button>
+                &nbsp;&nbsp;&nbsp;<button id="active_category_tag_update">Speichere Tag-Vorschläge</button>
                 &nbsp;&nbsp;&nbsp;<button data-ishidden="0" id="switch_show_recommended">Alle Tags einblenden/ausblenden</button>
               </div>
 
@@ -724,7 +735,8 @@ $media_path = $properties["media_path"];
       <div id="send-container">
         <div id="save_id" data-save_id=""></div>
         <button id="save_now" class="btn btn-default save_current_product" data-state="5">Speichern</button>
-        <button id="finish_now" class="btn btn-default save_current_product" data-state="10">Abschließen</button><br/><br/>
+        <button id="finish_now" class="btn btn-default save_current_product" data-state="10">Abschließen</button>
+        <br/><br/>
         <button id="state7_now" class="btn btn-default save_current_product" data-state="7">Speichern (für später)</button>
         <button id="state8_now" class="btn btn-default save_current_product" data-state="8">Speichern (Problemfall)</button>
         <button id="exported_now" class="btn btn-default save_current_product" data-state="15">Speichern (bereits exportiert)</button>

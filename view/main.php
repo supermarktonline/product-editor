@@ -24,6 +24,8 @@ if(isset($_REQUEST['edit'])) {
     include("taggroup.php");
 } else if(isset($_REQUEST['action']) && $_REQUEST['action']=="bricktree") {
     include("bricktree.php");
+} else if(isset($_REQUEST['reserve'])) {
+    include("reserve.php");
 } else {
     include("import-export.php");
 } 

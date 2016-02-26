@@ -16,6 +16,7 @@
     <script src="<?php echo VIEWPATH; ?>js/tag.js"></script>
     <script src="<?php echo VIEWPATH; ?>js/image.js"></script>
     <script src="<?php echo VIEWPATH; ?>js/tags-admin.js"></script>
+    <script src="<?php echo VIEWPATH; ?>js/reservation.js"></script>
     <?php } ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 </head>

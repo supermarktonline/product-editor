@@ -148,13 +148,14 @@ CREATE TABLE fdata (
     allergen_p boolean DEFAULT false,
     allergen_r boolean DEFAULT false,
 
-    allergen_honig boolean DEFAULT false,
-    allergen_fleisch boolean DEFAULT false,
+    allergen_honig boolean DEFAULT null,
+    allergen_fleisch boolean DEFAULT null,
 
     origin varchar(3) DEFAULT '',
     store varchar(255) DEFAULT 'normal',
     container varchar(255) DEFAULT '',
-    category int DEFAULT null
+    category int DEFAULT null,
+    reserved_by varchar(255) DEFAULT ''
 
 );
 

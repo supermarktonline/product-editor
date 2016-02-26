@@ -182,7 +182,12 @@ toggleList = function(){
 }
 
 // clicking a product within the list --> get the product via ajax and display the edit fields
-$(document).on('click','*[data-open_edit_id]',function() {
+$(document).on('click','*[data-open_edit_id]',function(e) {
+
+    if($(e.target).hasClass("reserve") || $(e.target).parent().hasClass("reserve")) {
+        return;
+    }
+
 
     $('[data-open_edit_id]').removeClass('active');
 
@@ -288,10 +293,21 @@ $(document).on('click','*[data-open_edit_id]',function() {
                         clearCurrentAllergen();
 
                         for(var i = 0;i<allergene.length; i++) {
-                            if(product["allergen_"+allergene[i]]) {
+
+                            var aval = product["allergen_"+allergene[i]];
+                            if(aval===true) {
                                 $('[data-art_ingr="'+allergene[i]+'"]').prop("checked",true);
                             } else {
                                 $('[data-art_ingr="'+allergene[i]+'"]').prop("checked",false);
+
+                                $('#check_no_honey,#check_no_meat').prop("checked",false);
+                                if(aval === false && allergene[i]=="honig") {
+                                    $('#check_no_honey').prop("checked",true);
+                                } else if(aval=== false && allergene[i]=="fleisch") {
+                                    $('#check_no_meat').prop("checked",true);
+                                }
+
+
                             }
                         }
                     }
@@ -322,10 +338,12 @@ $(document).on('click','*[data-open_edit_id]',function() {
                     return;
                 }
 
-                // set the categories and populate the GS1 Tags
-                $('#cs_segment,#cs_family,#cs_class,#cs_brick').html('');
+                if(product["status"]>0) {
+                    // set the categories and populate the GS1 Tags
+                    $('#cs_segment,#cs_family,#cs_class,#cs_brick').html('');
 
-                setCategorySelectorAndGS1Tags(product["category"],cons);
+                    setCategorySelectorAndGS1Tags(product["category"],cons);
+                }
 
 
                 // populate the custom and the numerical tags
@@ -403,6 +421,26 @@ $(document).on('click','.save_current_product',function() {
     if(status>20) {
         status = 20;
     }
+
+    if(status>9) {
+        var honig_in = $('#art_ingr_honig').is(":checked");
+        var honig_out = $('#check_no_honey').is("checked");
+
+        var meat_in = $('#art_ingr_fleisch').is("checked");
+        var meat_out = $('#check_no_meat').is("checked");
+
+        if(!(honig_in ^ honig_out)) {
+            $('#message_container').html('<div class="umsg error">Nicht gespeichert: Ist Honig enthalten oder nicht?</div>');
+            return false;
+        }
+
+        if(!(meat_in ^ meat_out)) {
+            $('#message_container').html('<div class="umsg error">Nicht gespeichert: Ist Fleisch enthalten oder nicht?</div>');
+            return false;
+        }
+
+    }
+
     
     var product = {};
     product["id"] = save_id;
