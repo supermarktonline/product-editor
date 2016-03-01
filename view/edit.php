@@ -51,18 +51,20 @@ $media_path = $properties["media_path"];
         <div class="navbar-header"><a class="navbar-brand">Produkteditor</a></div>
         <div id="menu-navbar">
           <ul class="nav navbar-nav">
-            <li><a href="/" class="dropdown-toggle">Import/Export</a></li>
+            <li><a href="/" class="dropdown-toggle">&laquo; Zurück zur Listenverwaltung</a></li>
+
+            <li>
+              <input type="text" id="claim_name" placeholder="Benutzername" value="" />
+            </li>
+
             <li>
                 <form action="" method="get">
                     <input type="hidden" name="edit" value="<?php echo $_GET['edit']; ?>" />
                     <input type="text" name="minstate" value="<?php echo $minstate; ?>" size="2" />
                     <input type="text" name="maxstate" value="<?php echo $maxstate; ?>" size="2" />
-                    <input type="submit" value="Filter Status" />
-                    (0=new,5=edited,10=finished,15=exported once,other=custom)
+                    <input type="submit" value="Status filtern" />
+                    <a href="#" id="show_status_info">(?)</a>
                 </form>
-            </li>
-            <li>
-              &nbsp;&nbsp;&nbsp;<input type="text" id="claim_name" placeholder="Benutzername" value="" />
             </li>
           </ul>
         </div>

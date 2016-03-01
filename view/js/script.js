@@ -635,3 +635,8 @@ $(document).on('click','.save_current_product',function() {
     var n = ~~Number(str);
     return String(n) === str && n >= 0;
 }
+
+$(document).on('click','#show_status_info',function(e) {
+    e.preventDefault();
+   alert('Der Bearbeitungsstatus eines Produkts wird kurz durch eine Zahl dargestellt.\n\n0 = neu\n5 = bereits bearbeitet\n7 = wird später bearbeitet\n8 = Bearbeitung problematisch\n10 = Bearbeitung abgeschlossen\n15 = Produkt bereits exportiert\nAndere Zahl = Sonderstatus, vom Administrator festgelegt');
+});
