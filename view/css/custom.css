@@ -383,7 +383,7 @@ hr {
     margin-bottom:20px;
 }
 
-#admin-area, #custom_state_wrapper {
+.admin-area {
     display:none;
 }
 
@@ -496,4 +496,8 @@ hr {
 
 #menu-navbar ul li input[type="text"] {
     margin-top:4px;
+}
+
+table tr td.reserve {
+    cursor:default;
 }

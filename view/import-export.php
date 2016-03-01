@@ -140,14 +140,16 @@ $imports = $stmt->fetchAll();
             <div class="area_sel_container_row">
                 <a href="/?edit=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id']; ?></a> 
                 &nbsp;&nbsp;&nbsp;
-                <form method="post" action="">
-                    Name: <input type="text" name="new_import_name" value="<?php echo $row['name']; ?>" />
-                    Media Path: <input type="text" name="media_path" value="<?php echo $row['media_path']; ?>" />
-                    <input type="hidden" name="import_id" value="<?php echo urlencode($row['import_id']); ?>" />
-                    <input type="submit" name="update_import" value="Update properties" />
-                </form>
-                &nbsp;&nbsp;&nbsp;
-                <a href="#" data-deletelist="<?php echo urlencode($row['import_id']); ?>">[Delete this import]</a>
+                <span id="admin_listedit" class="admin-area">
+                    <form method="post" action="">
+                        Name: <input type="text" name="new_import_name" value="<?php echo $row['name']; ?>" />
+                        Media Path: <input type="text" name="media_path" value="<?php echo $row['media_path']; ?>" />
+                        <input type="hidden" name="import_id" value="<?php echo urlencode($row['import_id']); ?>" />
+                        <input type="submit" name="update_import" value="Update properties" />
+                    </form>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="#" data-deletelist="<?php echo urlencode($row['import_id']); ?>">[Delete this import]</a>
+                </span>
             </div>
             <?php
         }

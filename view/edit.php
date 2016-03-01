@@ -661,7 +661,7 @@ $media_path = $properties["media_path"];
 
             <div id="tag-container">
 
-              <div id="admin-area">
+              <div id="admin-area" class="admin-area">
                 <div id="tag_group_wrapper">
 
                   <p><label>Admin - Tag-Gruppe anlegen:</label>  MUID (en): <input type="text" id="tag_group_new_muid" value="" /> Name (de): <input type="text" id="tag_group_new_name" />
@@ -748,7 +748,7 @@ $media_path = $properties["media_path"];
         <button id="state8_now" class="btn btn-default save_current_product" data-state="8">Speichern (Problemfall)</button>
         <button id="exported_now" class="btn btn-default save_current_product" data-state="15">Speichern (bereits exportiert)</button>
 
-        <div id="custom_state_wrapper"><span class="bold">Admin: Benutzerdefinierter Status</span> <input type="text" id="custom_state" value="" /></div>
+        <div id="custom_state_wrapper" class="admin-area"><span class="bold">Admin: Benutzerdefinierter Status</span> <input type="text" id="custom_state" value="" /></div>
         <div id="message_container"></div>
       </div>
     </div>
