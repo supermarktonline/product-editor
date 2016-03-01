@@ -229,11 +229,11 @@ $media_path = $properties["media_path"];
                               <option></option>
                               <option>g</option>
                               <option>kg</option>
-                              <option>l</option>
                               <option>ml</option>
-                              <option>m³</option>
-                              <option>m²</option>
+                              <option>l</option>
                               <option>m</option>
+                              <option>m²</option>
+                              <option>m³</option>
                               <option value="uses">Anwendungen / Stück</option>
                           </select>
                       </div>

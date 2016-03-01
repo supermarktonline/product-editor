@@ -191,6 +191,7 @@ function setCategorySelectorAndGS1Tags(category_id,tag_connections) {
 
     } else {
         $('#cs_segment').html(buildSelector(1));
+        $('#tags_gs1').html('');
     }
 
 }
