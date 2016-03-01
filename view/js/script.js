@@ -184,6 +184,8 @@ toggleList = function(){
 // clicking a product within the list --> get the product via ajax and display the edit fields
 $(document).on('click','*[data-open_edit_id]',function(e) {
 
+    $('#isreserved-container').hide();
+
     if($(e.target).hasClass("reserve") || $(e.target).parent().hasClass("reserve")) {
         return;
     }
@@ -199,7 +201,18 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
             
         var product = JSON.parse(result);
-        
+
+        if(product["reserved_by"]!="") {
+            var username = $('#claim_name').val();
+
+            if(username !== product["reserved_by"]) {
+                $('#main-container').hide();
+                $('#isreserved-container').show();
+                return;
+            }
+
+        }
+
         $('#message_container').html('');
         
         $('#save_id').attr('data-save_id',product["id"]);

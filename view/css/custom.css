@@ -477,3 +477,15 @@ hr {
 #check_no_honey, #check_no_meat {
 
 }
+
+#isreserved-container-inner {
+    padding:25px;
+}
+
+#isreserved-container-inner p {
+    display:block;
+    background-color:#fee;
+    color:#911;
+    border:1px solid #911;
+    padding:8px 10px;
+}
