@@ -307,6 +307,8 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                     if(type=="standard") {
                         clearCurrentAllergen();
 
+                        $('#check_no_honey,#check_no_meat').prop("checked",false);
+
                         for(var i = 0;i<allergene.length; i++) {
 
                             var aval = product["allergen_"+allergene[i]];
@@ -315,14 +317,13 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                             } else {
                                 $('[data-art_ingr="'+allergene[i]+'"]').prop("checked",false);
 
-                                $('#check_no_honey,#check_no_meat').prop("checked",false);
-                                if(aval === false && allergene[i]=="honig") {
+                                if(aval === false && allergene[i] == "honig") {
                                     $('#check_no_honey').prop("checked",true);
-                                } else if(aval=== false && allergene[i]=="fleisch") {
-                                    $('#check_no_meat').prop("checked",true);
                                 }
 
-
+                                if(aval === false && allergene[i] == "fleisch") {
+                                    $('#check_no_meat').prop("checked",true);
+                                }
                             }
                         }
                     }
@@ -432,6 +433,14 @@ $(document).on('click','.save_current_product',function() {
     if(isNormalInteger($('#custom_state').val())) {
         status = parseInt($('#custom_state').val());
     }
+
+    if(status==5 && ($('#notice').val()).trim().length > 0) {
+        status = 6;
+    }
+
+    if(status==10 && ($('#notice').val()).trim().length > 0) {
+        status = 11;
+    }
     
     if(status>20) {
         status = 20;
@@ -439,12 +448,14 @@ $(document).on('click','.save_current_product',function() {
 
     if(status>9) {
         var honig_in = $('#art_ingr_honig').is(":checked");
-        var honig_out = $('#check_no_honey').is("checked");
+        var honig_out = $('#check_no_honey').is(":checked");
 
-        var meat_in = $('#art_ingr_fleisch').is("checked");
-        var meat_out = $('#check_no_meat').is("checked");
+        var meat_in = $('#art_ingr_fleisch').is(":checked");
+        var meat_out = $('#check_no_meat').is(":checked");
 
         if(!(honig_in ^ honig_out)) {
+            console.log(honig_in);
+            console.log(honig_out);
             $('#message_container').html('<div class="umsg error">Nicht gespeichert: Ist Honig enthalten oder nicht?</div>');
             return false;
         }
@@ -640,5 +651,5 @@ $(document).on('click','.save_current_product',function() {
 
 $(document).on('click','#show_status_info',function(e) {
     e.preventDefault();
-   alert('Der Bearbeitungsstatus eines Produkts wird kurz durch eine Zahl dargestellt.\n\n0 = neu\n5 = bereits bearbeitet\n7 = wird später bearbeitet\n8 = Bearbeitung problematisch\n10 = Bearbeitung abgeschlossen\n15 = Produkt bereits exportiert\nAndere Zahl = Sonderstatus, vom Administrator festgelegt');
+   alert('Der Bearbeitungsstatus eines Produkts wird kurz durch eine Zahl dargestellt.\n\n0 = neu\n5 = bereits bearbeitet\n6 = bereits bearbeitet mit Anmerkungen\n7 = wird später bearbeitet\n8 = Bearbeitung problematisch\n10 = Bearbeitung abgeschlossen\n11=Bearbeitung abgeschlossen mit Anmerkungen\n15 = Produkt bereits exportiert\nAndere Zahl = Sonderstatus, vom Administrator festgelegt');
 });

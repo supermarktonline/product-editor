@@ -219,9 +219,6 @@ $media_path = $properties["media_path"];
                   <div class="lit" style="width:75%">
                     <label class="control-label">Beschreibung</label>
                     <textarea  id="description"  rows="2" class="form-control"></textarea>
-
-                    <label class="control-label">Anmerkung(en) (allg. Anmerkungen zum Einpflegen des Artikels)</label>
-                    <textarea  id="notice"  rows="2" class="form-control"></textarea>
                   </div>
 
                   <div class="lit" style="width:25%;">
@@ -743,6 +740,9 @@ $media_path = $properties["media_path"];
           
         </div>
       <div id="send-container">
+        <label class="control-label">Anmerkung(en) (allg. Anmerkungen zum Einpflegen des Artikels, Schwierigkeiten, Hinweise, ...)</label>
+        <textarea  id="notice"  rows="2" class="form-control"></textarea>
+        <div class="clear"></div>
         <div id="save_id" data-save_id=""></div>
         <button id="save_now" class="btn btn-default save_current_product" data-state="5">Speichern</button>
         <button id="finish_now" class="btn btn-default save_current_product" data-state="10">Abschließen</button>
