@@ -387,6 +387,10 @@ hr {
     display:none;
 }
 
+.no-admin-area {
+    display:block;
+}
+
 .bold {
     font-weight:700;
 }

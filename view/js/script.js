@@ -206,9 +206,11 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
             var username = $('#claim_name').val();
 
             if(username !== product["reserved_by"]) {
-                $('#main-container').hide();
                 $('#isreserved-container').show();
-                return;
+                if(!is_admin) {
+                    $('#main-container').hide();
+                    return;
+                }
             }
 
         }

@@ -10,7 +10,6 @@
 $pid = intval($_REQUEST["pid"]);
 $action = boolval($_REQUEST["reserve"]);
 $user = $_REQUEST["user"];
-$prev_user = $_REQUEST["prev_user"];
 
 $stmt = $db->prepare('SELECT * FROM fdata WHERE id = :id');
 $stmt->bindValue(":id",$pid);
@@ -38,18 +37,12 @@ if($stmt->rowCount() > 0) {
 
         // unreserve
     } else {
-
-        if($cur_user==$prev_user) {
             $stmt = $db->prepare('UPDATE fdata set reserved_by = :empty WHERE id = :id');
             $stmt->bindValue(":id",$pid);
             $stmt->bindValue(":empty","");
             $stmt->execute();
 
             echo "success";
-        } else {
-            echo "Error: The user reserving this product has changed.";
-        }
-
     }
 
 

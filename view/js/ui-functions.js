@@ -21,9 +21,11 @@ onkeyup = onkeydown = function(e){
 
         if(!is_admin) {
             $('.admin-area').show();
+            $('.no-admin-area').hide();
             is_admin = true;
         } else {
             $('.admin-area').hide();
+            $('.no-admin-area').show();
             is_admin = false;
         }
     }

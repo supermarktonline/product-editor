@@ -137,7 +137,7 @@ $media_path = $properties["media_path"];
 
     <div id="isreserved-container" class="no-show">
       <div id="isreserved-container-inner">
-        <p>Dieses Produkt ist für einen anderen Benutzer reserviert. Um es zu bearbeiten, muss die Reservierung aufgehoben werden.</p>
+        <p>Dieses Produkt ist für einen anderen Benutzer reserviert. <span class="no-admin-area">Um es zu bearbeiten, muss die Reservierung aufgehoben werden.</span></p>
       </div>
     </div>
 

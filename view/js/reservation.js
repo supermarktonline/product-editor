@@ -37,14 +37,17 @@ $(document).on('click','[data-res]',function(e) {
 
         if(suspected_current_owner!=username) {
 
-            r = confirm("Dieses Produkt ist von einem anderen Benutzer reserviert. Reservierung trotzdem aufheben?")
+            if(is_admin) {
+                r = confirm("Dieses Produkt ist von einem anderen Benutzer reserviert. Reservierung trotzdem aufheben?")
+            } else {
+                alert("Dieses Produkt ist von einem anderen Benutzer reserviert. Sie können es nur bearbeiten, wenn diese Reservierung nicht mehr besteht.");
+                r = false;
+            }
 
         }
 
         if(r) {
-            $.ajax({url: "/?reserve=0&pid="+pid+"&user="+username+"&prev_user="+suspected_current_owner, success: function(result) {
-
-                console.log(result);
+            $.ajax({url: "/?reserve=0&pid="+pid+"&user="+username, success: function(result) {
 
                 if(result!="success") {
                     $('[data-res='+pid+']').prop("checked",true);
