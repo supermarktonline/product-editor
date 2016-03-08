@@ -501,3 +501,8 @@ hr {
 table tr td.reserve {
     cursor:default;
 }
+
+.admin-hint {
+    color:#ac2925;
+    line-height:28px;
+}

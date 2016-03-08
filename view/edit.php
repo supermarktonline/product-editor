@@ -66,6 +66,9 @@ $media_path = $properties["media_path"];
                     <a href="#" id="show_status_info">(?)</a>
                 </form>
             </li>
+            <li>
+              <span class="admin-area admin-hint">Admin Modus aktiv</span>
+            </li>
           </ul>
         </div>
         <div class="navbar-right-label">

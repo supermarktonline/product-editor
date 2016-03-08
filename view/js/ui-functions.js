@@ -1,6 +1,9 @@
 /**
  * Created by david on 11/27/15.
  */
+
+var is_admin = false;
+
 $(document).ready(function() {
     $('#table-container-wrapper').resizable({
         handles: 'n,s'
@@ -15,7 +18,13 @@ onkeyup = onkeydown = function(e){
     map[e.keyCode] = e.type == 'keydown';
 
     if(map[65]==true && map[68]==true && map[77] ==true) {
-        $('.admin-area').toggle();
-    }
 
+        if(!is_admin) {
+            $('.admin-area').show();
+            is_admin = true;
+        } else {
+            $('.admin-area').hide();
+            is_admin = false;
+        }
+    }
 }
