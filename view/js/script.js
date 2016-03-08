@@ -434,6 +434,24 @@ $(document).on('click','.save_current_product',function() {
     $('[data-nfieldu="'+save_id+'"]').text($('#name').val());
     $('[data-nfieldb="'+save_id+'"]').text($('#brand').val());
 
+
+    // for status allowance we have to check the state of the gs1 tags first
+    var ntags = [];
+    var gs1tag_unselected=false;
+
+    $('.gs1tag select').each(function() {
+        var ar = {};
+        var val = $(this).val();
+
+        if(parseInt(val) == "undefined" || isNaN(parseInt(val)) || parseInt(val) < 1) {
+            gs1tag_unselected=true;
+        } else {
+            ar["tag_id"] = val;
+            ar["numerical_value"] = null;
+            ntags.push(ar);
+        }
+    });
+
     
     var status = $(this).attr("data-state");
 
@@ -470,6 +488,10 @@ $(document).on('click','.save_current_product',function() {
             return false;
         }
 
+        if(gs1tag_unselected) {
+            $('#message_container').html('<div class="umsg error">Nicht gespeichert: Alle GS1 Tags müssen korrekt zugeordnet sein, Zuordnung fehlt.</div>');
+            return false;
+        }
     }
 
     
@@ -577,16 +599,6 @@ $(document).on('click','.save_current_product',function() {
     
     
     // update all tags
-
-    // gs1 tags
-    var ntags = [];
-
-    $('.gs1tag select').each(function() {
-       var ar = {};
-        ar["tag_id"] = $(this).val();
-        ar["numerical_value"] = null;
-        ntags.push(ar);
-    });
 
 
     // standard tags

@@ -189,6 +189,8 @@ function appendGS1Selector(tagsel,tag_connections) {
     var html = '<div class="gs1tag" data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'" >';
     html += '<label>'+tagsel["muid"]+'</label> ';
     html += '<select data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'">';
+    html += '<option value="">---- OPTION AUSWÄHLEN ---</option>';
+
 
     for(var tag in tagsel["tags"]) {
         selected ="";
