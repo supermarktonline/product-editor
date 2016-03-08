@@ -269,6 +269,13 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                 }
             }
         });
+
+        // nutrients for prepared meal?
+        if(product["nutrient_snd_prepared"]===true) {
+            $('#nutrient_snd_prepared').prop("checked",true);
+        } else {
+            $('#nutrient_snd_prepared').prop("checked",false);
+        }
         
         // nutrient unit
         $('#nutrient_unit_copy').html(product["nutrient_unit"]);
@@ -454,8 +461,6 @@ $(document).on('click','.save_current_product',function() {
         var meat_out = $('#check_no_meat').is(":checked");
 
         if(!(honig_in ^ honig_out)) {
-            console.log(honig_in);
-            console.log(honig_out);
             $('#message_container').html('<div class="umsg error">Nicht gespeichert: Ist Honig enthalten oder nicht?</div>');
             return false;
         }
@@ -546,7 +551,13 @@ $(document).on('click','.save_current_product',function() {
             }
         }
     });
-    
+
+    if($('#nutrient_snd_prepared').is(":checked")) {
+        product["nutrient_snd_prepared"] = true;
+    } else {
+        product["nutrient_snd_prepared"] = false;
+    }
+
     for(var i=0; i<allergene.length;i++) {
         if($('#art_ingr_'+allergene[i]).is(":checked")) {
             product["allergen_"+allergene[i]] = true;

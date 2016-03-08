@@ -262,6 +262,7 @@ $media_path = $properties["media_path"];
                         <br/>
                         with:  <input type="text" class="myTextInput" id="nutrient_snd_additional" >
                         mit: <input type="text" class="myTextInput" id="nutrient_snd_additional_de" >
+                        Nährwerte gelten für zubereitet? <input type="checkbox" id="nutrient_snd_prepared" />
                     </div>
                     <div class="clear"></div>
                 </div>

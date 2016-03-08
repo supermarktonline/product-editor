@@ -119,6 +119,7 @@ CREATE TABLE fdata (
     nutrient_snd_amount integer DEFAULT null,
     nutrient_snd_additional varchar(255) DEFAULT '',
     nutrient_snd_additional_de varchar(255) DEFAULT '',
+    nutrient_snd_prepared boolean DEFAULT false,
 
     nutrient_snd_energy float DEFAULT null,
     nutrient_snd_fat_total float DEFAULT null,
