@@ -104,8 +104,7 @@ Angaben auf dem Produkt zusammenpasst).
 - rechts oben bei *pro* die Menge pro Mahlzeit eintragen
 - *Generate right* anklicken um die Werte rechts auszurechnen.
 
-Bei manchen Produkten gibt es keine Angabe / Mahlzeit.
-Dann einfach rechts leer lassen.
+Bei manchen Produkten gibt es keine Angabe / Mahlzeit und es gibt den seltenen Fall wo die linke Seite pro 100 g angegeben ist, und die rechte Seite in Milliliter (oder eine andere Kombination von Maßeinheiten). In diesen Fällen kann die rechte Seite leer gelassen werden.
 
 *Die alte Version verlangt leider einen Wert. Dort dann einfach 0 eingeben*
 
