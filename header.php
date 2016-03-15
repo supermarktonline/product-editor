@@ -10,13 +10,17 @@
     <script src="<?php echo VIEWPATH; ?>js/ui-functions.js"></script>
     
     <?php if(isset($_GET['edit'])) { ?>
-    <script src="<?php echo VIEWPATH; ?>js/script.js"></script>
-    <script src="<?php echo VIEWPATH; ?>js/ingredient.js"></script>
-    <script src="<?php echo VIEWPATH; ?>js/category.js"></script>
-    <script src="<?php echo VIEWPATH; ?>js/tag.js"></script>
-    <script src="<?php echo VIEWPATH; ?>js/image.js"></script>
-    <script src="<?php echo VIEWPATH; ?>js/tags-admin.js"></script>
-    <script src="<?php echo VIEWPATH; ?>js/reservation.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/init.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/mixed.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/product-open.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/product-save.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/ingredient.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/category.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/tag.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/image.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/tags-admin.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/reservation.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/autosave.js"></script>
     <?php } ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 </head>

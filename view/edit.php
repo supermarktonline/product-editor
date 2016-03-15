@@ -220,6 +220,7 @@ $media_path = $properties["media_path"];
                     <option value="Konststoffflasche">Kunststoffflasche</option>
                     <option value="Riegel">Riegel</option>
                     <option value="Tafel">Tafel</option>
+                    <option value="Tafel">Tafel</option>
                   </select>
                   <input type="text" id="container_custom" value="" class="form-control" style="max-width:150px; display:inline-block">
                 </div>
@@ -757,6 +758,7 @@ $media_path = $properties["media_path"];
         <textarea  id="notice"  rows="2" class="form-control"></textarea>
         <div class="clear"></div>
         <div id="save_id" data-save_id=""></div>
+        <div id="last_state" data-last_state="0"></div>
         <button id="save_now" class="btn btn-default save_current_product" data-state="5">Speichern</button>
         <button id="finish_now" class="btn btn-default save_current_product" data-state="10">Abschließen</button>
         <br/><br/>
