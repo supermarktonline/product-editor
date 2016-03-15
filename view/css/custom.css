@@ -510,3 +510,7 @@ table tr td.reserve {
     color:#ac2925;
     line-height:28px;
 }
+
+select {
+    height:34px;
+}

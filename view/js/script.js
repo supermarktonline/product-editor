@@ -50,12 +50,11 @@ var product_simple_properties = [
     "nutrient_snd_bread_unit",
 
     "origin",
-    "store",
-    "container"
+    "store"
 ];
 
 var product_simple_properties_nofloat = [
-  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional","nutrient_snd_additional_de","origin","store","container"
+  "notice","nutrient_unit","nutrient_snd_amount","nutrient_snd_additional","nutrient_snd_additional_de","origin","store"
 ];
 
 
@@ -269,6 +268,24 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                 }
             }
         });
+
+        // container
+        var container = product["container"];
+
+        if(container!="") {
+            if($("#container option[value='"+container+"']").length > 0) {
+                $('#container').val(container);
+                $('#container_custom').val('');
+            } else {
+                $('#container').val('');
+                $('#container_custom').val(container);
+            }
+        } else {
+            $('#container').val('');
+            $('#container_custom').val('');
+        }
+
+
 
         // nutrients for prepared meal?
         if(product["nutrient_snd_prepared"]===true) {
@@ -573,6 +590,13 @@ $(document).on('click','.save_current_product',function() {
             }
         }
     });
+
+    // containers
+    product["container"] = $('#container').val();
+
+    if(product["container"]=="") {
+        product["container"] = $("#container_custom").val();
+    }
 
     if($('#nutrient_snd_prepared').is(":checked")) {
         product["nutrient_snd_prepared"] = true;
