@@ -731,8 +731,10 @@ $media_path = $properties["media_path"];
                 Aktive Kategorie:
                 <input type="hidden" id="active_category" value="" />
                 <span id="active_category_display">-- Keine --</span>
+                <span class="admin-area">
                 &nbsp;&nbsp;&nbsp;<button id="active_category_tag_update">Speichere Tag-Vorschläge</button>
                 &nbsp;&nbsp;&nbsp;<button data-ishidden="0" id="switch_show_recommended">Alle Tags einblenden/ausblenden</button>
+                </span>
               </div>
 
               <div id="attributes-container">
