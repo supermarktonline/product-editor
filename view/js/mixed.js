@@ -13,7 +13,7 @@ toggleList = function(){
 
 $(document).on('click','#generate_nw',function() {
 
-    var multiply = parseInt($('#nutrient_snd_amount').val()) || 0;
+    var multiply = parseFloat( ($('#nutrient_snd_amount').val()).replace(",",".")) || 0;
     multiply = multiply / 100.0;
 
     var nutnames = ["energy","fat_total","fat_saturated","protein","fibers","calcium","carb","sugar","salt","lactose","natrium","bread_unit"];
