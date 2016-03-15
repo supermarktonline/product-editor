@@ -3,6 +3,53 @@
 
 include("export-functions.php");
 
+$columns = [
+    "productMuid" => "",
+    "articleMuid" => "",
+    "articleWeight" => "",
+    "articleVolume" => "",
+    "articleArea" => "",
+    "articleLength" => "",
+    "articleUses" => "",
+    "articleEanCode" => "",
+    "articleBarCode" => "",
+    "productImages" => "",
+    "productName de_AT" => "",
+    "productBrand de_AT" => "",
+    "productCorporation de_AT" => "",
+    "productDescription de_AT" => "",
+    "articleUnit de_AT" => "container",
+    "articleTagPaths" => ""
+];
+
+$defaultColumns = [
+    "productNumber" => "",
+    "productOverrideInsertNew" => "",
+    "productDisplaySortValue" => "",
+    "articleNumber" => "",
+    "articlePrice" => "",
+    "articleShippingWeight" => "",
+    "articleShippingHeight" => "",
+    "articleShippingWidth" => "",
+    "articleShippingDepth" => "",
+    "articleMinQuantity" => "1",
+    "articleQuantitySteps" => "1",
+    "articleStock" => "99999",
+    "articleShowStock" => "FALSE",
+    "articleMsrPrice" => "",
+    "articleUnreducedPrice" => "",
+    "articleUnreducedPriceType" => "",
+    "articleMerchantInfo" => "",
+    "articleSortValue" => "",
+    "articleImages" => "",
+    "articleCurrency" => "EUR",
+    "articleTaxCategory" => "",
+    "articleRestrictDeliveryToZone" => "",
+    "articleNoticesJson de_AT" => "",
+    "articlePosText de_AT" => "",
+    "articleSelectorTags" => "",
+    "articleMerchantTags" => ""
+];
 
 $stmt = $db->prepare('SELECT * FROM import WHERE id = :id');
 $stmt->bindValue(":id",urldecode($_GET['export']));
@@ -33,42 +80,46 @@ $stmt->execute();
 $count = 1;
 $column_headings = array();
 
-foreach($fdata[0] as $key  => $value) {
-    if($count > NUM_COLS_BEFORE && $count <= NUM_COLS_BEFORE+NUM_IMPORT_COLS) {
-        array_push($column_headings,$key);
-    }
-
-    $count++;
+// add header names to $column_headings
+foreach($columns as $columnName => $dbColumnName) {
+    array_push($column_headings, $columnName);
+}
+foreach($defaultColumns as $columnName => $defaultValue) {
+    array_push($column_headings, $columnName);
 }
 
 $column_gatherer=array();
 foreach($fdata as $row) {
-    
-    // a row is an associative array of cols and val
-    $count = 1;
     $article = array();
-    foreach($row as $key  => $value) {
-        if($count > NUM_COLS_BEFORE && $count <= NUM_COLS_BEFORE+NUM_IMPORT_COLS) {
-            
-            if($key=="articleTagPaths") {
-                
-                $tagpath = "";
-                
-                // Categories
-                $tagpath .= getCategoryExportPath($row["id"]);
-                
-                $tagpath .= getPreparedTagPathForRow($row);
-                
-                $article[$key] = $tagpath;
-                
-            } else if(strtolower($key)==strtolower("productdescription de_at")) {
-                $article[$key] = $value.getDescriptionAppendix($row["id"]);
-            } else {
-                $article[$key] = $value;
-            }
+
+    foreach($columns as $columnName => $dbColumnName) {
+        if ($dbColumnName === "") $dbColumnName = $columnName;
+
+        $value = $row[$dbColumnName];
+        $id = $row["id"];
+        if ($columnName === "articleTagPaths") {
+            $tagpath = "";
+
+            // Categories
+            $tagpath .= getCategoryExportPath($id);
+            $tagpath .= getPreparedTagPathForRow($row);
+
+            $article[$columnName] = $tagpath;
+        } else if ($columnName === "productDescription de_AT") {
+            $article[$columnName] = $value . getDescriptionAppendix($id);
+        } else if ($columnName === "productImages") {
+            $article[$columnName] = str_replace(",", ";", $value);
+        } else if ($columnName === "articleWeight") {
+            $article[$columnName] = "" . round(explode(" ", $value)[0], 12) . " kg";
+        } else {
+            $article[$columnName] = $value;
         }
-        $count++;
     }
+
+    foreach($defaultColumns as $columnName => $defaultValue) {
+        $article[$columnName] = $defaultValue;
+    }
+
     array_push($column_gatherer,$article);
 }
 
