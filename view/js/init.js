@@ -87,7 +87,16 @@ $(document).ready(function() {
 
     // autocomplete ingredients for ingredients selecotrs
    $('#ingredients_selector,#enthalt_spuren,#enthalt_gering').autocomplete({
-       source: ingredient_names,
+       source: function(request, response) {
+        var filteredArray = $.map(ingredient_names, function(item) {
+            if((item.toLowerCase()).indexOf((request.term).toLowerCase()) == 0){
+                return item;
+            } else {
+                return null;
+            }
+        });
+        response(filteredArray);
+        },
        select: function(event,ui) {
            
            event.preventDefault();
@@ -119,7 +128,16 @@ $(document).ready(function() {
     }
 
     $('#tag_group_delete_selector').autocomplete({
-        source: taggroup_labels,
+        source: function(request, response) {
+            var filteredArray = $.map(taggroup_labels, function(item) {
+                if((item.toLowerCase()).indexOf((request.term).toLowerCase()) == 0){
+                    return item;
+                } else {
+                    return null;
+                }
+            });
+            response(filteredArray);
+        },
         select: function(event,ui) {
             event.preventDefault();
             $('#tag_group_delete_selector').val(ui.item.label);
@@ -128,7 +146,16 @@ $(document).ready(function() {
     });
 
     $('#tag_group_selector').autocomplete({
-        source: taggroup_labels,
+        source: function(request, response) {
+            var filteredArray = $.map(taggroup_labels, function(item) {
+                if((item.toLowerCase()).indexOf((request.term).toLowerCase()) == 0){
+                    return item;
+                } else {
+                    return null;
+                }
+            });
+            response(filteredArray);
+        },
         select: function(event,ui) {
             event.preventDefault();
             $('#tag_group_selector').val(ui.item.label);
@@ -147,7 +174,16 @@ $(document).ready(function() {
     }
 
     $('#tag_delete_selector').autocomplete({
-        source: tag_labels,
+        source: function(request, response) {
+            var filteredArray = $.map(tag_labels, function(item) {
+                if((item.toLowerCase()).indexOf((request.term).toLowerCase()) == 0){
+                    return item;
+                } else {
+                    return null;
+                }
+            });
+            response(filteredArray);
+        },
         select: function(event,ui) {
             event.preventDefault();
             $('#tag_delete_selector').val(ui.item.label);
