@@ -80,7 +80,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
 
         var images = product["productImages"];
-        var imagesAr = images.split(",");
+        var imagesAr = images.split(";");
 
         // populate the simple fields
         $.each(product_simple_properties,function(key,value) {
@@ -235,9 +235,9 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         $('#thumb-container').html('');
         $('#current_image_wrapper').html('');
 
-        var images_product = product["productImages"].split(",").map(function(e){return e.trim();});
+        var images_product = product["productImages"].split(";").map(function(e){return e.trim();});
 
-        var images_article = product["articleImages"].split(",").map(function(e){return e.trim();});
+        var images_article = product["articleImages"].split(";").map(function(e){return e.trim();});
 
         var allImages = images_product.concat(images_article);
 
