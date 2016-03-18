@@ -543,7 +543,12 @@ $media_path = $properties["media_path"];
                   </label>
                 </div>
                   <div>
-                      <button id="ingredient_deleter">Inhaltsstoff komplett löschen</button>
+                      <span class="admin-area">
+                        <input type="hidden" id="ingredient_upnew_id" name="ingredient_upnew_id" value="0" />
+                        <input type="text" id="ingredient_upnew" value="" />
+                        <button id="ingredient_updater">Inhaltsstoff aktualisieren</button>
+                      </span>
+                      <button id="ingredient_deleter">Inhaltsstoff löschen</button>
                   </div>
                   
               </div>
