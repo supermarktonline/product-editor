@@ -11,15 +11,15 @@ $columns = [
     "articleArea" => "",
     "articleLength" => "",
     "articleUses" => "",
-    "articleEanCode" => "",
-    "articleBarCode" => "",
+    "articleTradeItemIds" => "articleBarCode",
     "productImages" => "",
     "productName de_AT" => "",
     "productBrand de_AT" => "",
     "productCorporation de_AT" => "",
     "productDescription de_AT" => "",
     "articleUnit de_AT" => "container",
-    "articleTagPaths" => ""
+    "articleTagPaths" => "",
+    "productEditorId" => "id"
 ];
 
 $defaultColumns = [
@@ -28,6 +28,7 @@ $defaultColumns = [
     "productDisplaySortValue" => "",
     "articleNumber" => "",
     "articlePrice" => "",
+    "articleDescription de_AT" => "",
     "articleShippingWeight" => "",
     "articleShippingHeight" => "",
     "articleShippingWidth" => "",
@@ -49,6 +50,11 @@ $defaultColumns = [
     "articlePosText de_AT" => "",
     "articleSelectorTags" => "",
     "articleMerchantTags" => ""
+];
+
+$editorColumns = [
+    "name" => "Stat Editor Name",
+    "count" => "Stat Inhaltsstoffe Anzahl"
 ];
 
 $stmt = $db->prepare('SELECT * FROM import WHERE id = :id');
@@ -87,41 +93,65 @@ foreach($columns as $columnName => $dbColumnName) {
 foreach($defaultColumns as $columnName => $defaultValue) {
     array_push($column_headings, $columnName);
 }
+foreach($editorColumns as $intName => $columnName) {
+    array_push($column_headings, $columnName);
+}
 
 $column_gatherer=array();
 foreach($fdata as $row) {
     $article = array();
+
+    // undo bug where for instance «9 g» has been converted to 0.009000000000000001 kg
+    if ($row['articleWeight'] != "") {
+        $row['articleWeight'] = "" . round(explode(" ", $row['articleWeight'])[0], 12) . " kg";
+    }
+    if ($row['articleVolume'] != "") {
+        $row['articleVolume'] = "" . round(explode(" ", $row['articleVolume'])[0], 12) . " l";
+    }
 
     foreach($columns as $columnName => $dbColumnName) {
         if ($dbColumnName === "") $dbColumnName = $columnName;
 
         $value = $row[$dbColumnName];
         $id = $row["id"];
-        if ($columnName === "articleTagPaths") {
+        if ($columnName === "productMuid") {
+            $article[$columnName] = quoteForCsv(buildMuid($row));
+        } else if ($columnName === "articleMuid") {
+                $article[$columnName] = quoteForCsv(buildMuid($row, "for article"));
+        } else if ($columnName === "articleTagPaths") {
             $tagpath = "";
 
             // Categories
             $tagpath .= getCategoryExportPath($id);
             $tagpath .= getPreparedTagPathForRow($row);
 
-            $article[$columnName] = $tagpath;
+            $article[$columnName] = quoteForCsv($tagpath);
         } else if ($columnName === "productDescription de_AT") {
-            $article[$columnName] = $value . getDescriptionAppendix($id);
+            $article[$columnName] = quoteForCsv($value . getDescriptionAppendix($id));
         } else if ($columnName === "productImages") {
-            $article[$columnName] = str_replace(",", ";", $value);
-        } else if ($columnName === "articleWeight") {
-            $article[$columnName] = "" . round(explode(" ", $value)[0], 12) . " kg";
+            $article[$columnName] = quoteForCsv(str_replace(",", ";", $value));
+        } else if ($columnName === "articleUnit de_AT" && $value == "") {
+            $article[$columnName] = quoteForCsv("Stück");
         } else {
-            $article[$columnName] = $value;
+            $article[$columnName] = quoteForCsv($value);
         }
     }
 
     foreach($defaultColumns as $columnName => $defaultValue) {
-        $article[$columnName] = $defaultValue;
+        $article[$columnName] = quoteForCsv($defaultValue);
+    }
+
+    foreach($editorColumns as $c => $name) {
+        if ($c === "name") {
+            $article[$name] = quoteForCsv($row["reserved_by"]);
+        } else if ($c === "count") {
+            $article[$name] = quoteForCsv(countIngredients($id));
+        }
     }
 
     array_push($column_gatherer,$article);
 }
+
 
 header("Content-type: text/csv");
 header("Content-Disposition: attachment; filename=export-".$import['name']."-".$import['id'].".csv");
