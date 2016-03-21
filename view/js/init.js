@@ -64,6 +64,10 @@ var allergene = [
 
 var ingredients;
 
+var corporations;
+
+var brands;
+
 var ingredient_names = [];
 
 var tags;
@@ -78,6 +82,32 @@ var taggroup_labels = [];
 
 
 $(document).ready(function() {
+        // initialize corporations
+    corporations = JSON.parse($('#corporations').html());
+
+    // enable autocomplete corporations
+    $('#company').autocomplete({
+        source: function( request, response ) {
+            var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
+            response($.grep(corporations, function (item) {
+                return matcher.test(item);
+            }));
+        }
+    });
+
+    // same for brands
+    brands = JSON.parse($('#brands').html());
+
+    // enable autocomplete corporations
+    $('#brand').autocomplete({
+        source: function( request, response ) {
+            var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
+            response($.grep(brands, function (item) {
+                return matcher.test(item);
+            }));
+        }
+    });
+
     // initialize the ingredients
    ingredients = JSON.parse($('#ingredients').html());
    
