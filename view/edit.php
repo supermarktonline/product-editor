@@ -201,7 +201,7 @@ $media_path = $properties["media_path"];
                   <input type="text" id="brand" value="" class="form-control">
                 </div>
 
-                <div class="lit c3">
+                <div class="lit c25">
                   <label class="control-label">Herkunftsland</label>
                   <select id="origin" class="form-control">
                     <option value="">-- Unbekannt --</option>
@@ -220,9 +220,22 @@ $media_path = $properties["media_path"];
                   </select>
                 </div>
 
-                <div class="lit c2">
-                  <label class="control-label">Behälter</label>
-                  <input type="text" id="container" value="" class="form-control">
+                <div class="lit c3">
+                  <label class="control-label">Behälter (wenn leer, benutzerdefiniert)</label>
+                  <select id="container" style="display:inline-block">
+                    <option></option>
+                    <option value="Packung">Packung</option>
+                    <option value="Beutel">Beutel</option>
+                    <option value="Karton">Karton</option>
+                    <option value="Dose">Dose</option>
+                    <option value="Glas">Glas</option>
+                    <option value="Glasflasche">Glasflasche</option>
+                    <option value="Konststoffflasche">Kunststoffflasche</option>
+                    <option value="Riegel">Riegel</option>
+                    <option value="Tafel">Tafel</option>
+                    <option value="Tafel">Tafel</option>
+                  </select>
+                  <input type="text" id="container_custom" value="" class="form-control" style="max-width:150px; display:inline-block">
                 </div>
 
 
@@ -534,16 +547,21 @@ $media_path = $properties["media_path"];
                 </div>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" id="cur_ingr_honig" data-cur_ingr="honig">Honig (für Vegan Berechnung)
+                    <input type="checkbox" id="cur_ingr_fleisch" data-cur_ingr="fleisch">Fleisch/Gelatine/Tierprodukt (wg. vegetarisch)
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" id="cur_ingr_fleisch" data-cur_ingr="fleisch">Fleisch/Gelatine/Tierprodukt (wg. vegetarisch)
+                    <input type="checkbox" id="cur_ingr_honig" data-cur_ingr="honig">Honig (für Vegan Berechnung)
                   </label>
                 </div>
                   <div>
-                      <button id="ingredient_deleter">Inhaltsstoff komplett löschen</button>
+                      <span class="admin-area">
+                        <input type="hidden" id="ingredient_upnew_id" name="ingredient_upnew_id" value="0" />
+                        <input type="text" id="ingredient_upnew" value="" />
+                        <button id="ingredient_updater">Inhaltsstoff aktualisieren</button>
+                      </span>
+                      <button id="ingredient_deleter">Inhaltsstoff löschen</button>
                   </div>
                   
               </div>
@@ -626,13 +644,13 @@ $media_path = $properties["media_path"];
                   <label>-</label>
                 </div>
                 <div class="checkbox">
-                  <label><input type="checkbox" id="art_ingr_honig" data-art_ingr="honig">Honig</label>
-                  <label><input type="checkbox" id="check_no_honey" /> Kein Honig (wg. vegan)</label>
+                  <label><input type="checkbox" id="art_ingr_fleisch" data-art_ingr="fleisch">Fleisch/Gelatine/Tierprodukt (wg. vegetarisch)</label>
+                  <label><input type="checkbox" id="check_no_meat" /> Vegetarisch</label>
 
                 </div>
                 <div class="checkbox">
-                  <label><input type="checkbox" id="art_ingr_fleisch" data-art_ingr="fleisch">Fleisch/Gelatine/Tierprodukt (wg. vegetarisch)</label>
-                  <label><input type="checkbox" id="check_no_meat" /> Vegetarisch</label>
+                  <label><input type="checkbox" id="art_ingr_honig" data-art_ingr="honig">Honig</label>
+                  <label><input type="checkbox" id="check_no_honey" /> Kein Honig (wg. vegan)</label>
 
                 </div>
               </div>
@@ -731,8 +749,10 @@ $media_path = $properties["media_path"];
                 Aktive Kategorie:
                 <input type="hidden" id="active_category" value="" />
                 <span id="active_category_display">-- Keine --</span>
+                <span class="admin-area">
                 &nbsp;&nbsp;&nbsp;<button id="active_category_tag_update">Speichere Tag-Vorschläge</button>
                 &nbsp;&nbsp;&nbsp;<button data-ishidden="0" id="switch_show_recommended">Alle Tags einblenden/ausblenden</button>
+                </span>
               </div>
 
               <div id="attributes-container">
@@ -758,6 +778,7 @@ $media_path = $properties["media_path"];
         <textarea  id="notice"  rows="2" class="form-control"></textarea>
         <div class="clear"></div>
         <div id="save_id" data-save_id=""></div>
+        <div id="last_state" data-last_state="0"></div>
         <button id="save_now" class="btn btn-default save_current_product" data-state="5">Speichern</button>
         <button id="finish_now" class="btn btn-default save_current_product" data-state="10">Abschließen</button>
         <br/><br/>

@@ -5,10 +5,15 @@
  
  // set the current ingredient
  function setCurrentIngredient(ingredient,by_property) {
-     
+
      if(by_property) {
          ingredient = getIngredientBy(by_property,ingredient);
      }
+
+     $('#ingredient_upnew_id').val(ingredient.id);
+     $('#ingredient_updater').val(ingredient.name);
+
+     $('#ingredient_upnew').val(ingredient.name);
      
      $('#current_ingredient').html(ingredient["name"]);
      $('#current_ingredient').attr('data-id',ingredient["id"]);
@@ -19,7 +24,54 @@
          } else {
              $('#cur_ingr_'+allergene[i]).prop("checked",false);
          }
-     } 
+     }
+ }
+
+    $(document).on('click','#ingredient_updater',function() {
+        updateIngredient(getIngredientBy('id',$('#ingredient_upnew_id').val()));
+    });
+
+ function updateIngredient(ingredient) {
+
+     if(!ingredient) {
+         $('#message_container').html('<div class="umsg error">Keine Zutat ausgewählt.</div>');
+         return;
+     }
+
+
+     var old = ingredient.name;
+     ingredient.name = $('#ingredient_upnew').val();
+
+     // create ingredient
+     $.ajax({ type:"POST", url: "/?ingredient=update", data:ingredient, success: function(result){
+
+         var crIngr = JSON.parse(result);
+
+         if(!crIngr["id"]) {
+             $('#message_container').html('<div class="umsg error">'+crIngr["error"]+'</div>');
+         } else {
+
+             for(ingredient in ingredients) {
+                 if(ingredient["id"] == crIngr["id"]) {
+                     ingredient["name"] = crIngr["name"];
+                 }
+             }
+
+             var index = ingredient_names.indexOf(old);
+             ingredient_names.splice(index,1);
+             ingredient_names.push(crIngr["name"]);
+
+             $(".ic_ing[data-id="+crIngr["id"]+"]").each(function() {
+                 var text_to_change = this.childNodes[0];
+                 text_to_change.nodeValue = crIngr["name"]+" ";
+             });
+
+             $('#ingredients_selector,#enthalt_spuren,#enthalt_gering').autocomplete("close");
+
+             $('#message_container').html('<div class="umsg success">Zutat erfolgreich aktualisiert.</div>');
+         }
+     }
+     });
  }
 
  /**
@@ -245,11 +297,10 @@ $(document).on('click','#ingredient_deleter',function() {
                         
                         $('#message_container').html('<div class="umsg error">'+res["error"]+'</div>');
                     } else {
-                        
-                        // remove the ingredient also from the interface
+
                         var remover = ' .ic_ing[data-id="'+cur_ingr+'"]';
 
-                        $('#ingredients_collector'+remover+',#enthalt_spuren_collector '+remover+' ,#enthalt_gering_collector '+remover).remove();
+                        $('#ingredients_collector'+remover+',#enthalt_spuren_collector'+remover+' ,#enthalt_gering_collector'+remover).remove();
                         
                         for(var i=0;i<ingredients.length; i++) {
                             if(ingredients[i]["id"]==cur_ingr) {
@@ -271,8 +322,6 @@ $(document).on('click','#ingredient_deleter',function() {
                                 }
                             }
                         }
-                        
-                        
                         
                     }
                 }

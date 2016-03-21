@@ -116,7 +116,7 @@ CREATE TABLE fdata (
     nutrient_100_natrium float DEFAULT null,
     nutrient_100_bread_unit float DEFAULT null,
 
-    nutrient_snd_amount integer DEFAULT null,
+    nutrient_snd_amount float DEFAULT null,
     nutrient_snd_additional varchar(255) DEFAULT '',
     nutrient_snd_additional_de varchar(255) DEFAULT '',
     nutrient_snd_prepared boolean DEFAULT false,
