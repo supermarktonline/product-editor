@@ -103,11 +103,13 @@ function saveCurrentProduct(status) {
     var weight_amount = parseFloat($('#weight_amount').val());
     var weight_amount_unit = $('#weight_amount_unit').val();
 
+    // add toFixed(10) to prevent double weirdness. Ex: 0.009 would otherwise become 0.009000000000000001
     if (!isNaN(weight_amount)) {
         switch (weight_amount_unit) {
             case "g":
             {
-                product["articleWeight"] = (weight_amount * 0.001) + " kg";
+                // the changes the rounded string-number back to a number trimming the trailing 0s
+                product["articleWeight"] = +((weight_amount * 0.001).toFixed(10)) + " kg";
                 break;
             }
             case "kg":
@@ -121,7 +123,7 @@ function saveCurrentProduct(status) {
             }
             case "ml":
             {
-                product["articleVolume"] = (weight_amount * 0.001) + " l";
+                product["articleVolume"] = +((weight_amount * 0.001).toFixed(10)) + " l";
             }
             case "m³":
             {

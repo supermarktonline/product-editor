@@ -3,6 +3,59 @@
 
 include("export-functions.php");
 
+$columns = [
+    "productMuid" => "",
+    "articleMuid" => "",
+    "articleWeight" => "",
+    "articleVolume" => "",
+    "articleArea" => "",
+    "articleLength" => "",
+    "articleUses" => "",
+    "articleTradeItemIds" => "articleBarCode",
+    "productImages" => "",
+    "productName de_AT" => "",
+    "productBrand de_AT" => "",
+    "productCorporation de_AT" => "",
+    "productDescription de_AT" => "",
+    "articleUnit de_AT" => "container",
+    "articleTagPaths" => "",
+    "productEditorId" => "id"
+];
+
+$defaultColumns = [
+    "productNumber" => "",
+    "productOverrideInsertNew" => "",
+    "productDisplaySortValue" => "",
+    "articleNumber" => "",
+    "articlePrice" => "",
+    "articleDescription de_AT" => "",
+    "articleShippingWeight" => "",
+    "articleShippingHeight" => "",
+    "articleShippingWidth" => "",
+    "articleShippingDepth" => "",
+    "articleMinQuantity" => "1",
+    "articleQuantitySteps" => "1",
+    "articleStock" => "99999",
+    "articleShowStock" => "FALSE",
+    "articleMsrPrice" => "",
+    "articleUnreducedPrice" => "",
+    "articleUnreducedPriceType" => "",
+    "articleMerchantInfo" => "",
+    "articleSortValue" => "",
+    "articleImages" => "",
+    "articleCurrency" => "EUR",
+    "articleTaxCategory" => "",
+    "articleRestrictDeliveryToZone" => "",
+    "articleNoticesJson de_AT" => "",
+    "articlePosText de_AT" => "",
+    "articleSelectorTags" => "",
+    "articleMerchantTags" => ""
+];
+
+$editorColumns = [
+    "name" => "Stat Editor Name",
+    "count" => "Stat Inhaltsstoffe Anzahl"
+];
 
 $stmt = $db->prepare('SELECT * FROM import WHERE id = :id');
 $stmt->bindValue(":id",urldecode($_GET['export']));
@@ -33,44 +86,72 @@ $stmt->execute();
 $count = 1;
 $column_headings = array();
 
-foreach($fdata[0] as $key  => $value) {
-    if($count > NUM_COLS_BEFORE && $count <= NUM_COLS_BEFORE+NUM_IMPORT_COLS) {
-        array_push($column_headings,$key);
-    }
-
-    $count++;
+// add header names to $column_headings
+foreach($columns as $columnName => $dbColumnName) {
+    array_push($column_headings, $columnName);
+}
+foreach($defaultColumns as $columnName => $defaultValue) {
+    array_push($column_headings, $columnName);
+}
+foreach($editorColumns as $intName => $columnName) {
+    array_push($column_headings, $columnName);
 }
 
 $column_gatherer=array();
 foreach($fdata as $row) {
-    
-    // a row is an associative array of cols and val
-    $count = 1;
     $article = array();
-    foreach($row as $key  => $value) {
-        if($count > NUM_COLS_BEFORE && $count <= NUM_COLS_BEFORE+NUM_IMPORT_COLS) {
-            
-            if($key=="articleTagPaths") {
-                
-                $tagpath = "";
-                
-                // Categories
-                $tagpath .= getCategoryExportPath($row["id"]);
-                
-                $tagpath .= getPreparedTagPathForRow($row);
-                
-                $article[$key] = $tagpath;
-                
-            } else if(strtolower($key)==strtolower("productdescription de_at")) {
-                $article[$key] = $value.getDescriptionAppendix($row["id"]);
-            } else {
-                $article[$key] = $value;
-            }
-        }
-        $count++;
+
+    // undo bug where for instance «9 g» has been converted to 0.009000000000000001 kg
+    if ($row['articleWeight'] != "") {
+        $row['articleWeight'] = "" . round(explode(" ", $row['articleWeight'])[0], 12) . " kg";
     }
+    if ($row['articleVolume'] != "") {
+        $row['articleVolume'] = "" . round(explode(" ", $row['articleVolume'])[0], 12) . " l";
+    }
+
+    foreach($columns as $columnName => $dbColumnName) {
+        if ($dbColumnName === "") $dbColumnName = $columnName;
+
+        $value = $row[$dbColumnName];
+        $id = $row["id"];
+        if ($columnName === "productMuid") {
+            $article[$columnName] = quoteForCsv(buildMuid($row));
+        } else if ($columnName === "articleMuid") {
+                $article[$columnName] = quoteForCsv(buildMuid($row, "for article"));
+        } else if ($columnName === "articleTagPaths") {
+            $tagpath = "";
+
+            // Categories
+            $tagpath .= getCategoryExportPath($id);
+            $tagpath .= getPreparedTagPathForRow($row);
+
+            $article[$columnName] = quoteForCsv($tagpath);
+        } else if ($columnName === "productDescription de_AT") {
+            $article[$columnName] = quoteForCsv($value . getDescriptionAppendix($id));
+        } else if ($columnName === "productImages") {
+            $article[$columnName] = quoteForCsv(str_replace(",", ";", $value));
+        } else if ($columnName === "articleUnit de_AT" && $value == "") {
+            $article[$columnName] = quoteForCsv("Stück");
+        } else {
+            $article[$columnName] = quoteForCsv($value);
+        }
+    }
+
+    foreach($defaultColumns as $columnName => $defaultValue) {
+        $article[$columnName] = quoteForCsv($defaultValue);
+    }
+
+    foreach($editorColumns as $c => $name) {
+        if ($c === "name") {
+            $article[$name] = quoteForCsv($row["reserved_by"]);
+        } else if ($c === "count") {
+            $article[$name] = quoteForCsv(countIngredients($id));
+        }
+    }
+
     array_push($column_gatherer,$article);
 }
+
 
 header("Content-type: text/csv");
 header("Content-Disposition: attachment; filename=export-".$import['name']."-".$import['id'].".csv");

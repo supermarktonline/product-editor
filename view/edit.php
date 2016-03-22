@@ -16,6 +16,19 @@ $stmt2 = $db->prepare('SELECT * FROM ingredient ORDER BY name DESC');
 $stmt2->execute();
 $ingredients = $stmt2->fetchAll();
 
+$stmt_brand = $db->prepare('SELECT DISTINCT "productBrand de_AT" FROM fdata ORDER BY "productBrand de_AT" ASC');
+$stmt_brand->execute();
+$extractBrand = function($row) {
+  return $row['productBrand de_AT'];
+};
+$brands = array_map($extractBrand, $stmt_brand->fetchAll());
+
+$stmt_corp = $db->prepare('SELECT DISTINCT "productCorporation de_AT" FROM fdata ORDER BY "productCorporation de_AT" ASC');
+$stmt_corp->execute();
+$extractCorp = function($row) {
+  return $row['productCorporation de_AT'];
+};
+$corporations = array_map($extractCorp, $stmt_corp->fetchAll());
 
 $stmt3 = $db->prepare('SELECT * FROM category ORDER BY segment_description_en,family_description_en,class_description_en,brick_description_en');
 $stmt3->execute();
@@ -113,7 +126,7 @@ $media_path = $properties["media_path"];
                       echo $tp;
                   }
               ?></td>
-              <td><?php echo $imp["articleEanCode"]; ?></td>
+              <td><?php echo preg_replace('/^.*~/', '', $imp["articleEanCode"] . $imp["articleBarCode"]); ?></td>
               <td data-nfieldb="<?php echo $imp["id"]; ?>"><?php
                   if(strlen($tp = $imp["productBrand de_AT"])>1) {
                       echo $tp;
@@ -780,6 +793,10 @@ $media_path = $properties["media_path"];
 
       
       <div class="hidden" id="ingredients"><?php echo json_encode($ingredients); ?></div>
+
+      <div class="hidden" id="corporations"><?php echo json_encode($corporations); ?></div>
+
+      <div class="hidden" id="brands"><?php echo json_encode($brands); ?></div>
 
       <div class="hidden" id="taggroups"><?php echo json_encode($taggroups); ?></div>
       
