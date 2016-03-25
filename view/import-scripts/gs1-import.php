@@ -154,9 +154,8 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
                         }
 
                         // if not exists insert tag, otherwise get its id
-                        $tid = $db->prepare("SELECT id FROM tag WHERE gs1_attribute_value_code=:gs1_attribute_value_code AND muid=:muid AND taggroup=:taggroup");
+                        $tid = $db->prepare("SELECT id FROM tag WHERE gs1_attribute_value_code=:gs1_attribute_value_code AND taggroup=:taggroup");
                         $tid->bindValue(":gs1_attribute_value_code",$t_gs1_attribute_value_code);
-                        $tid->bindValue(":muid",$t_muid);
                         $tid->bindValue(":taggroup",$tgid);
                         $tid->execute();
 
@@ -167,7 +166,7 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
                             if($updates) {
                                 $up = $db->prepare("UPDATE tag SET muid=:muid WHERE id=:id");
                                 $up->bindValue(":muid",$t_muid);
-                                $up->bindValue(":id",$tgid);
+                                $up->bindValue(":id",$tid);
 
                                 $upsuc = $up->execute();
 

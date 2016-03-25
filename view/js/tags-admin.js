@@ -1,6 +1,12 @@
 /**
  * Created by david on 12/22/15.
  */
+$(document).on('change','#weight_amount',function(e) {
+    var val = $('#weight_amount').val();
+    if (val.match(/^[0.]+$/)) {
+        $('#weight_amount').val('');
+    }
+});
 
 $(document).on('click','#tag_group_new_create',function(e) {
     e.preventDefault();

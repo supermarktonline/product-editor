@@ -14,73 +14,73 @@ function getNutrientDefsPlain()
         array(
             "field" => "nutrient_%s_energy",
             "tagGroupingPrefixEN" => "Energy (Nutrient)",
-            "tagGroupingPrefixDE" => "Energie (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Energie",
             "unit" => "kJ"
         ),
         array(
             "field" => "nutrient_%s_fat_total",
             "tagGroupingPrefixEN" => "Fat total (Nutrient)",
-            "tagGroupingPrefixDE" => "Fett gesamt (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Fett gesamt",
             "unit" => "g"
         ),
         array(
             "field" => "nutrient_%s_fat_saturated",
             "tagGroupingPrefixEN" => "Fat saturated (Nutrient)",
-            "tagGroupingPrefixDE" => "Gesättigte Fettsäuren (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Gesättigte Fettsäuren",
             "unit" => "g"
         ),
         array(
             "field" => "nutrient_%s_protein",
             "tagGroupingPrefixEN" => "Protein (Nutrient)",
-            "tagGroupingPrefixDE" => "Eiweiß (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Eiweiß",
             "unit" => "g"
         ),
         array(
             "field" => "nutrient_%s_fibers",
             "tagGroupingPrefixEN" => "Fibers (Nutrient)",
-            "tagGroupingPrefixDE" => "Ballaststoffe (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Ballaststoffe",
             "unit" => "g"
         ),
         array(
             "field" => "nutrient_%s_calcium",
             "tagGroupingPrefixEN" => "Calcium (Nutrient)",
-            "tagGroupingPrefixDE" => "Calcium (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Calcium",
             "unit" => "g"
         ),
         array(
             "field" => "nutrient_%s_carb",
             "tagGroupingPrefixEN" => "Carbohydrate (Nutrient)",
-            "tagGroupingPrefixDE" => "Kohlenhydrate (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Kohlenhydrate",
             "unit" => "g"
         ),
         array(
             "field" => "nutrient_%s_sugar",
             "tagGroupingPrefixEN" => "Sugar (Nutrient)",
-            "tagGroupingPrefixDE" => "Zucker (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Zucker",
             "unit" => "g"
         ),
         array(
             "field" => "nutrient_%s_salt",
             "tagGroupingPrefixEN" => "Salt (Nutrient)",
-            "tagGroupingPrefixDE" => "Salz (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Salz",
             "unit" => "g"
         ),
         array(
             "field" => "nutrient_%s_lactose",
             "tagGroupingPrefixEN" => "Lactose (Nutrient)",
-            "tagGroupingPrefixDE" => "Laktose (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Laktose",
             "unit" => "g"
         ),
         array(
             "field" => "nutrient_%s_natrium",
             "tagGroupingPrefixEN" => "Natrium (Nutrient)",
-            "tagGroupingPrefixDE" => "Natrium (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Natrium",
             "unit" => "g"
         ),
         array(
             "field" => "nutrient_%s_bread_unit",
             "tagGroupingPrefixEN" => "Bread Unit (Nutrient)",
-            "tagGroupingPrefixDE" => "Broteinheiten (Lebensmittel)",
+            "tagGroupingPrefixDE" => "Broteinheiten",
             "unit" => "g"
         )
     );
@@ -545,10 +545,10 @@ function getCategoryExportPath($id)
     $cat = $stmt->fetch();
 
     $catgath = array();
-    array_push($catgath, $cat["segment_description_en"]);
-    array_push($catgath, $cat["family_description_en"]);
-    array_push($catgath, $cat["class_description_en"]);
-    array_push($catgath, $cat["brick_description_en"]);
+    array_push($catgath, "GPC_" . $cat["segment_description_en"]);
+    array_push($catgath, "GPC_" . $cat["family_description_en"]);
+    array_push($catgath, "GPC_" . $cat["class_description_en"]);
+    array_push($catgath, "GPC_" . $cat["brick_description_en"]);
 
     return implode(" >> ", $catgath);
 }

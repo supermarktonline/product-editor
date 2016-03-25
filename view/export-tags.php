@@ -35,7 +35,8 @@ $column_headings = array(
     "tagNumericalValueRangeStart",
     "tagNumericalValueRangeEnd",
     "tagType",
-    "gpcId"
+    "gpcId",
+    "googleTaxonomyId"
 );
 
 $taglist = array();
@@ -44,12 +45,19 @@ foreach($fdata as $row) {
     $taglist = array_merge($taglist,  getAllTagsForRow($row));
 }
 
+// http://www.jonasjohn.de/snippets/php/trim-array.htm
+function trim_r($arr) {
+    return is_array($arr) ? array_map('trim_r', $arr) : trim($arr);
+}
+
+// trim all values
+$taglist = trim_r($taglist);
+
 // eliminate all duplicate tags
 $taglist = array_map("unserialize", array_unique(array_map("serialize", $taglist)));
 
 // eliminate grouping properties for each grouping which occures more than once
 $taglist = tagGroupingFilterRemoveDuplicate($taglist);
-
 
 $resempty = function($array,$key) {
     if(array_key_exists($key,$array)) {

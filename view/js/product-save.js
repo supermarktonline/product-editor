@@ -24,17 +24,13 @@ function saveCurrentProduct(status) {
     $('[data-nfieldb="' + save_id + '"]').text($('#brand').val());
 
 
-    // for status allowance we have to check the state of the gs1 tags first
     var ntags = [];
-    var gs1tag_unselected = false;
 
     $('.gs1tag select').each(function () {
         var ar = {};
         var val = $(this).val();
 
-        if (parseInt(val) == "undefined" || isNaN(parseInt(val)) || parseInt(val) < 1) {
-            gs1tag_unselected = true;
-        } else {
+        if (!(parseInt(val) == "undefined" || isNaN(parseInt(val)) || parseInt(val) < 1)) {
             ar["tag_id"] = val;
             ar["numerical_value"] = null;
             ntags.push(ar);
@@ -66,6 +62,8 @@ function saveCurrentProduct(status) {
         var meat_in = $('#art_ingr_fleisch').is(":checked");
         var meat_out = $('#check_no_meat').is(":checked");
 
+        var unit = $('#container option').filter(':selected').text().concat($('#container_custom').val());
+
         if (!(honig_in ^ honig_out)) {
             $('#message_container').html('<div class="umsg error">Nicht gespeichert: Ist Honig enthalten oder nicht?</div>');
             return false;
@@ -76,8 +74,8 @@ function saveCurrentProduct(status) {
             return false;
         }
 
-        if (gs1tag_unselected) {
-            $('#message_container').html('<div class="umsg error">Nicht gespeichert: Alle GS1 Tags müssen korrekt zugeordnet sein, Zuordnung fehlt.</div>');
+        if (unit.trim() == "") {
+            $('#message_container').html('<div class="umsg error">Nicht gespeichert: Behälter muss gesetzt sein.</div>');
             return false;
         }
     }
