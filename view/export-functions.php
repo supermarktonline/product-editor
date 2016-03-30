@@ -342,6 +342,10 @@ function getSealetcTagColumns($row)
 
     foreach ($connected_tags as $ct) {
 
+        if ($ct["muid"] == "UNCLASSIFIED" || $ct["muid"] == "UNIDENTIFIED") {
+            continue;
+        }
+        
         $tag_column = array();
 
         $numerical = floatval($ct["numerical_value"]);
@@ -374,7 +378,7 @@ function getSealetcTagColumns($row)
         $tag_column["tagType"] = "ArticleDescribing";
 
         if (intval($ct["gs1_attribute_value_code"]) > 0) {
-            $tag_column["gpcId"] = $ct["gs1_attribute_value_code"];
+            $tag_column["gpcId"] = $ct["group_gs1"] . "_" . $ct["gs1_attribute_value_code"];
         }
 
         $tag_column["tagGroupingTagNumericalRequired"] = ($isNumerical && $ct["numerical_required"]) ? "Yes" : "No";

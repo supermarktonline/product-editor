@@ -42,9 +42,27 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
 
 
                 if (($handle = fopen($_FILES["impfilegpr"]["tmp_name"], "r")) !== FALSE) {
-                    while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+                    $findid = $db->prepare("SELECT gid FROM category WHERE segment_code=:segment_code AND family_code=:family_code AND class_code=:class_code AND brick_code=:brick_code");
+                    $upCategory = $db->prepare("UPDATE category SET segment_description_en=:segment_description_en, family_description_en=:family_description_en, class_description_en=:class_description_en, brick_description_en=:brick_description_en WHERE gid=:id");
+                    $inCategory = $db->prepare("INSERT INTO category(segment_code,family_code,class_code,brick_code,segment_description_en,family_description_en,class_description_en,brick_description_en)
+                              VALUES (:segment_code,:family_code,:class_code,:brick_code,:segment_description_en,:family_description_en,:class_description_en,:brick_description_en)");
+                    $dbTgid = $db->prepare("SELECT id FROM taggroup WHERE gs1_attribute_type_code=:gs1_attribute_type_code");
+                    $inTg = $db->prepare("INSERT INTO taggroup(gs1_attribute_type_code,muid) VALUES (:gs1_attribute_type_code,:muid)");
+                    $dbTid = $db->prepare("SELECT id FROM tag WHERE gs1_attribute_value_code=:gs1_attribute_value_code AND taggroup=:taggroup");
+                    $upTag = $db->prepare("UPDATE tag SET muid=:muid WHERE id=:id");
+                    $upTg = $db->prepare("UPDATE taggroup SET muid=:muid WHERE id=:id");
+                    $inTag = $db->prepare("INSERT INTO tag(gs1_attribute_value_code,taggroup,muid,type) VALUES (:gs1_attribute_value_code,:taggroup,:muid,:type)");
+                    $connect = $db->prepare("INSERT INTO category_tag (category_id,tag_id) VALUES (:category_id,:tag_id)");
 
+                    $dbRowCounter = 0;
 
+                    // length found by    wc -L GS1\ Combined\ Published*.csv
+                    while (($data = fgetcsv($handle, 400, ",")) !== FALSE) {
+                        ++$dbRowCounter;
+                        if ($dbRowCounter % 10000 == 0) error_log("Processing row: " . $dbRowCounter);
+                        
+                        // skip header-row
+                        if ($dbRowCounter == 1 && $data[0] == "Segment Code") continue;
 
 
                         // category specific
@@ -68,7 +86,6 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
 
 
                         // 1. Upsert the Category
-                        $findid = $db->prepare("SELECT gid FROM category WHERE segment_code=:segment_code AND family_code=:family_code AND class_code=:class_code AND brick_code=:brick_code");
                         $findid->bindValue(":segment_code",$segment_code);
                         $findid->bindValue(":family_code",$family_code);
                         $findid->bindValue(":class_code",$class_code);
@@ -83,115 +100,113 @@ if(isset($_POST['newimpgpr']) && $_POST['newimpgpr']=="doit") {
                             $category_already_existed++;
 
                             if($updates) {
-                                $up = $db->prepare("UPDATE category SET segment_description_en=:segment_description_en, family_description_en=:family_description_en, class_description_en=:class_description_en, brick_description_en=:brick_description_en WHERE gid=:id");
-                                $up->bindValue(":segment_description_en",$segment_description_en);
-                                $up->bindValue(":family_description_en",$family_description_en);
-                                $up->bindValue(":class_description_en",$class_description_en);
-                                $up->bindValue(":brick_description_en",$brick_description_en);
-                                $up->bindValue(":id",$id);
+                                $upCategory->bindValue(":segment_description_en",$segment_description_en);
+                                $upCategory->bindValue(":family_description_en",$family_description_en);
+                                $upCategory->bindValue(":class_description_en",$class_description_en);
+                                $upCategory->bindValue(":brick_description_en",$brick_description_en);
+                                $upCategory->bindValue(":id",$id);
 
-                                $upsuc = $up->execute();
+                                $upsuc = $upCategory->execute();
 
                                 if(!$upsuc) {
+                                    error_log("Could not update category: $id $segment_description_en | $family_description | $class_description_en | $brick_description_en");
                                     $category_update_errors++;
                                 }
                             }
                         } else {
                             $category_didnt_exist++;
 
-                            $in = $db->prepare("INSERT INTO category(segment_code,family_code,class_code,brick_code,segment_description_en,family_description_en,class_description_en,brick_description_en)
-                              VALUES (:segment_code,:family_code,:class_code,:brick_code,:segment_description_en,:family_description_en,:class_description_en,:brick_description_en)");
-                            $in->bindValue(":segment_code",$segment_code);
-                            $in->bindValue(":family_code",$family_code);
-                            $in->bindValue(":class_code",$class_code);
-                            $in->bindValue(":brick_code",$brick_code);
-                            $in->bindValue(":segment_description_en",$segment_description_en);
-                            $in->bindValue(":family_description_en",$family_description_en);
-                            $in->bindValue(":class_description_en",$class_description_en);
-                            $in->bindValue(":brick_description_en",$brick_description_en);
+                            $inCategory->bindValue(":segment_code",$segment_code);
+                            $inCategory->bindValue(":family_code",$family_code);
+                            $inCategory->bindValue(":class_code",$class_code);
+                            $inCategory->bindValue(":brick_code",$brick_code);
+                            $inCategory->bindValue(":segment_description_en",$segment_description_en);
+                            $inCategory->bindValue(":family_description_en",$family_description_en);
+                            $inCategory->bindValue(":class_description_en",$class_description_en);
+                            $inCategory->bindValue(":brick_description_en",$brick_description_en);
 
-                            $insuc = $in->execute();
+                            $insuc = $inCategory->execute();
 
                             if(!$insuc) {
+                                error_log("Could not insert category: $segment_code | $family_code | $class_code | $brick_code | $segment_description_en | $family_description_en | $class_description_en | $brick_description_en");
                                 $category_insert_errors++;
                             }
                             $id= intval($db->lastInsertId());
                         }
 
+                        if ($tg_gs1_attribute_type_code == "") continue;
 
                         // if not exists insert taggroup, otherwise get its id
-                        $tgid = $db->prepare("SELECT id FROM taggroup WHERE gs1_attribute_type_code=:gs1_attribute_type_code");
-                        $tgid->bindValue(":gs1_attribute_type_code",$tg_gs1_attribute_type_code);
-                        $tgid->execute();
+                        $dbTgid->bindValue(":gs1_attribute_type_code",$tg_gs1_attribute_type_code);
+                        $dbTgid->execute();
 
-                        $tgid = intval($tgid->fetchColumn(0));
+                        $tgid = intval($dbTgid->fetchColumn(0));
 
                         if($tgid>0) {
                             $taggroup_already_existed++;
                             if($updates) {
-                                $up = $db->prepare("UPDATE taggroup SET muid=:muid WHERE id=:id");
-                                $up->bindValue(":muid",$tg_muid);
-                                $up->bindValue(":id",$tgid);
+                                $upTg->bindValue(":muid",$tg_muid);
+                                $upTg->bindValue(":id",$tgid);
 
-                                $upsuc = $up->execute();
+                                $upsuc = $upTg->execute();
 
                                 if(!$upsuc) {
+                                    error_log("Could not update taggroup: $tgid | $tg_muid");
                                     $taggroup_update_errors++;
                                 }
                             }
                         } else {
                             $taggroup_didnt_exist++;
-                            $in = $db->prepare("INSERT INTO taggroup(gs1_attribute_type_code,muid) VALUES (:gs1_attribute_type_code,:muid)");
-                            $in->bindValue(":gs1_attribute_type_code",$tg_gs1_attribute_type_code);
-                            $in->bindValue(":muid",$tg_muid);
+                            $inTg->bindValue(":gs1_attribute_type_code",$tg_gs1_attribute_type_code);
+                            $inTg->bindValue(":muid",$tg_muid);
 
-                            $insuc = $in->execute();
+                            $insuc = $inTg->execute();
 
                             if(!$insuc) {
+                                error_log("Could not insert taggroup: $tg_muid | $tg_gs1_attribute_type_code");
+                                error_log("Data row ($dbRowCounter): " . implode("|", $data));
                                 $taggroup_insert_errors++;
                             }
                             $tgid= intval($db->lastInsertId());
                         }
 
                         // if not exists insert tag, otherwise get its id
-                        $tid = $db->prepare("SELECT id FROM tag WHERE gs1_attribute_value_code=:gs1_attribute_value_code AND taggroup=:taggroup");
-                        $tid->bindValue(":gs1_attribute_value_code",$t_gs1_attribute_value_code);
-                        $tid->bindValue(":taggroup",$tgid);
-                        $tid->execute();
+                        $dbTid->bindValue(":gs1_attribute_value_code",$t_gs1_attribute_value_code);
+                        $dbTid->bindValue(":taggroup",$tgid);
+                        $dbTid->execute();
 
-                        $tid = intval($tid->fetchColumn(0));
+                        $tid = intval($dbTid->fetchColumn(0));
 
                         if($tid>0) {
                             $tag_already_existed++;
                             if($updates) {
-                                $up = $db->prepare("UPDATE tag SET muid=:muid WHERE id=:id");
-                                $up->bindValue(":muid",$t_muid);
-                                $up->bindValue(":id",$tid);
+                                $upTag->bindValue(":muid",$t_muid);
+                                $upTag->bindValue(":id",$tid);
 
-                                $upsuc = $up->execute();
+                                $upsuc = $upTag->execute();
 
                                 if(!$upsuc) {
+                                    error_log("Could not update tag: $tid | $t_muid");
                                     $tag_update_errors++;
                                 }
                             }
                         } else {
                             $tag_didnt_exist++;
-                            $in = $db->prepare("INSERT INTO tag(gs1_attribute_value_code,taggroup,muid,type) VALUES (:gs1_attribute_value_code,:taggroup,:muid,:type)");
-                            $in->bindValue(":gs1_attribute_value_code",$t_gs1_attribute_value_code);
-                            $in->bindValue(":taggroup",$tgid);
-                            $in->bindValue(":muid",$t_muid);
-                            $in->bindValue(":type",NULL);
+                            $inTag->bindValue(":gs1_attribute_value_code",$t_gs1_attribute_value_code);
+                            $inTag->bindValue(":taggroup",$tgid);
+                            $inTag->bindValue(":muid",$t_muid);
+                            $inTag->bindValue(":type",NULL);
 
-                            $insuc = $in->execute();
+                            $insuc = $inTag->execute();
 
                             if(!$insuc) {
+                                error_log("Could not insert tag: $t_muid | $tgid | $t_gs1_attribute_value_code");
                                 $tag_insert_errors++;
                             }
                             $tid= intval($db->lastInsertId());
                         }
 
                         // Create the connection - it is ok to only create the connection for the lowest level category - dont care if it already exists
-                        $connect = $db->prepare("INSERT INTO category_tag (category_id,tag_id) VALUES (:category_id,:tag_id)");
                         $connect->bindValue(":category_id",$id);
                         $connect->bindValue(":tag_id",$tid);
 
