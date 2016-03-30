@@ -36,13 +36,6 @@ if($desired_state > 9) {
     $stmt->bindValue(":fdata_id",$_POST["id"]);
     $stmt->execute();
 
-    $found = $stmt->fetch(PDO::FETCH_NUM)[0];
-
-    if($found<1) {
-        echo "Dieser Status ist nicht erlaubt: Bitte Inhaltsstoffe angeben.<br/>";
-        $dissallow = true;
-    }
-
     if(!Validator::validateInt(intval($_POST["category"]),array("min"=>1))) {
         echo "Dieser Status ist nicht erlaubt: Kategorie muss ausgewählt sein.<br/>";
         $dissallow = true;

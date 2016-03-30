@@ -178,7 +178,7 @@ $(document).ready(function() {
     $('#tag_group_selector').autocomplete({
         source: function(request, response) {
             var filteredArray = $.map(taggroup_labels, function(item) {
-                if((item.toLowerCase()).indexOf((request.term).toLowerCase()) == 0){
+                if((item.label.toLowerCase()).indexOf((request.term).toLowerCase()) == 0){
                     return item;
                 } else {
                     return null;
