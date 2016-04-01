@@ -13,6 +13,8 @@ $(document).on('click','[data-res]',function(e) {
     }
 
     var pid = $(this).attr('data-res');
+    $('#form-readonly').show();
+    $('#edit-form').prop('disabled', true);
 
     // if the box is checked
     if($(this).is(":checked")) {
@@ -25,6 +27,8 @@ $(document).on('click','[data-res]',function(e) {
                 alert(result);
             } else {
                 $('[data-res='+pid+'] + span').html(username);
+                $('#form-readonly').hide();
+                $('#edit-form').prop('disabled', false);
             }
         }
     });

@@ -25,8 +25,10 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
         var product = JSON.parse(result);
 
+        var username = $('#claim_name').val();
+        $('#form-readonly').show();
+        $('#edit-form').prop('disabled', true);
         if(product["reserved_by"]!="") {
-            var username = $('#claim_name').val();
 
             if(username !== product["reserved_by"]) {
                 $('#isreserved-container').show();
@@ -35,7 +37,21 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                     return;
                 }
             }
-
+            
+            $('#form-readonly').hide();
+            $('#edit-form').prop('disabled', false);
+        }
+        if (is_admin) {
+            $('#form-readonly').hide();
+            $('#edit-form').prop('disabled', false);
+        }
+        
+        if (username == "") {
+            $('#name-required-container').show();
+            $('#main-container').hide();
+            return;
+        }  else {
+            $('#name-required-container').hide();
         }
 
         $('#last_state').attr('data-last_state',product["status"]);
