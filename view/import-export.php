@@ -138,7 +138,7 @@ $imports = $stmt->fetchAll();
         foreach ($imports as $row) {
             ?>
             <div class="area_sel_container_row">
-                <a href="/?edit=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id']; ?></a> 
+                <a href="/?edit=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id'] . " (" . $row['name'] . ")"; ?></a> 
                 &nbsp;&nbsp;&nbsp;
                 <span id="admin_listedit" class="admin-area">
                     <form method="post" action="">
