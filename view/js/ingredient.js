@@ -43,7 +43,7 @@
      ingredient.name = $('#ingredient_upnew').val();
 
      // create ingredient
-     $.ajax({ type:"POST", url: "/?ingredient=update", data:ingredient, success: function(result){
+     $.ajax({ type:"POST", url: "/?ingredient=update_name", data:ingredient, success: function(result){
 
          var crIngr = JSON.parse(result);
 

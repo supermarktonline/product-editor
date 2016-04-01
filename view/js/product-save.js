@@ -14,7 +14,7 @@ function saveCurrentProduct(status) {
     var status = parseInt(status);
 
     if(status<0 || status===undefined || isNaN(status)) {
-        $('#message_container').html('<div class="umsg error">Nicht gespeichert: Status-Problem.</div>');
+        $('#message_container_save').html('<div class="umsg error">Nicht gespeichert: Status-Problem.</div>');
         return false;
     }
 
@@ -65,17 +65,17 @@ function saveCurrentProduct(status) {
         var unit = $('#container option').filter(':selected').text().concat($('#container_custom').val());
 
         if (!(honig_in ^ honig_out)) {
-            $('#message_container').html('<div class="umsg error">Nicht gespeichert: Ist Honig enthalten oder nicht?</div>');
+            $('#message_container_save').html('<div class="umsg error">Nicht gespeichert: Ist Honig enthalten oder nicht?</div>');
             return false;
         }
 
         if (!(meat_in ^ meat_out)) {
-            $('#message_container').html('<div class="umsg error">Nicht gespeichert: Ist Fleisch enthalten oder nicht?</div>');
+            $('#message_container_save').html('<div class="umsg error">Nicht gespeichert: Ist Fleisch enthalten oder nicht?</div>');
             return false;
         }
 
         if (unit.trim() == "") {
-            $('#message_container').html('<div class="umsg error">Nicht gespeichert: Behälter muss gesetzt sein.</div>');
+            $('#message_container_save').html('<div class="umsg error">Nicht gespeichert: Behälter muss gesetzt sein.</div>');
             return false;
         }
     }
@@ -193,11 +193,11 @@ function saveCurrentProduct(status) {
     $.ajax({
         type: "POST", url: "/?updateproduct", data: product, success: function (result) {
             if (result === "success") {
-                $('#message_container').html('<div class="umsg success">Article updated successfully.</div>');
+                $('#message_container_save').html('<div class="umsg success">Article updated successfully.</div>');
                 $('tr[data-open_edit_id="' + save_id + '"] td:nth-child(2)').html('<span class="eds eds-state-' + status + '">' + status + '</span>');
                 $('#last_state').attr('data-last_state', status);
             } else {
-                $('#message_container').html('<div class="umsg error">' + result + '</div>');
+                $('#message_container_save').html('<div class="umsg error">' + result + '</div>');
             }
         }
     });
@@ -233,9 +233,9 @@ function saveCurrentProduct(status) {
         data: {cons: ntags},
         success: function (result) {
             if (result === "success") {
-                $('#message_container').append('<div class="umsg success">Article tags updated successfully.</div>');
+                $('#message_container_save').append('<div class="umsg success">Article tags updated successfully.</div>');
             } else {
-                $('#message_container').append('<div class="umsg error">' + result + '</div>');
+                $('#message_container_save').append('<div class="umsg error">' + result + '</div>');
             }
         }
     });

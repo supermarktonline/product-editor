@@ -834,6 +834,7 @@ $media_path = $properties["media_path"];
                     class="bold">Admin: Benutzerdefinierter Status</span> <input type="text" id="custom_state"
                                                                                  value=""/></div>
             <div id="message_container"></div>
+            <div id="message_container_save"></div>
         </div>
     </div>
 
