@@ -681,7 +681,7 @@ $media_path = $properties["media_path"];
 
                     <div>
                         <p>
-                            <label class="enthaltwrp">Enthält Spuren von:</label>
+                            <label class="enthaltwrp">Kann Spuren von enthalten:</label>
                             <span id="enthalt_spuren_collector"></span>
                             <span><input type="text" id="enthalt_spuren" data-type="enthalt"/></span>
                         </p>
