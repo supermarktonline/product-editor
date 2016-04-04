@@ -24,7 +24,8 @@ function setActiveImage(img_src) {
         var preview_height = (container_width * origHeight) / origWidth;
         
 
-        var html = '<div id="image_frame">' +
+        var html =
+            '<div id="image_frame">' +
             '<img src="'+img_src+'" />' +
             '<div id="image_frame_controls1" class="image_frame_controls"><div id="ifc_lt" class="ifc">↖</div><div class="spacer"></div><div id="ifc_rt" class="ifc">↗</div><div class="spacer"></div>' +
             '<div id="ifc_ct" class="ifc">o</div><div class="spacer"></div><div id="ifc_lb" class="ifc">↙</div><div class="spacer"></div><div id="ifc_rb" class="ifc">↘</div></div>' +
