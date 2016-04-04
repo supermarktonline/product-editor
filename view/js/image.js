@@ -24,13 +24,6 @@ function setActiveImage(img_src) {
         var preview_height = (container_width * origHeight) / origWidth;
         
 
-        // 2. If height / width not bigger than container, just display it, otherwise apply easyzooom
-        var easyzoom = "";
-
-        if(origWidth > container_width || origHeight > container_height) {
-            easyzoom = "easyzoom";
-        }
-
         var html = '<div id="image_frame">' +
             '<img src="'+img_src+'" />' +
             '<div id="image_frame_controls1" class="image_frame_controls"><div id="ifc_lt" class="ifc">↖</div><div class="spacer"></div><div id="ifc_rt" class="ifc">↗</div><div class="spacer"></div>' +
@@ -58,8 +51,8 @@ function setActiveImage(img_src) {
 
         zimg.draggable();
 
-        center_img();
-
+        // by default fit to container.
+        fitToContainer();
     });
 }
 
@@ -93,7 +86,7 @@ $(document).on('click','#ifc_100',function() {
     center_img();
 });
 
-$(document).on('click','#ifc_fit',function() {
+function fitToContainer() {
     var theImage = new Image();
     theImage.src =  zimg.attr("src");
 
@@ -112,7 +105,9 @@ $(document).on('click','#ifc_fit',function() {
     }
 
     center_img();
-});
+};
+
+$(document).on('click','#ifc_fit', fitToContainer);
 
 function center_img() {
     var cw = cont.width();

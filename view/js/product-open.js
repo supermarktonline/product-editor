@@ -67,6 +67,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         $('#notice').val(product["notice"]);
         $('#company').val(product["productCorporation de_AT"]);
 
+        $('.nav-tabs a[href="#tab1"]').tab('show');
 
         // weight amount and weight amount unit calculations
         var pcSets = ["articleWeight","articleVolume","articleArea","articleLength","articleUses"];

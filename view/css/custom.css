@@ -285,16 +285,6 @@ main {
     max-height:98px;
 }
 
-/* Shrink wrap strategy 2 */
-.easyzoom {
-    position:relative;
-    display: inline-block;
-}
-.easyzoom img {
-    vertical-align: bottom;
-}
-
-
 .c50 {
     float:left;
     width:50%;
@@ -417,7 +407,6 @@ hr {
 
 #image_frame {
     width:100%;
-    height:790px;
     overflow:hidden;
     position:relative;
 }
