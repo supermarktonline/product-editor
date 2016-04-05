@@ -19,6 +19,24 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
     $(this).addClass('active');
 
+    var nextImpId = $(this).attr('data-open-next-id');
+
+    function extractImageNames(product) {
+        var images_product = product["productImages"].split(/[;,]/).map(function(e){return e.trim();});
+
+        var images_article = product["articleImages"].split(/[;,]/).map(function(e){return e.trim();});
+
+        var allImages = images_product.concat(images_article);
+
+        var allImagesUnique = [];
+
+        $.each(allImages, function(i, el){
+            if(($.inArray(el, allImagesUnique) === -1) && (el !== "")) allImagesUnique.push(el);
+        });
+
+        return allImagesUnique;
+    }
+
     $.ajax({url: "/?productjson="+$(this).attr('data-open_edit_id'), success: function(result){
 
         $('#main-container').show();
@@ -252,17 +270,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         $('#thumb-container').html('');
         $('#current_image_wrapper').html('');
 
-        var images_product = product["productImages"].split(/[;,]/).map(function(e){return e.trim();});
-
-        var images_article = product["articleImages"].split(/[;,]/).map(function(e){return e.trim();});
-
-        var allImages = images_product.concat(images_article);
-
-        var allImagesUnique = [];
-
-        $.each(allImages, function(i, el){
-            if(($.inArray(el, allImagesUnique) === -1) && (el !== "")) allImagesUnique.push(el);
-        });
+        var allImagesUnique = extractImageNames(product);
 
         var first = true;
 
@@ -280,6 +288,18 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
         startAutosave();
 
+        if (nextImpId != "-") {
+            setTimeout(function() {
+                console.log("Preloading images for " + nextImpId);
+                $.ajax({url: "/?productjson="+nextImpId, success: function(result) {
+                    var nextProduct = JSON.parse(result);
+                    var allImagesNext = extractImageNames(nextProduct);
+                    for (var index in allImagesNext) {
+                        var imgSrc = allImagesNext[index];
+                        new Image().src = media_path + imgSrc;
+                    }
+                }});
+            }, 10000);
+        };
     }});
-
 });

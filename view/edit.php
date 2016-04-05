@@ -105,10 +105,13 @@ $media_path = $properties["media_path"];
 
             <?php
             // <tr class="row-active">
+            $i = 0;
             foreach ($imports as $imp) {
-
+                $i++;
+                $nextImpId = "-";
+                if (array_key_exists($i, $imports)) $nextImpId = $imports[$i]["id"];
                 ?>
-                <tr data-open_edit_id="<?php echo $imp["id"]; ?>">
+                <tr data-open-next-id="<?php echo $nextImpId; ?>" data-open_edit_id="<?php echo $imp["id"]; ?>">
                     <td><?php echo $imp["id"]; ?></td>
                     <td><span class="eds eds-state-<?php echo $imp["status"]; ?>"><?php echo $imp["status"]; ?></span>
                     </td>
