@@ -19,7 +19,7 @@ $product = $stmt->fetch();
 
 if($stmt->rowCount() > 0) {
 
-    $cur_user = $product->reserved_by;
+    $cur_user = $product['reserved_by'];
 
     if($action) {
 
