@@ -244,6 +244,8 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                 $('#cs_segment,#cs_family,#cs_class,#cs_brick').html('');
 
                 setCategorySelectorAndGS1Tags(product["category"],cons);
+            } else {
+                setCategorySelectorAndGS1Tags();
             }
 
 
