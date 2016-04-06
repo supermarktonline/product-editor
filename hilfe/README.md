@@ -2,13 +2,10 @@
 
 ## Oberer Bereich.
 
-### Alte Version
-Ihr habt einen bestimmten Nummernbereich zugewiesen bekommen.  Nehmt euch ein
-Produkt, das in diesem Nummernbereich ist und klickt darauf.
-
-### Neue Version
-Such euch einfach ein Produkt, bei dem noch kein Name steht, und markiert es
-als eures.
+### Produkt reservieren
+Such euch einfach ein Produkt, bei dem noch kein Name steht, und reserviert es
+als eures.  Manchmal kann es hilfreich sein ein Produkt anzuschauen, das von einer anderen Person reserviert wurde.
+Ihr könnt temporär euren Namen ändern, und dann dieses Produkt anschauen.
 
 
 Die farbig hinterlegte Zahl gibt Auskunft, wie weit das Produkt schon bearbeitet
@@ -43,7 +40,7 @@ Die Faustregel: wenn jemand zum Einkaufen geht, sage ich ihm, er soll mir eine P
 
 Groß und Kleinschreibung anpassen (also nicht WALDPILZEN)
 
-### Konzern (bzw. alte Version Firmenname)
+### Konzern
 Hier soll der Name des Konzerns eingetragen werden, also sozusagen der des Besitzers der Marke. Hier einige Beispiele:
 * `Unilever`
 * `Mondelez International`
@@ -61,7 +58,8 @@ Akzents wie bei Nestlé und Mondelēz sowie die Rechtsform wie GmbH oder ähnlic
 
 ### Herkunftsland
 wird oft `--Unbekannt--` bleiben.  
-Wird in der Regel extra beworben, dann z.B. `Österreich` auswählen.
+Wird in der Regel extra beworben, dann z.B. `Österreich` auswählen.  Nicht verwechseln mit "Hergestellt in", da können
+die Zutaten dann noch immer von irgendwo herkommen.
 
 ### Lagerung
 sollte klar sein.
@@ -86,14 +84,6 @@ Preisschild: xx€/100g anzeigen zu können.
 Bei der Suppe ergibt ein Preis / Gewicht keinen Sinn.  Daher entweder leer
 lassen, oder 2 `Anwendungen / Stück` auswählen. (2 Teller)
 
-### Anmerkung(en)...
-*SOLLTET IHR EUCH IRGENDWO NICHT SICHER SEIN...  TRAGT HIER EINE NACHRICHT AN
-UNS EIN*
-
-außerdem ist es hilfreich, wenn ihr in solchen Fällen den Status beim Speichern
-z.B. auf 9 setzt.  Wir schauen uns dann gerne alles an.
-Bsp: `Habe 2 Stück bei Inhalt (zur Preisberechnung) genommen, ok?`
-
 ### Nährwertangaben
 Die rechte Seite kann von der linken Seite ausgerechnet werden.  Rundungsfehler
 sind uns in diesem Fall egal (selbst wenn die rechte Seite dann nicht mit den
@@ -106,15 +96,19 @@ Angaben auf dem Produkt zusammenpasst).
 
 Bei manchen Produkten gibt es keine Angabe / Mahlzeit und es gibt den seltenen Fall wo die linke Seite pro 100 g angegeben ist, und die rechte Seite in Milliliter (oder eine andere Kombination von Maßeinheiten). In diesen Fällen kann die rechte Seite leer gelassen werden.
 
-*Die alte Version verlangt leider einen Wert. Dort dann einfach 0 eingeben*
-
 Bei unserer Cremesuppe sind die Nährwertangaben 'pro 100ml zubereitet'
-*Die alte Version hat für «zubereitet» keine Eingabemöglichkeit.  
-Bitte im Anmerkungsfeld hinschreiben.*
 
 with: / mit: ist für den Fall, dass andere Zutaten für den Konsum mitberechnet
 werden.  Z.B. bei Cornflakes steht dann bei / Portion _mit 100ml Milch_.
 Das dann einfach dort eintragen.
+
+### Anmerkung(en)...
+*SOLLTET IHR EUCH IRGENDWO NICHT SICHER SEIN...  TRAGT HIER EINE NACHRICHT AN
+UNS EIN*
+
+außerdem ist es hilfreich, wenn ihr in solchen Fällen den Status beim Speichern
+z.B. auf 9 setzt.  Wir schauen uns dann gerne alles an.
+Bsp: `Habe 2 Stück bei Inhalt (zur Preisberechnung) genommen, ok?`
 
 
 Damit ist die erste Seite fertig.  Rechts oben zur nächsten Seite:
@@ -133,7 +127,6 @@ Anmerkungen (oft Hochzahlen oder *) wie 'aus biologischem Anbau',
 Sollte eine Zutat ein Allergen beinhalten, dann wird dies direkt bei der
 Zutat gespeichert.
 
-- bei der alten Version dafür ZUERST auf die Zutat klicken
 - Text ändert sich von `Allergene für ...:` auf `Allergene für XYZ:`
 - links das Allergen auswählen.  Die rechte Seite wird automatisch
   berechnet.
@@ -150,9 +143,7 @@ Es gibt keine Möglichkeit eine Zutat umzubenennen.
 
 Meldet uns das bitte im Anmerkungsfeld.
 
-### Enthält Spuren von
-bzw. in der neuen Version korrekterweise:
-*Kann Spuren von enthalten!*
+### Kann Spurent von enthalten
 
 ### Enthält eine geringe Menge
 manche Produkte haben diese Angabe.
@@ -167,9 +158,6 @@ Wir arbeiten an deutschen Übersetzungen.
 Für unsere Suppe `Food/Beverage/Tobacco` → `Prepared/Preserved Foods` → `Prepared Soups` → `Soups - Prepared (Shelf Stable)`
 
 Solltet ihr euch nicht sicher sein, bitte in der Anmerkung schreiben.
-
-### Alte Version: Artikelbeschreibende Informationen:
-*BITTE IGNORIEREN*
 
 ### GS1 Tags
 Je nach ausgewählter Kategorie werden hier "Fragen" gestellt.

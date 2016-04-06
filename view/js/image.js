@@ -4,6 +4,9 @@ var cont = null;
 $(document).on('click','#thumb-container > div',function() {
     setActiveImage($(this).attr('data-src'));
 });
+$(document).on('click','#thumb-container2 > div',function() {
+    setActiveImage($(this).attr('data-src'));
+});
 
 
 function setActiveImage(img_src) {

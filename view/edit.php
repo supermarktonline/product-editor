@@ -212,7 +212,7 @@ $media_path = $properties["media_path"];
                             </div>
 
                             <div class="lit c25">
-                                <label class="control-label">Firmenname</label>
+                                <label class="control-label">Konzern</label>
                                 <input type="text" id="company" value="" class="form-control">
                             </div>
 

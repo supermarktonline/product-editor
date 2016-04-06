@@ -37,3 +37,6 @@ define('NUMERICAL_VALUE_TYPES_MAP',serialize(
         'cubicmeters'=> array('en'=>'m³','de'=>'m³')
     )
 ));
+
+define('HTTP_USERNAME', 'username');
+define('HTTP_PASSWORD', 'password');
