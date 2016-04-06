@@ -26,6 +26,8 @@ if(isset($_REQUEST['edit'])) {
     include("bricktree.php");
 } else if(isset($_REQUEST['reserve'])) {
     include("reserve.php");
+} else if(isset($_REQUEST['rescale'])) {
+    include("rescale.php");
 } else {
     include("import-export.php");
 } 

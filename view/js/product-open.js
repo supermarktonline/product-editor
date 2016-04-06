@@ -274,15 +274,18 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
         var first = true;
 
-        $.each(allImagesUnique,function(i,img_src) {
+        $.each(allImagesUnique,function(i,img_src_orig) {
+            var path = media_path + img_src_orig;
+            var img_src = "?rescale=" + path;
             if(first===true) {
 
-                setActiveImage(media_path+img_src);
+                setActiveImage(img_src);
 
                 first = false;
             }
 
-            $('#thumb-container').append('<div data-src="'+media_path+img_src+'"><img src="'+media_path+img_src+'" alt="" /></div>');
+            $('#thumb-container').append('<div data-src="'+img_src+'"><img src="'+img_src+'" alt="" /></div>');
+            $('#thumb-container').append('<div style="display:none" data-src="'+path+'"><img src="'+img_src+'" alt="" /></div>');
 
         });
 
@@ -296,7 +299,9 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                     var allImagesNext = extractImageNames(nextProduct);
                     for (var index in allImagesNext) {
                         var imgSrc = allImagesNext[index];
-                        new Image().src = media_path + imgSrc;
+                        var path = media_path + imgSrc;
+                        var smallPath = "?rescale=" + path;
+                        new Image().src = smallPath;
                     }
                 }});
             }, 10000);
