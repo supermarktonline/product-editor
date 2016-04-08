@@ -19,7 +19,8 @@ $columns = [
     "productDescription de_AT" => "",
     "articleUnit de_AT" => "container",
     "articleTagPaths" => "",
-    "productEditorId" => "id"
+    "productEditorId" => "id",
+    "productGpcBrick" => ""
 ];
 
 $defaultColumns = [
@@ -102,11 +103,22 @@ foreach($fdata as $row) {
     $article = array();
 
     // undo bug where for instance «9 g» has been converted to 0.009000000000000001 kg
-    if ($row['articleWeight'] != "") {
-        $row['articleWeight'] = "" . round(explode(" ", $row['articleWeight'])[0], 12) . " kg";
+    // also don't print 0 values
+    $articleWeight = $row['articleWeight'];
+    if ($articleWeight != "") {
+        if ($articleWeight == "0 kg") {
+            $row['articleWeight'] = "";
+        } else {
+            $row['articleWeight'] = "" . round(explode(" ", $articleWeight)[0], 12) . " kg";
+        }
     }
-    if ($row['articleVolume'] != "") {
-        $row['articleVolume'] = "" . round(explode(" ", $row['articleVolume'])[0], 12) . " l";
+    $articleVolume = $row['articleVolume'];
+    if ($articleVolume != "") {
+        if ($articleVolume == "0 l") {
+            $row['articleVolume'] = "";
+        } else {
+            $row['articleVolume'] = "" . round(explode(" ", $articleVolume)[0], 12) . " l";
+        }
     }
 
     foreach($columns as $columnName => $dbColumnName) {
@@ -132,6 +144,9 @@ foreach($fdata as $row) {
             $article[$columnName] = quoteForCsv(str_replace(",", ";", $value));
         } else if ($columnName === "articleUnit de_AT" && $value == "") {
             $article[$columnName] = quoteForCsv("Stück");
+        } else if ($columnName === "productGpcBrick") {
+            $cat = getCategory($id);
+            $article[$columnName] = $cat["brick_code"];
         } else {
             $article[$columnName] = quoteForCsv($value);
         }

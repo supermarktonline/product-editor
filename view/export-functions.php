@@ -539,20 +539,29 @@ function buildMuid($row, $buildForArticle)
 
 
 /************ CATEGORIES: Category Path **********/
-function getCategoryExportPath($id)
-{
+function getCategory($id) {
     global $db;
 
     $stmt = $db->prepare('SELECT category.* FROM category,fdata WHERE fdata.id = :id AND category.gid = fdata.category');
     $stmt->bindValue(":id", $id);
     $stmt->execute();
-    $cat = $stmt->fetch();
+    return $stmt->fetch();
+}
+
+function replaceNonAsciiInCategories($category) {
+    $category = preg_replace('/–/u', '-', $category);
+    $category = preg_replace('/:/', '|', $category);
+    return $category;
+}
+function getCategoryExportPath($id)
+{
+    $cat = getCategory($id);
 
     $catgath = array();
-    array_push($catgath, "GPC_" . $cat["segment_description_en"]);
-    array_push($catgath, "GPC_" . $cat["family_description_en"]);
-    array_push($catgath, "GPC_" . $cat["class_description_en"]);
-    array_push($catgath, "GPC_" . $cat["brick_description_en"]);
+    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["segment_description_en"]));
+    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["family_description_en"]));
+    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["class_description_en"]));
+    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["brick_description_en"]));
 
     return implode(" >> ", $catgath);
 }
