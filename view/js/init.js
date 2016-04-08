@@ -154,7 +154,7 @@ $(document).ready(function() {
     taggroups = JSON.parse($('#taggroups').html());
 
     for(var i = 0; i < taggroups.length; i++) {
-        taggroup_labels.push({label: taggroups[i]["name"]+" ("+taggroups[i]["muid"]+")",value: taggroups[i]["id"]});
+        taggroup_labels.push({label: taggroups[i]["muid"],value: taggroups[i]["id"]});
     }
 
     $('#tag_group_delete_selector').autocomplete({
