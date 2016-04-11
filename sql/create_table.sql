@@ -254,9 +254,10 @@ CREATE INDEX tag_unique ON tag (gs1_attribute_value_code,muid,taggroup);
 
 /* saves suggestions for a certain category */
 CREATE TABLE category_tag (
-  category_id    int REFERENCES category(gid) ON UPDATE CASCADE ON DELETE CASCADE
-, tag_id int REFERENCES tag(id) ON UPDATE CASCADE ON DELETE RESTRICT
-, CONSTRAINT category_tag_pkey PRIMARY KEY (category_id, tag_id)
+  id serial PRIMARY KEY
+, category_id    int REFERENCES category(gid) ON UPDATE CASCADE ON DELETE CASCADE
+, tag_id int REFERENCES tag(id) ON UPDATE CASCADE ON DELETE RESTRICT NOT NULL
+, CONSTRAINT category_tag_pkey UNIQUE (category_id, tag_id)
 );
 
 

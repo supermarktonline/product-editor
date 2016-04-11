@@ -162,6 +162,8 @@ select addTags(1, 54000000, 20000142); -- if organic
 select addTags(1, 54000000, 20000175); -- vegan / vegetarians
 select addTags(1, 67000000, 20000142); -- if organic
 select addTags(1, 67000000, 20000175); -- vegan / vegetarians
+-- enable level of sugar for all Foods:
+select addTags(1, 50000000, 20000125); -- level of sugar
 
 -- add PUDDING MIX [30001937] to Baking/Cooking Mixes (Shelf Stable) [10000156]
 -- select gid from category where brick_code = 10000156; -- 1338

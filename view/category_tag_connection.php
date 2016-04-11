@@ -3,27 +3,20 @@
 
 global $db;
 
-if(!isset($_REQUEST["category_id"]) || intval($_REQUEST["category_id"])<1 ) {
-    echo "Missing category id."; die;
-    die;
+function checkCategoryId() {
+    if(!isset($_REQUEST["category_id"]) || intval($_REQUEST["category_id"])<1 ) {
+        echo "Missing category id."; die;
+        die;
+    }
 }
 
 
 if(isset($_REQUEST["category_tag_connection"]) && $_REQUEST["category_tag_connection"]=="update") {
-
-    // 1. Delete old connections of non-gs1 tags
-    $stmt = $db->prepare("DELETE FROM category_tag WHERE category_id = :category_id AND tag_id IN (SELECT id FROM tag WHERE gs1_attribute_value_code IS NULL)");
-    $stmt->bindValue(":category_id",$_REQUEST["category_id"]);
-
-    if(!$stmt->execute()) {
-        echo "Error recreating category/tag connections."; die;
-    } else {
-
-        $stmt = $db->prepare("INSERT INTO category_tag (category_id,tag_id) VALUES (:category_id,:tag_id)");
+    if (isset($_REQUEST["all_categories"])) {
+        $stmt = $db->prepare("INSERT INTO category_tag (category_id,tag_id) VALUES (null,:tag_id)");
 
         foreach($_REQUEST["ids"] as $id) {
 
-            $stmt->bindValue(":category_id",$_REQUEST["category_id"]);
             $stmt->bindValue(":tag_id",intval($id));
 
             if(!$stmt->execute()) {
@@ -32,14 +25,41 @@ if(isset($_REQUEST["category_tag_connection"]) && $_REQUEST["category_tag_connec
         }
 
         echo "success"; die;
+    } else {
+        checkCategoryId();
 
+        // 1. Delete old connections of non-gs1 tags
+        $stmt = $db->prepare("DELETE FROM category_tag WHERE category_id = :category_id AND tag_id IN (SELECT id FROM tag WHERE gs1_attribute_value_code IS NULL)");
+        $stmt->bindValue(":category_id",$_REQUEST["category_id"]);
+
+        if(!$stmt->execute()) {
+            echo "Error recreating category/tag connections."; die;
+        } else {
+
+            $stmt = $db->prepare("INSERT INTO category_tag (category_id,tag_id) VALUES (:category_id,:tag_id)");
+
+            foreach($_REQUEST["ids"] as $id) {
+
+                $stmt->bindValue(":category_id",$_REQUEST["category_id"]);
+                $stmt->bindValue(":tag_id",intval($id));
+
+                if(!$stmt->execute()) {
+                    echo "SQL Failure: ".$db->errorInfo()[2]." ";
+                }
+            }
+
+            echo "success"; die;
+
+        }
+        
     }
 } else if(isset($_REQUEST["category_tag_connection"]) && $_REQUEST["category_tag_connection"]=="get") {
+    checkCategoryId();
 
     // get the connections of this category
     $direct = array();
 
-    $stmt = $db->prepare("SELECT tag_id FROM category_tag WHERE category_id = :category_id");
+    $stmt = $db->prepare("SELECT tag_id FROM category_tag WHERE category_id = :category_id or category_id is null");
     $stmt->bindValue(":category_id",$_REQUEST["category_id"]);
 
     if(!$stmt->execute()) {
