@@ -222,7 +222,6 @@ insert into category_tag (category_id, tag_id) values (1338, 7970);
     
       <div class="mc">
         <h1>Select a list to export</h1>
-        <p>Note: For products with state "10" the state is updated to "15", no change otherwise.</p>
         <div class="area_sel_container">
         <?php
         foreach ($imports as $row) {
@@ -233,6 +232,7 @@ insert into category_tag (category_id, tag_id) values (1338, 7970);
                     <input type="hidden" name="export" value="<?php echo urlencode($row['import_id']); ?>" />
                     | Minstate: <input type="text" size="2" name="minstate" value="10" />
                     Maxstate: <input type="text" size="2" name="maxstate" value="10" />
+                    New Id after export: <input type="text" size="2" name="newstatus" value="15" />
                     <input type="submit" value="Export list" />
                 </form>
                 &nbsp;&nbsp;&nbsp;|||&nbsp;&nbsp;&nbsp;
