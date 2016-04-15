@@ -184,10 +184,11 @@ CREATE TABLE ingredient (
 );
 
 
-
+CREATE SEQUENCE ingredient_sort_seq;
 CREATE TABLE fdata_ingredient (
   fdata_id    int REFERENCES fdata (id) ON UPDATE CASCADE ON DELETE CASCADE
 , ingredient_id int REFERENCES ingredient(id) ON UPDATE CASCADE ON DELETE CASCADE
+, sort_nb float DEFAULT nextval('ingredient_sort_seq'::regclass);
   -- explicit pk
 , CONSTRAINT fdata_ingredient_pkey PRIMARY KEY (fdata_id, ingredient_id)
 );

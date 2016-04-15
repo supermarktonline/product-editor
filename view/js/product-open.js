@@ -186,7 +186,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                     }
 
                     for(var i = 0; i < icons.length; i++) {
-                        appendIngredientToCollection(getIngredientBy("id",icons[i]["ingredient_id"]),collector_id,type);
+                        appendIngredientToCollection(getIngredientBy("id",icons[i]["ingredient_id"]),collector_id,type, icons[i]["sort_nb"]);
                     }
 
                     if(type=="standard") {

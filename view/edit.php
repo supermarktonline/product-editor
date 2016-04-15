@@ -487,6 +487,12 @@ $media_path = $properties["media_path"];
                 </span>
                     </p>
                 </div>
+                
+                <div class="admin-area">
+                    <label>ing-id</label><input type="text" id="change-sort-ingredient-id" data-type="standard"/>
+                    <label>sort-nb</label><input type="text" id="change-sort-sort-nb" data-type="standard"/>
+                    <button id="ingredient-change-sort-nb-button">Change sort#</button>
+                </div>
 
                 <!-- -->
                 <div class="form-group">

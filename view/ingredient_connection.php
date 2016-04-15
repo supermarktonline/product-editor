@@ -12,11 +12,22 @@ if($_GET["type"]=="enthalt") {
 
 if($_GET["ingredient_connection"]=="get") {
 
-    $stmt = $db->prepare("SELECT * FROM $tablename WHERE fdata_id= :fdata_id");
+    $stmt = $db->prepare("SELECT * FROM $tablename WHERE fdata_id= :fdata_id ORDER BY sort_nb");
     $stmt->bindValue(":fdata_id",$_REQUEST["fdata_id"]);
     $stmt->execute();
     echo json_encode($stmt->fetchAll()); die;
     
+} else if ($_GET["ingredient_connection"] == "update-sort-nb") {
+    $stmt = $db->prepare("UPDATE $tablename SET sort_nb=:sort_nb WHERE fdata_id=:fdata_id AND ingredient_id=:ingredient_id");
+    $stmt->bindValue(":fdata_id",$_REQUEST["fdata_id"]);
+    $stmt->bindValue(":ingredient_id",$_REQUEST["ingredient_id"]);
+    $stmt->bindValue(":sort_nb",$_REQUEST["sort_nb"]);
+    $stmt->execute();
+
+    if(!$stmt->execute()) {
+        echo "SQL Failure: ".$db->errorInfo()[2]; die;
+    }
+    echo "success"; die;
 } else {
 
     $dbstr = "";
