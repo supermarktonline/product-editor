@@ -515,7 +515,7 @@ function _replToAscii($t) {
                                         $t)))))))));
 }
 
-function buildMuid($row, $buildForArticle)
+function buildMuid($row, $buildForArticle = false)
 {
     $productName = $row["productName de_AT"];
     $barCode = explode("~", $row["articleBarCode"])[1];
