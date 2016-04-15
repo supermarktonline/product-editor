@@ -26,7 +26,7 @@ if($_REQUEST["tag"]=="create") {
     $stmt->execute();
 
     $res = $stmt->fetch(PDO::FETCH_ASSOC);
-    if($res) {
+    if($res['count'] > 0) {
         $tag_group_requires_numerical = true;
     }
 

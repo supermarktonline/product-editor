@@ -114,7 +114,7 @@ function getIngredientBy(property,value) {
     return null;
 }
 
-function appendIngredientToCollection(ingredient,collector_id,connection_type) {
+function appendIngredientToCollection(ingredient,collector_id,connection_type, sort_nb) {
 
     var exists = false;
 
@@ -134,7 +134,7 @@ function appendIngredientToCollection(ingredient,collector_id,connection_type) {
     $('#'+selector).val('');
 
     if(!exists) {
-        $('#'+collector_id).append('<span class="ic_ing" data-id="'+ingredient["id"]+'">'+ingredient["name"]+' <span class="ic_ing_remove" data-type="'+connection_type+'">X</span></span>');
+        $('#'+collector_id).append('<span class="ic_ing" sort-nb="' + sort_nb + '" data-id="'+ingredient["id"]+'">'+ingredient["name"]+' <span class="ic_ing_remove" data-type="'+connection_type+'">X</span><span class="admin-area">ing-id: ' + ingredient["id"] + ", sort-nb: " + sort_nb + '</span></span></span>');
 
         if(connection_type=="standard") {
             for(var i = 0;i<allergene.length; i++) {
@@ -362,3 +362,20 @@ function clearCurrentAllergen() {
        $(this).prop("checked",false); 
     });
 }
+
+$(document).on('click','#ingredient-change-sort-nb-button',function(e) {
+    e.preventDefault();
+
+    var fdataId = $('#save_id').attr('data-save_id');
+    var ingredientId = $('#change-sort-ingredient-id').val();
+    var newSortNb = $('#change-sort-sort-nb').val();
+
+    $.ajax({ type:"GET", url: "/?ingredient_connection=update-sort-nb&fdata_id="+fdataId+"&ingredient_id=" + ingredientId + "&sort_nb=" + newSortNb, success: function(result){
+        if(result=="success") {
+            $('#message_container').html('<div class="umsg success">Sort number changed.</div>');
+        } else {
+            var dec = JSON.parse(result);
+            $('#message_container').html('<div class="umsg error">'+dec["error"]+'</div>');
+        }
+    }});
+});

@@ -102,7 +102,7 @@ function saveCurrentProduct(status) {
     var weight_amount_unit = $('#weight_amount_unit').val();
 
     // add toFixed(10) to prevent double weirdness. Ex: 0.009 would otherwise become 0.009000000000000001
-    if (!isNaN(weight_amount)) {
+    if (!isNaN(weight_amount) && weight_amount != 0) {
         switch (weight_amount_unit) {
             case "g":
             {

@@ -140,7 +140,11 @@ $(document).on('click','#active_category_tag_update',function() {
 
     ids["ids"] = tpids;
     
-    $.ajax({ type:"POST", url: "/?category_tag_connection=update&category_id="+$('#active_category').val(), data:ids, success: function(result){
+    var forAll = "";
+    if ($('#tag_for_all').val()) {
+        forAll = "&all_categories=true";
+    }
+    $.ajax({ type:"POST", url: "/?category_tag_connection=update&category_id="+$('#active_category').val() + forAll, data:ids, success: function(result){
        if(result==="success") {
            $('#message_container').html('<div class="umsg success">Category / tag configuration updated successfully.</div>');
        } else {

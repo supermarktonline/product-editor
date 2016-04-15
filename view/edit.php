@@ -477,6 +477,7 @@ $media_path = $properties["media_path"];
 
                 <div class="form-group">
                     <label class="control-label">Inhaltsstoffe</label>
+                    <p>Inhaltsstoffe bitte OHNE % eintragen.  Aus z.B. "8% Zucker" würde "Zucker" werden.</p>
 
                     <p>
                         <span id="ingredients_collector"></span>
@@ -485,6 +486,12 @@ $media_path = $properties["media_path"];
                     <div id="ingredients_suggestor"></div>
                 </span>
                     </p>
+                </div>
+                
+                <div class="admin-area">
+                    <label>ing-id</label><input type="text" id="change-sort-ingredient-id" data-type="standard"/>
+                    <label>sort-nb</label><input type="text" id="change-sort-sort-nb" data-type="standard"/>
+                    <button id="ingredient-change-sort-nb-button">Change sort#</button>
                 </div>
 
                 <!-- -->
@@ -789,6 +796,7 @@ $media_path = $properties["media_path"];
                         <input type="hidden" id="active_category" value=""/>
                         <span id="active_category_display">-- Keine --</span>
                 <span class="admin-area">
+                &nbsp;&nbsp;&nbsp;TagVorschlag für alle: <input type="checkbox" id="tag_for_all"/>
                 &nbsp;&nbsp;&nbsp;<button id="active_category_tag_update">Speichere Tag-Vorschläge</button>
                 &nbsp;&nbsp;&nbsp;<button data-ishidden="0" id="switch_show_recommended">Alle Tags
                         einblenden/ausblenden
@@ -803,6 +811,7 @@ $media_path = $properties["media_path"];
                         <p><label>Eigene Tags</label></p>
                         <div id="guetesiegel" class="div-attributes"></div>
                         <div class="clear"></div>
+                        <p>Sollte ein Qualitätssiegel fehlen, dieses einfach im Anmerkungsfeld schreiben!</p>
                         <p><label>Numerische Tags</label> (0 ist ein Wert)</p>
                         <div id="tags_numerical" class="div-attributes"></div>
                         <div class="clear"></div>

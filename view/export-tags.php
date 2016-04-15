@@ -35,8 +35,8 @@ $column_headings = array(
     "tagNumericalValueRangeStart",
     "tagNumericalValueRangeEnd",
     "tagType",
-    "gpcId",
-    "googleTaxonomyId"
+    "tagGpcId",
+    "tagGoogleTaxonomyId"
 );
 
 $taglist = array();

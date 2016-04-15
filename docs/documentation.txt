@@ -1,2 +1,9 @@
-PHP settings:
+Database commands:
 
+backup of schema:
+`ssh host01 docker exec -t psql1 pg_dump --username "postgres" --no-password  --format plain --encoding UTF8  > /tmp/dump1.sql`
+
+remove or rename public schema first then:
+
+restoration of schema:
+`psql -U postgres -d db_cl_product_editor < /tmp/dump1.sql`

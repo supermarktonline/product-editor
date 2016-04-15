@@ -184,10 +184,11 @@ CREATE TABLE ingredient (
 );
 
 
-
+CREATE SEQUENCE ingredient_sort_seq;
 CREATE TABLE fdata_ingredient (
   fdata_id    int REFERENCES fdata (id) ON UPDATE CASCADE ON DELETE CASCADE
 , ingredient_id int REFERENCES ingredient(id) ON UPDATE CASCADE ON DELETE CASCADE
+, sort_nb float DEFAULT nextval('ingredient_sort_seq'::regclass);
   -- explicit pk
 , CONSTRAINT fdata_ingredient_pkey PRIMARY KEY (fdata_id, ingredient_id)
 );
@@ -254,9 +255,10 @@ CREATE INDEX tag_unique ON tag (gs1_attribute_value_code,muid,taggroup);
 
 /* saves suggestions for a certain category */
 CREATE TABLE category_tag (
-  category_id    int REFERENCES category(gid) ON UPDATE CASCADE ON DELETE CASCADE
-, tag_id int REFERENCES tag(id) ON UPDATE CASCADE ON DELETE RESTRICT
-, CONSTRAINT category_tag_pkey PRIMARY KEY (category_id, tag_id)
+  id serial PRIMARY KEY
+, category_id    int REFERENCES category(gid) ON UPDATE CASCADE ON DELETE CASCADE
+, tag_id int REFERENCES tag(id) ON UPDATE CASCADE ON DELETE RESTRICT NOT NULL
+, CONSTRAINT category_tag_pkey UNIQUE (category_id, tag_id)
 );
 
 
