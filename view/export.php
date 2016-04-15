@@ -20,7 +20,7 @@ $columns = [
     "articleUnit de_AT" => "container",
     "articleTagPaths" => "",
     "productEditorId" => "id",
-    "productGpcBrick" => ""
+    "productGpcBrick" => "category"
 ];
 
 $defaultColumns = [
