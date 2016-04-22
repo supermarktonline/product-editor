@@ -3,16 +3,19 @@
 global $db;
 
 $tablename = "fdata_ingredient";
+$sort_by = " ORDER BY sort_nb ";
 
 if($_GET["type"]=="enthalt") {
     $tablename = "fdata_ingredient_enthalt";
+    $sort_by = "";
 } else if($_GET["type"]=="gering") {
     $tablename = "fdata_ingredient_gering";
+    $sort_by = "";
 }
 
 if($_GET["ingredient_connection"]=="get") {
 
-    $stmt = $db->prepare("SELECT * FROM $tablename WHERE fdata_id= :fdata_id ORDER BY sort_nb");
+    $stmt = $db->prepare("SELECT * FROM $tablename WHERE fdata_id= :fdata_id " . $sort_by);
     $stmt->bindValue(":fdata_id",$_REQUEST["fdata_id"]);
     $stmt->execute();
     echo json_encode($stmt->fetchAll()); die;
