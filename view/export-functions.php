@@ -352,10 +352,12 @@ function getSealetcTagColumns($row)
         $isNumerical = $numerical > 0.0;
 
         $groupMuid = $ct["group_muid"];
+        $tagMuid = $ct["muid"];
 
         if (intval($ct["group_gs1"]) > 0) {
             $tag_column["tagGroupingGpcId"] = $ct["group_gs1"];
-            $groupMuid = "GPC_" . $groupMuid;
+            $groupMuid = "GPC_" . $ct["group_gs1"];
+            $tagMuid = $ct["gs1_attribute_value_code"];
         }
 
         $groupName = strval($ct["group_name"]);
@@ -364,14 +366,14 @@ function getSealetcTagColumns($row)
         $tag_column["tagGroupingUid"] = $groupMuid;
 
         if ($isNumerical) {
-            $tag_column["tagUid"] = $groupMuid . " : " . numericTag($ct["muid"], $ct["numerical_value"], $ct["type"], "en");
+            $tag_column["tagUid"] = $groupMuid . " : " . numericTag($tagMuid, $ct["numerical_value"], $ct["type"], "en");
             $tag_column["tagName de_DE"] = numericTag(strval($ct["name_de"]), $ct["numerical_value"], $ct["type"], "de", ",");
             $tag_column["tagNumericalValueRangeStart"] = $numerical;
             $tag_column["tagNumericalValueRangeEnd"] = $numerical;
         } else {
             $tagName = strval($ct["name_de"]);
             if ($tagName == "") $tagName = $ct["muid"];
-            $tag_column["tagUid"] = $groupMuid . " : " . $ct["muid"];
+            $tag_column["tagUid"] = $groupMuid . " : " . $tagMuid;
             $tag_column["tagName de_DE"] = $tagName;
         }
 
