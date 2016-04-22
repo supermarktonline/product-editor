@@ -560,10 +560,10 @@ function getCategoryExportPath($id)
     $cat = getCategory($id);
 
     $catgath = array();
-    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["segment_description_en"]));
-    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["family_description_en"]));
-    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["class_description_en"]));
-    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["brick_description_en"]));
+    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["segment_code"]));
+    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["family_code"]));
+    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["class_code"]));
+    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["brick_code"]));
 
     return implode(" >> ", $catgath);
 }
