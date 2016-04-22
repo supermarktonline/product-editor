@@ -65,7 +65,6 @@ $import = $stmt->fetch();
  
 $minstate = intval((isset($_GET['minstate'])) ? $_GET['minstate']:"0");
 $maxstate = intval((isset($_GET['maxstate'])) ? $_GET['maxstate']:"20");
-$newstatus = intval((isset($_GET['newstatus'])) ? $_GET['newstatus']:"15");
 
 // query the list of the desired import
 $stmt = $db->prepare('SELECT * FROM fdata WHERE import_id = :import_id AND status >= :minstate AND status <= :maxstate ORDER BY id ASC');
@@ -77,14 +76,15 @@ $fdata = $stmt->fetchAll();
 
 
 // all data in state 10 gets state 15, dont touch otherwise
-$stmt = $db->prepare('UPDATE fdata SET status=:new_status WHERE import_id = :import_id AND status >= :minstate AND status <= :maxstate');
-$stmt->bindValue(":import_id",urldecode($_GET['export']));
-$stmt->bindValue(":import_id",urldecode($_GET['export']));
-$stmt->bindValue(":minstate",$minstate);
-$stmt->bindValue(":maxstate",$maxstate);
-$stmt->bindValue(":new_status",$newstatus);
-$stmt->execute();
-
+if (isset($_GET['newstatus'])) {
+    $stmt = $db->prepare('UPDATE fdata SET status=:new_status WHERE import_id = :import_id AND status >= :minstate AND status <= :maxstate');
+    $stmt->bindValue(":import_id", urldecode($_GET['export']));
+    $stmt->bindValue(":import_id", urldecode($_GET['export']));
+    $stmt->bindValue(":minstate", $minstate);
+    $stmt->bindValue(":maxstate", $maxstate);
+    $stmt->bindValue(":new_status", $_GET['newstatus']);
+    $stmt->execute();
+}
 
     
 // initialize array with column headings
