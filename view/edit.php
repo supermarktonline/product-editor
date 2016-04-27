@@ -207,7 +207,8 @@ $media_path = $properties["media_path"];
                     <fieldset id="edit-form" disabled="disabled">
                         <div class="form-group clearfix">
                             <div class="lit c25">
-                                <label class="control-label">Name</label>
+                                <label class="control-label">Name (<b>NEU</b>! bzw. Serie) siehe
+                                <a href="https://github.com/supermarktonline/product-editor/blob/master/hilfe/README.md">Hilfe</a></label>
                                 <input type="text" id="name" value="" class="form-control">
                             </div>
 

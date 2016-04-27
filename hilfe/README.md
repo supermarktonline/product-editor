@@ -7,21 +7,6 @@ Such euch einfach ein Produkt, bei dem noch kein Name steht, und reserviert es
 als eures.  Manchmal kann es hilfreich sein ein Produkt anzuschauen, das von einer anderen Person reserviert wurde.
 Ihr könnt temporär euren Namen ändern, und dann dieses Produkt anschauen.
 
-
-Die farbig hinterlegte Zahl gibt Auskunft, wie weit das Produkt schon bearbeitet
-worden ist.
-
-- 0 → noch gar nicht bearbeitet worden
-- 5 → es wurde schon etwas gespeichert
-- 10 → das Produkt wurde als fertig markiert (abschließen)
-- 15 → das Produkt ist von uns schon aus dem Editor ins Shop system übertragen
-  worden
-
-Ihr habt die Möglichkeit eigene Zahlen zu setzen (siehe weiter unten)
-Z.B. 1 → Inhaltsstoffe fehlen noch,...
-
-*Bitte nur die Zahlen 1-9 dafür verwenden!*
-
 Sobald Name und Marke gespeichert worden sind, kann man auch die im oberen
 Bereich sehen.
 
@@ -35,8 +20,24 @@ Beispiel:
 
 ### Name
 Der Name soll ohne Marke und ohne zusätzlich Beitexte sein.
-`Kaiser Teller Gourmet Cremesuppe von erlesenen Waldpilzen`
-Die Faustregel: wenn jemand zum Einkaufen geht, sage ich ihm, er soll mir eine Packung Kaiser Teller Gourmet Cremesuppe von erlesenen Waldpilzen von Knorr mitbringen, damit er sicher das richtige findet. Genau das soll dann der Name sein, `Knorr` ist später im Feld `Marke` einzutragen. Bei Schokoladen würde man jemandem zum Beispiel "Bring mir eine Tafel Nuss-Splitter von Ritter Sport mit!" sagen, deshalb wäre der Name hier `Nuss-Splitter` und die Marke `Ritter Sport` (bei Behälter, siehe auch weiter unten, wäre in diesem Fall `Tafel` einzutragen). Wenn die Kombination aus Behälter, Name und Marke nicht intuitiv klingt, dann stimmt etwas nicht oder sie kann abgeändert werden, z.B. "~~eine Packung Rittersport Nuss-Splitter von Rittersport~~" wäre falsch.
+
+In der Regel kann eine Produktbezeichnung in folgende Teile zerlegt werden.
+
+* Marke: Knorr
+* Serie: Kaiser Teller Gourmet (wenn überhaupt vorhanden)
+* Name: Cremesuppe von erlesenen Waldpilzen
+
+Wir haben derzeit noch kein eigenes Feld für Serie.
+Diese daher in das Namensfeld eintragen und dann mit « - » getrennt den Namen hinzufügen.
+
+`Kaiser Teller Gourmet - Cremesuppe von erlesenen Waldpilzen`
+Die Faustregel: wenn jemand zum Einkaufen geht, sage ich ihm, er soll mir eine Packung Kaiser Teller Gourmet Cremesuppe
+von erlesenen Waldpilzen von Knorr mitbringen, damit er sicher das richtige findet. Genau das soll dann der Name sein,
+`Knorr` ist später im Feld `Marke` einzutragen. Bei Schokoladen würde man jemandem zum Beispiel
+"Bring mir eine Tafel Nuss-Splitter von Ritter Sport mit!" sagen, deshalb wäre der Name hier `Nuss-Splitter` und die
+Marke `Ritter Sport` (bei Behälter, siehe auch weiter unten, wäre in diesem Fall `Tafel` einzutragen). Wenn die
+Kombination aus Behälter, Name und Marke nicht intuitiv klingt, dann stimmt etwas nicht oder sie kann abgeändert werden,
+z.B. "~~eine Packung Rittersport Nuss-Splitter von Rittersport~~" wäre falsch.
 
 Groß und Kleinschreibung anpassen (also nicht WALDPILZEN)
 
@@ -184,4 +185,17 @@ fertig für den Export ist.
 auf 5.  Dadurch ist klar, dass das Produkt noch nicht frei gegeben ist.
 
 
+Die farbig hinterlegte Zahl (sichtbar in der oberen Auswahl-Liste) gibt Auskunft, wie weit das Produkt schon bearbeitet
+worden ist.
+
+- 0 → noch gar nicht bearbeitet worden
+- 5 → es wurde schon etwas gespeichert
+- 10 → das Produkt wurde als fertig markiert (abschließen)
+- 15 → das Produkt ist von uns schon aus dem Editor ins Shop system übertragen
+  worden
+
+Ihr habt die Möglichkeit eigene Zahlen zu setzen (siehe weiter unten)
+Z.B. 1 → Inhaltsstoffe fehlen noch,...
+
+*Bitte nur die Zahlen 1-9 dafür verwenden!*
 
