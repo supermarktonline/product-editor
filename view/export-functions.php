@@ -345,7 +345,7 @@ function getSealetcTagColumns($row)
         if ($ct["muid"] == "UNCLASSIFIED" || $ct["muid"] == "UNIDENTIFIED") {
             continue;
         }
-        
+
         $tag_column = array();
 
         $numerical = floatval($ct["numerical_value"]);
@@ -503,18 +503,25 @@ function getSpecialTags($row)
 }
 
 
-/************ MUID Builder **********/
-function _replToAscii($t) {
-    return preg_replace("/_*$/", "",
-        mb_ereg_replace("[^a-zA-Z0-9]", "_",
-            mb_ereg_replace("ä", "ae",
-                mb_ereg_replace("Ä", "ae",
-                    mb_ereg_replace("ö", "oe",
-                        mb_ereg_replace("Ö", "Oe",
-                            mb_ereg_replace("ü", "ue",
-                                mb_ereg_replace("Ü", "Ue",
-                                    mb_ereg_replace("ß", "ss",
-                                        $t)))))))));
+/************ MUID Builder *********
+ * @param string $t
+ * @param int $length
+ * @return string
+ */
+function _replToAscii($t, $length = null)
+{
+    $t = str_replace("ß", "ss", $t);
+    $t = str_replace("Ü", "Ue", $t);
+    $t = str_replace("ü", "ue", $t);
+    $t = str_replace("Ö", "Oe", $t);
+    $t = str_replace("ö", "oe", $t);
+    $t = str_replace("Ä", "Ae", $t);
+    $t = str_replace("ä", "ae", $t);
+    $t = str_replace("Ü", "Ue", $t);
+    if (empty($length)) $t = str_replace(".", "x", $t);
+    $t = mb_ereg_replace("[^a-zA-Z0-9]", "", $t);
+    if (!empty($length)) $t = substr($t, 0, $length);
+    return $t;
 }
 
 function buildMuid($row, $buildForArticle = false)
@@ -523,17 +530,16 @@ function buildMuid($row, $buildForArticle = false)
     $barCode = explode("~", $row["articleBarCode"])[1];
     $brand = $row["productBrand de_AT"];
 
-    $muid = preg_replace("/_*$/", "",
-        $barCode . "." . _replToAscii(substr($brand, 0, 11)) . "." . _replToAscii(substr($productName, 0, 15)));
+    $muid = $barCode . "." . _replToAscii($brand, 11) . "." . _replToAscii($productName, 15);
     if ($buildForArticle) {
         $weight = $row["articleWeight"];
         $volume = $row["articleVolume"];
         $area = $row["articleArea"];
         $length = $row["articleLength"];
         $uses = $row["articleUses"];
-        
+
         $size = $weight . $volume . $area . $length . $uses;
-        
+
         if ($size != "") $muid .= "." . _replToAscii($size);
     }
     return $muid;
@@ -541,7 +547,8 @@ function buildMuid($row, $buildForArticle = false)
 
 
 /************ CATEGORIES: Category Path **********/
-function getCategory($id) {
+function getCategory($id)
+{
     global $db;
 
     $stmt = $db->prepare('SELECT category.* FROM category,fdata WHERE fdata.id = :id AND category.gid = fdata.category');
@@ -550,11 +557,13 @@ function getCategory($id) {
     return $stmt->fetch();
 }
 
-function replaceNonAsciiInCategories($category) {
+function replaceNonAsciiInCategories($category)
+{
     $category = preg_replace('/–/u', '-', $category);
     $category = preg_replace('/:/', '|', $category);
     return $category;
 }
+
 function getCategoryExportPath($id)
 {
     $cat = getCategory($id);
@@ -576,7 +585,8 @@ function getDescriptionAppendix($id)
     return getIngredientExport($id) . getSpurenExport($id) . getGeringeMengeExport($id);
 }
 
-function _getIngredients($id) {
+function _getIngredients($id)
+{
     // get all Ingredients and add them to description
     global $db;
 
@@ -586,7 +596,8 @@ function _getIngredients($id) {
     return $stmt->fetchAll();
 }
 
-function countIngredients($id) {
+function countIngredients($id)
+{
     return count(_getIngredients($id));
 }
 
@@ -609,7 +620,8 @@ Inhaltsstoffe: " . implode(", ", $ingrs);
     return "";
 }
 
-function _combineForSentence($a, $andWord) {
+function _combineForSentence($a, $andWord)
+{
     $c = count($a);
 
     if ($c == 1) {
@@ -661,7 +673,7 @@ function getGeringeMengeExport($id)
     }
 
     if (empty($ingrs)) return "";
-    
+
     return
         "
 
