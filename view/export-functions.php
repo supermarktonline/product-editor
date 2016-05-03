@@ -582,7 +582,7 @@ function getCategoryExportPath($id)
 
 function getDescriptionAppendix($id)
 {
-    return getIngredientExport($id) . getSpurenExport($id) . getGeringeMengeExport($id);
+    return "\n-----------\nZutaten\n======\n" . getIngredientExport($id) . getSpurenExport($id) . getGeringeMengeExport($id);
 }
 
 function _getIngredients($id)
@@ -611,13 +611,11 @@ function getIngredientExport($id)
         array_push($ingrs, $i['name']);
     }
 
-    if (!empty($ingrs)) {
-        return
-            "
-
-Inhaltsstoffe: " . implode(", ", $ingrs);
+    if (empty($ingrs)) {
+        return "";
+    } else {
+        return "Inhaltsstoffe: " . implode(", ", $ingrs);
     }
-    return "";
 }
 
 function _combineForSentence($a, $andWord)

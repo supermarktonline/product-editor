@@ -143,7 +143,7 @@ foreach($fdata as $row) {
 
             $article[$columnName] = quoteForCsv($tagpath);
         } else if ($columnName === "productDescription de_AT") {
-            $article[$columnName] = quoteForCsv($value . getDescriptionAppendix($id));
+            $article[$columnName] = quoteForCsv("-----------\nBeschreibung\n======\n" . $value . "\n" . getDescriptionAppendix($id));
         } else if ($columnName === "productImages") {
             $images = explode(",", $value);
             sort($images);
