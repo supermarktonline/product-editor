@@ -582,7 +582,7 @@ function getCategoryExportPath($id)
 
 function getDescriptionAppendix($id)
 {
-    return "\n-----------\nZutaten\n======\n" . getIngredientExport($id) . getSpurenExport($id) . getGeringeMengeExport($id);
+    return "\n-----------\nInhaltsstoffe\n======\n" . getIngredientExport($id) . getSpurenExport($id) . getGeringeMengeExport($id);
 }
 
 function _getIngredients($id)
