@@ -518,7 +518,13 @@ function _replToAscii($t, $length = null)
     $t = str_replace("Ä", "Ae", $t);
     $t = str_replace("ä", "ae", $t);
     $t = str_replace("Ü", "Ue", $t);
-    if (empty($length)) $t = str_replace(".", "x", $t);
+
+    if (empty($length)) {
+        $t = str_replace(".", "x", $t);
+    } else {
+        $t = ucwords($t);
+    }
+    
     $t = mb_ereg_replace("[^a-zA-Z0-9]", "", $t);
     if (!empty($length)) $t = substr($t, 0, $length);
     return $t;
