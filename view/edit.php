@@ -251,9 +251,8 @@ $media_path = $properties["media_path"];
                                     <option value="Dose">Dose</option>
                                     <option value="Glas">Glas</option>
                                     <option value="Glasflasche">Glasflasche</option>
-                                    <option value="Konststoffflasche">Kunststoffflasche</option>
+                                    <option value="Kunststoffflasche">Kunststoffflasche</option>
                                     <option value="Riegel">Riegel</option>
-                                    <option value="Tafel">Tafel</option>
                                     <option value="Tafel">Tafel</option>
                                 </select>
                                 <input type="text" id="container_custom" value="" class="form-control"
