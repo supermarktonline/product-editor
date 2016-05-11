@@ -145,9 +145,7 @@ foreach($fdata as $row) {
         } else if ($columnName === "productDescription de_AT") {
             $article[$columnName] = quoteForCsv("-----------\nBeschreibung\n======\n" . $value . "\n" . getDescriptionAppendix($id));
         } else if ($columnName === "productImages") {
-            $images = explode(",", $value);
-            sort($images);
-            $article[$columnName] = quoteForCsv(implode(";", $images));
+            $article[$columnName] = quoteForCsv(str_replace(",", ";", $value));
         } else if ($columnName === "articleUnit de_AT" && $value == "") {
             $article[$columnName] = quoteForCsv("Stück");
         } else if ($columnName === "productGpcBrick") {
