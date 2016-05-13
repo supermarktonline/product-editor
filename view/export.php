@@ -82,11 +82,11 @@ $fdata = $stmt->fetchAll();
 
 
 // updates status to new values if so desired
-if (isset($_GET['newstatus'])) {
+if (is_numeric($_GET['newstatus'])) {
     if ($_GET['export'] === "ALL") {
-        $stmt = $db->prepare('UPDATE fdata SET status=:new_status WHERE import_id = :import_id AND status >= :minstate AND status <= :maxstate');
-    } else {
         $stmt = $db->prepare('UPDATE fdata SET status=:new_status WHERE status >= :minstate AND status <= :maxstate');
+    } else {
+        $stmt = $db->prepare('UPDATE fdata SET status=:new_status WHERE import_id = :import_id AND status >= :minstate AND status <= :maxstate');
         $stmt->bindValue(":import_id", urldecode($_GET['export']));
     }
     $stmt->bindValue(":minstate", $minstate);
