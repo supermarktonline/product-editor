@@ -83,6 +83,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         $('#description').val(product["productDescription de_AT"]);
         $('#brand').val(product["productBrand de_AT"]);
         $('#notice').val(product["notice"]);
+        $('#productImages').val(product["productImages"]);
         $('#company').val(product["productCorporation de_AT"]);
 
         $('.nav-tabs a[href="#tab1"]').tab('show');

@@ -782,6 +782,11 @@ $media_path = $properties["media_path"];
                                     <button id="tag_delete">Tag löschen</button>
                                 </p>
                             </div>
+                            <div id="images_edit">
+                                <p>
+                                    <label for="productImages">Bilder: </label><input type="text" id="productImages" value=""/>
+                                </p>
+                            </div>
 
                             <hr>
 
