@@ -269,7 +269,7 @@ $media_path = $properties["media_path"];
                             </div>
 
                             <div class="lit" style="width:25%;">
-                                <label class="control-label">Inhalt (zur Preisberechnung)</label>
+                                <label class="control-label">Inhalt (zur Preisberechnung) NEU: Portion!</label>
                                 <div style="white-space:nowrap">
                                     <input type="text" id="weight_amount" value="" class="form-control"
                                            style="width:100px; display:inline">
@@ -282,7 +282,7 @@ $media_path = $properties["media_path"];
                                         <option>m</option>
                                         <option>m²</option>
                                         <option>m³</option>
-                                        <option value="uses">Anwendungen / Stück</option>
+                                        <option value="uses">Portion / Anwendungen / Stück</option>
                                     </select>
                                 </div>
                             </div>
