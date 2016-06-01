@@ -591,12 +591,24 @@ function getDescriptionAppendix($id)
     return "\n-----------\nInhaltsstoffe\n======\n" . getIngredientExport($id) . getSpurenExport($id) . getGeringeMengeExport($id);
 }
 
-function _getIngredients($id)
-{
+function _getIngredients($id, $allergenPref = null, $allergenSuf = null) {
     // get all Ingredients and add them to description
     global $db;
 
-    $stmt = $db->prepare('SELECT ingredient.name FROM ingredient, fdata_ingredient AS con WHERE con.fdata_id=:id AND con.ingredient_id = ingredient.id');
+    if ($allergenPref && $allergenSuf) {
+      $stmt = $db->prepare('
+        SELECT
+          CASE
+            WHEN ing.a or ing.b or ing.c or ing.d or ing.e or ing.f or
+                 ing.g or ing.h or ing.l or ing.m or ing.n or ing.o or
+                 ing.p or ing.r
+              THEN \'' . $allergenPref . '\' || ing.name || \'' . $allergenSuf . '\'
+            ELSE ing.name
+            END
+          FROM ingredient as ing, fdata_ingredient AS con WHERE con.fdata_id=:id AND con.ingredient_id = ing.id;');
+    } else {
+      $stmt = $db->prepare('SELECT ingredient.name FROM ingredient, fdata_ingredient AS con WHERE con.fdata_id=:id AND con.ingredient_id = ingredient.id');
+    }
     $stmt->bindValue(":id", $id);
     $stmt->execute();
     return $stmt->fetchAll();
@@ -609,7 +621,7 @@ function countIngredients($id)
 
 function getIngredientExport($id)
 {
-    $ingredients = _getIngredients($id);
+    $ingredients = _getIngredients($id, '*', '*');
 
     $ingrs = array();
 
