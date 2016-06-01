@@ -300,7 +300,8 @@ $media_path = $properties["media_path"];
                                         <option>g</option>
                                         <option>ml</option>
                                     </select>
-                                    <button type="button" id="generate_nw">Generate right</button>
+                                    <button type="button" id="generate_nw">Generate right</button><br>
+                                    Nährwerte pro 100x gelten für zubereitet? <input type="checkbox" id="nutrient_100_prepared"/>
                                 </div>
 
                                 <div class="c50">
@@ -308,8 +309,6 @@ $media_path = $properties["media_path"];
                                     <input type="text" class="myTextInput" id="nutrient_snd_amount" value="0">
                                     <span id="nutrient_unit_copy"></span>
                                     <br/>
-                                    with: <input type="text" class="myTextInput" id="nutrient_snd_additional">
-                                    mit: <input type="text" class="myTextInput" id="nutrient_snd_additional_de">
                                     Nährwerte gelten für zubereitet? <input type="checkbox" id="nutrient_snd_prepared"/>
                                 </div>
                                 <div class="clear"></div>

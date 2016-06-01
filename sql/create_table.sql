@@ -103,6 +103,8 @@ CREATE TABLE fdata (
     notice text DEFAULT '',
     nutrient_unit varchar(10) DEFAULT 'g',
 
+    nutrient_100_prepared boolean DEFAULT false,
+
     nutrient_100_energy float DEFAULT null,
     nutrient_100_fat_total float DEFAULT null,
     nutrient_100_fat_saturated float DEFAULT null,
@@ -117,8 +119,6 @@ CREATE TABLE fdata (
     nutrient_100_bread_unit float DEFAULT null,
 
     nutrient_snd_amount float DEFAULT null,
-    nutrient_snd_additional varchar(255) DEFAULT '',
-    nutrient_snd_additional_de varchar(255) DEFAULT '',
     nutrient_snd_prepared boolean DEFAULT false,
 
     nutrient_snd_energy float DEFAULT null,

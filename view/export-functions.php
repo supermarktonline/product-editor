@@ -133,7 +133,7 @@ function getNutrientTagColumn($row, $nut)
 
     $tag_column = array();
 
-    $tgam = "100" . $row["nutrient_unit"];
+    $tgam = "100 " . $row["nutrient_unit"];
     $dgam = $tgam;
     if ($nut["amount"] === "snd") {
         $tgam = "serving";
@@ -146,12 +146,16 @@ function getNutrientTagColumn($row, $nut)
 
 
     if ($nut["amount"] === "snd") {
-        $fullvalue .= " (per " . $row["nutrient_snd_amount"] . $row["nutrient_unit"];
+        $fullvalue .= " (per " . $row["nutrient_snd_amount"] . " " . $row["nutrient_unit"];
 
-        if ($row["nutrient_snd_additional"] != "") {
-            $fullvalue .= " with " . $row["nutrient_snd_additional"];
+        if ($row["nutrient_snd_prepared"]) {
+            $fullvalue .= " prepared";
         }
         $fullvalue .= ")";
+    } else {
+        if ($row["nutrient_100_prepared"]) {
+            $fullvalue .= " (per " . $tgam . " prepared)";
+        }
     }
 
     $fullgroup = $nut["tagGroupingPrefixEN"] . " per " . $tgam;
@@ -174,12 +178,16 @@ function getNutrientTagColumn($row, $nut)
 
     // add the with
     if ($nut["amount"] === "snd") {
-        $deTagName .= " (pro " . $row["nutrient_snd_amount"] . $row["nutrient_unit"];
+        $deTagName .= " (pro " . $row["nutrient_snd_amount"] . " " . $row["nutrient_unit"];
 
-        if ($row["nutrient_snd_additional"] != "") {
-            $deTagName .= " mit " . $row["nutrient_snd_additional_de"];
+        if ($row["nutrient_snd_prepared"] != "") {
+            $deTagName .= " zubereitet";
         }
         $deTagName .= ")";
+    } else {
+        if ($row["nutrient_100_prepared"] != "") {
+            $deTagName .= " (pro " . $tgam . " zubereitet)";
+        }
     }
 
     $tag_column["tagName de_DE"] = $deTagName;
