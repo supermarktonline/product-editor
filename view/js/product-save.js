@@ -177,6 +177,12 @@ function saveCurrentProduct(status) {
         product["container"] = $("#container_custom").val();
     }
 
+    if ($('#nutrient_100_prepared').is(":checked")) {
+        product["nutrient_100_prepared"] = true;
+    } else {
+        product["nutrient_100_prepared"] = false;
+    }
+
     if ($('#nutrient_snd_prepared').is(":checked")) {
         product["nutrient_snd_prepared"] = true;
     } else {

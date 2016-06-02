@@ -149,6 +149,13 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
 
 
+        // nutrients 100x for prepared meal?
+        if(product["nutrient_100_prepared"]===true) {
+            $('#nutrient_100_prepared').prop("checked",true);
+        } else {
+            $('#nutrient_100_prepared').prop("checked",false);
+        }
+
         // nutrients for prepared meal?
         if(product["nutrient_snd_prepared"]===true) {
             $('#nutrient_snd_prepared').prop("checked",true);
