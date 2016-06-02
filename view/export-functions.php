@@ -588,7 +588,14 @@ function getCategoryExportPath($id)
 
 function getDescriptionAppendix($id)
 {
-    return "\n-----------\nInhaltsstoffe\n======\n" . getIngredientExport($id) . getSpurenExport($id) . getGeringeMengeExport($id);
+    $ingExport = getIngredientExport($id);
+    $spurenExport = getSpurenExport($id);
+    $geringeExport = getGeringeMengeExport($id);
+    if ($ingExport || $spurenExport || $geringeExport) {
+      return "\n-----------\nInhaltsstoffe\n======\n" . $ingExport . spurenExport . geringeExport;
+    } else {
+      return "";
+    }
 }
 
 function _getIngredients($id, $allergenPref = null, $allergenSuf = null) {
