@@ -13,6 +13,7 @@ $columns = [
     "articleUses" => "",
     "articleTradeItemIds" => "articleBarCode",
     "productImages" => "",
+    "productFamily de_AT" => "",
     "productName de_AT" => "",
     "productBrand de_AT" => "",
     "productCorporation de_AT" => "",

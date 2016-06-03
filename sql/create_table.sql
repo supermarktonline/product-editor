@@ -50,6 +50,8 @@ CREATE TABLE fdata (
     "productName es_ES" varchar(255),
     "productName fr_FR" varchar(255),
 
+    "productFamily de_AT" varchar(255),
+
     "productBrand de_AT" varchar(255),
     "productBrand de_DE" varchar(255),
     "productBrand en_US" varchar(255),

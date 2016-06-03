@@ -66,6 +66,8 @@ var corporations;
 
 var brands;
 
+var families;
+
 var ingredient_names = [];
 
 var tags;
@@ -80,7 +82,7 @@ var taggroup_labels = [];
 
 
 $(document).ready(function() {
-        // initialize corporations
+    // initialize corporations
     corporations = JSON.parse($('#corporations').html());
 
     // enable autocomplete corporations
@@ -96,11 +98,24 @@ $(document).ready(function() {
     // same for brands
     brands = JSON.parse($('#brands').html());
 
-    // enable autocomplete corporations
+    // enable autocomplete brands
     $('#brand').autocomplete({
         source: function( request, response ) {
             var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
             response($.grep(brands, function (item) {
+                return matcher.test(item);
+            }));
+        }
+    });
+
+    // same for family
+    families = JSON.parse($('#families').html());
+
+    // enable autocomplete family
+    $('#family').autocomplete({
+        source: function( request, response ) {
+            var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
+            response($.grep(families, function (item) {
                 return matcher.test(item);
             }));
         }
@@ -113,7 +128,7 @@ $(document).ready(function() {
        ingredient_names.push(ingredients[i]["name"]);
    }
 
-    // autocomplete ingredients for ingredients selecotrs
+    // autocomplete ingredients for ingredients selectors
    $('#ingredients_selector,#enthalt_spuren,#enthalt_gering').autocomplete({
        source: function(request, response) {
         var filteredArray = $.map(ingredient_names, function(item) {
