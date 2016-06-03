@@ -549,7 +549,8 @@ function buildMuid($row, $buildForArticle = false)
       $family = _replToAscii($family, 10) . ".";
     }
 
-    $muid = $barCode . "." . _replToAscii($brand, 11) . "." . $family . _replToAscii($productName, 15);
+    // @ is the separator charactor to indicate that everything afterwards should be treated like a comment
+    $muid = $barCode . "@" . _replToAscii($brand, 11) . "." . $family . _replToAscii($productName, 15);
     if ($buildForArticle) {
         $weight = $row["articleWeight"];
         $volume = $row["articleVolume"];
