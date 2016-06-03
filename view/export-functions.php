@@ -543,8 +543,13 @@ function buildMuid($row, $buildForArticle = false)
     $productName = $row["productName de_AT"];
     $barCode = explode("~", $row["articleBarCode"])[1];
     $brand = $row["productBrand de_AT"];
+    $family = $row["productFamily de_AT"];
 
-    $muid = $barCode . "." . _replToAscii($brand, 11) . "." . _replToAscii($productName, 15);
+    if ($family) {
+      $family = _replToAscii($family, 10) . ".";
+    }
+
+    $muid = $barCode . "." . _replToAscii($brand, 11) . "." . $family . _replToAscii($productName, 15);
     if ($buildForArticle) {
         $weight = $row["articleWeight"];
         $volume = $row["articleVolume"];

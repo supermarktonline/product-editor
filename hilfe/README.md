@@ -27,12 +27,10 @@ In der Regel kann eine Produktbezeichnung in folgende Teile zerlegt werden.
 * Serie: Kaiser Teller Gourmet (wenn überhaupt vorhanden)
 * Name: Cremesuppe von erlesenen Waldpilzen
 
-Wir haben derzeit noch kein eigenes Feld für Serie.
-Diese daher in das Namensfeld eintragen und dann mit « - » getrennt den Namen hinzufügen.
-
-`Kaiser Teller Gourmet - Cremesuppe von erlesenen Waldpilzen`
+`Cremesuppe von erlesenen Waldpilzen`
 Die Faustregel: wenn jemand zum Einkaufen geht, sage ich ihm, er soll mir eine Packung Kaiser Teller Gourmet Cremesuppe
-von erlesenen Waldpilzen von Knorr mitbringen, damit er sicher das richtige findet. Genau das soll dann der Name sein,
+von erlesenen Waldpilzen von Knorr mitbringen, damit er sicher das richtige findet. Genau das soll dann aus der
+Kombination Marke, Serie und Name entstehen.
 `Knorr` ist später im Feld `Marke` einzutragen. Bei Schokoladen würde man jemandem zum Beispiel
 "Bring mir eine Tafel Nuss-Splitter von Ritter Sport mit!" sagen, deshalb wäre der Name hier `Nuss-Splitter` und die
 Marke `Ritter Sport` (bei Behälter, siehe auch weiter unten, wäre in diesem Fall `Tafel` einzutragen). Wenn die

@@ -84,6 +84,7 @@ function saveCurrentProduct(status) {
     var product = {};
     product["id"] = save_id;
     product["status"] = status;
+    product["productFamily___de_AT"] = $('#family').val();
     product["productName___de_AT"] = $('#name').val();
     product["productDescription___de_AT"] = $('#description').val();
     product["productBrand___de_AT"] = $('#brand').val();

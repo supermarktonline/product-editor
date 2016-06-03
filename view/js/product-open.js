@@ -79,6 +79,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         $('#save_id').attr('data-save_id',product["id"]);
         $('#custom_state').val('');
 
+        $('#family').val(product["productFamily de_AT"]);
         $('#name').val(product["productName de_AT"]);
         $('#description').val(product["productDescription de_AT"]);
         $('#brand').val(product["productBrand de_AT"]);

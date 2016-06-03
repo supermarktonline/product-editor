@@ -23,6 +23,13 @@ $extractBrand = function ($row) {
 };
 $brands = array_map($extractBrand, $stmt_brand->fetchAll());
 
+$stmt_family = $db->prepare('SELECT DISTINCT "productFamily de_AT" FROM fdata ORDER BY "productFamily de_AT" ASC');
+$stmt_family->execute();
+$extractFamily = function ($row) {
+    return $row['productFamily de_AT'];
+};
+$families = array_map($extractFamily, $stmt_family->fetchAll());
+
 $stmt_corp = $db->prepare('SELECT DISTINCT "productCorporation de_AT" FROM fdata ORDER BY "productCorporation de_AT" ASC');
 $stmt_corp->execute();
 $extractCorp = function ($row) {
@@ -207,8 +214,12 @@ $media_path = $properties["media_path"];
                     <fieldset id="edit-form" disabled="disabled">
                         <div class="form-group clearfix">
                             <div class="lit c25">
-                                <label class="control-label">Name (<b>NEU</b>! bzw. Serie) siehe
-                                <a href="https://github.com/supermarktonline/product-editor/blob/master/hilfe/README.md">Hilfe</a></label>
+                                <label class="control-label">Serie</label>
+                                <input type="text" id="family" value="" class="form-control">
+                            </div>
+
+                            <div class="lit c25">
+                                <label class="control-label">Name</label>
                                 <input type="text" id="name" value="" class="form-control">
                             </div>
 
@@ -860,6 +871,8 @@ $media_path = $properties["media_path"];
     <div class="hidden" id="corporations"><?php echo json_encode($corporations); ?></div>
 
     <div class="hidden" id="brands"><?php echo json_encode($brands); ?></div>
+
+    <div class="hidden" id="families"><?php echo json_encode($families); ?></div>
 
     <div class="hidden" id="taggroups"><?php echo json_encode($taggroups); ?></div>
 
