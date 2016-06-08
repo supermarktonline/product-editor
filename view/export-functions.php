@@ -485,8 +485,8 @@ function getSpecialTags($row)
         $tag_column["tagGroupingName de_DE"] = "Lagerung";
         $tag_column["tagGroupingTagNumericalRequired"] = "No";
 
-        $tag_column["tagUid"] = "Storage : " . $label_de;
-        $tag_column["tagName de_DE"] = $label_en;
+        $tag_column["tagUid"] = "Storage : " . $label_en;
+        $tag_column["tagName de_DE"] = $label_de;
         $tag_column["tagType"] = "ArticleDescribing";
 
         array_push($cols, $tag_column);
