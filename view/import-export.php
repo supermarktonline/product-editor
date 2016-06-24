@@ -224,44 +224,60 @@ insert into category_tag (category_id, tag_id) values (1338, 7970);
     <div class="mc admin-area">
         <h1>Select a list to export</h1>
         <div class="area_sel_container">
-            <?php
-            foreach ($imports as $row) {
-                ?>
-                <div class="area_sel_container_row">
-                    <form method="get" action="">
-                        <?php echo $row['import_id']; ?> <?php echo ($row['name']) ? "(" . $row["name"] . ")" : ""; ?>
-                        <input type="hidden" name="export" value="<?php echo urlencode($row['import_id']); ?>"/>
-                        | Minstate: <input type="text" size="2" name="minstate" value="10"/>
-                        Maxstate: <input type="text" size="2" name="maxstate" value="10"/>
-                        New Id after export: <input type="text" size="2" name="newstatus" value=""/>
-                        <input type="submit" value="Export list"/>
-                    </form>
-                    &nbsp;&nbsp;&nbsp;|||&nbsp;&nbsp;&nbsp;
-                    <form method="get" action="">
-                        <input type="hidden" name="export-tags" value="<?php echo urlencode($row['import_id']); ?>"/>
-                        Minstate: <input type="text" size="2" name="minstate" value="10"/>
-                        Maxstate: <input type="text" size="2" name="maxstate" value="10"/>
-                        <input type="submit" value="Export tags"/>
-                    </form>
-                </div>
+            <table style="border-collapse: separate; border-spacing: 20px 3px;">
                 <?php
-            }
-            ?>
-            <form method="get" action="">
-                ALL
-                <input type="hidden" name="export" value="ALL"/>
-                | Minstate: <input type="text" size="2" name="minstate" value="10"/>
-                Maxstate: <input type="text" size="2" name="maxstate" value="10"/>
-                New Id after export: <input type="text" size="2" name="newstatus" value=""/>
-                <input type="submit" value="Export list"/>
-            </form>
-            &nbsp;&nbsp;&nbsp;|||&nbsp;&nbsp;&nbsp;
-            <form method="get" action="">
-                <input type="hidden" name="export-tags" value="ALL"/>
-                Minstate: <input type="text" size="2" name="minstate" value="10"/>
-                Maxstate: <input type="text" size="2" name="maxstate" value="10"/>
-                <input type="submit" value="Export tags"/>
-            </form>
+                foreach ($imports as $row) {
+                    ?>
+                    <tr>
+                        <td><?php echo $row['import_id']; ?><?php echo ($row['name']) ? "(" . $row["name"] . ")" : ""; ?></td>
+                        <td>
+                            <div class="area_sel_container_row">
+                                <form method="get" action="">
+                                    <input type="hidden" name="export"
+                                           value="<?php echo urlencode($row['import_id']); ?>"/>
+                                    Minstate: <input type="text" size="2" name="minstate" value="10"/>
+                                    Maxstate: <input type="text" size="2" name="maxstate" value="10"/>
+                                    <input type="submit" value="Export list"/>
+                                </form>
+                            </div>
+                        </td>
+                        <td>
+                            <form method="get" action="">
+                                <input type="hidden" name="export-tags"
+                                       value="<?php echo urlencode($row['import_id']); ?>"/>
+                                Minstate: <input type="text" size="2" name="minstate" value="10"/>
+                                Maxstate: <input type="text" size="2" name="maxstate" value="10"/>
+                                <input type="submit" value="Export tags"/>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php
+                }
+                ?>
+
+                <tr>
+                    <td>ALL</td>
+                    <td>
+                        <div class="area_sel_container_row">
+                            <form method="get" action="">
+                                <input type="hidden" name="export" value="ALL"/>
+                                Minstate: <input type="text" size="2" name="minstate" value="10"/>
+                                Maxstate: <input type="text" size="2" name="maxstate" value="10"/>
+                                <input type="submit" value="Export list"/>
+                            </form>
+                        </div>
+                    </td>
+                    <td>
+                        <form method="get" action="">
+                            <input type="hidden" name="export-tags" value="ALL"/>
+                            Minstate: <input type="text" size="2" name="minstate" value="10"/>
+                            Maxstate: <input type="text" size="2" name="maxstate" value="10"/>
+                            <input type="submit" value="Export tags"/>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+
         </div>
     </div>
 

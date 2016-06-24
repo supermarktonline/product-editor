@@ -6,6 +6,8 @@ include("export-functions.php");
 $columns = [
     "productMuid" => "",
     "articleMuid" => "",
+    "productBrand de_AT" => "",
+    "productName de_AT" => "",
     "articleWeight" => "",
     "articleVolume" => "",
     "articleArea" => "",
@@ -14,8 +16,6 @@ $columns = [
     "articleTradeItemIds" => "articleBarCode",
     "productImages" => "",
     "productFamily de_AT" => "",
-    "productName de_AT" => "",
-    "productBrand de_AT" => "",
     "productCorporation de_AT" => "",
     "productDescription de_AT" => "",
     "articleUnit de_AT" => "container",
@@ -29,7 +29,7 @@ $defaultColumns = [
     "productOverrideInsertNew" => "",
     "productDisplaySortValue" => "",
     "articleNumber" => "",
-    "articlePrice" => "",
+    "articlePricings" => "",
     "articleDescription de_AT" => "",
     "articleShippingWeight" => "",
     "articleShippingHeight" => "",
@@ -37,11 +37,7 @@ $defaultColumns = [
     "articleShippingDepth" => "",
     "articleMinQuantity" => "1",
     "articleQuantitySteps" => "1",
-    "articleStock" => "99999",
-    "articleShowStock" => "FALSE",
-    "articleMsrPrice" => "",
-    "articleUnreducedPrice" => "",
-    "articleUnreducedPriceType" => "",
+    "articleShared" => "TRUE",
     "articleMerchantInfo" => "",
     "articleSortValue" => "",
     "articleImages" => "",
@@ -80,22 +76,6 @@ $stmt->bindValue(":minstate", $minstate);
 $stmt->bindValue(":maxstate", $maxstate);
 $stmt->execute();
 $fdata = $stmt->fetchAll();
-
-
-// updates status to new values if so desired
-if (is_numeric($_GET['newstatus'])) {
-    if ($_GET['export'] === "ALL") {
-        $stmt = $db->prepare('UPDATE fdata SET status=:new_status WHERE status >= :minstate AND status <= :maxstate');
-    } else {
-        $stmt = $db->prepare('UPDATE fdata SET status=:new_status WHERE import_id = :import_id AND status >= :minstate AND status <= :maxstate');
-        $stmt->bindValue(":import_id", urldecode($_GET['export']));
-    }
-    $stmt->bindValue(":minstate", $minstate);
-    $stmt->bindValue(":maxstate", $maxstate);
-    $stmt->bindValue(":new_status", $_GET['newstatus']);
-    $stmt->execute();
-}
-
 
 // initialize array with column headings
 $count = 1;
@@ -141,9 +121,9 @@ foreach ($fdata as $row) {
         $value = $row[$dbColumnName];
         $id = $row["id"];
         if ($columnName === "productMuid") {
-            $article[$columnName] = quoteForCsv(buildMuid($row));
+            $article[$columnName] = explode("~", $row["articleBarCode"])[1];
         } else if ($columnName === "articleMuid") {
-            $article[$columnName] = quoteForCsv(buildMuid($row, "for article"));
+            $article[$columnName] = explode("~", $row["articleBarCode"])[1];
         } else if ($columnName === "articleTagPaths") {
             $tagpath = "";
 
