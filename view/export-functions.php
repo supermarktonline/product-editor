@@ -606,7 +606,7 @@ function getDescriptionAppendix($id)
     $spurenExport = getSpurenExport($id);
     $geringeExport = getGeringeMengeExport($id);
     if ($ingExport || $spurenExport || $geringeExport) {
-      return "\n-----------\nInhaltsstoffe\n======\n" . $ingExport . spurenExport . geringeExport;
+      return "\n-----------\nInhaltsstoffe\n======\n" . $ingExport . $spurenExport . $geringeExport;
     } else {
       return "";
     }
