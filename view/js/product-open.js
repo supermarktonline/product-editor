@@ -286,7 +286,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         var first = true;
 
         $.each(allImagesUnique,function(i,img_src_orig) {
-            var path = media_path + img_src_orig;
+            var path = media_path + encodeURIComponent(img_src_orig);
             var img_src = "?rescale=" + path;
             if(first===true) {
 
@@ -310,7 +310,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                     var allImagesNext = extractImageNames(nextProduct);
                     for (var index in allImagesNext) {
                         var imgSrc = allImagesNext[index];
-                        var path = media_path + imgSrc;
+                        var path = media_path + encodeURIComponent(imgSrc);
                         var smallPath = "?rescale=" + path;
                         new Image().src = smallPath;
                     }
