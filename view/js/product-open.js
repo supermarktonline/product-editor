@@ -62,6 +62,10 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         if (is_admin) {
             $('#form-readonly').hide();
             $('#edit-form').prop('disabled', false);
+        } else {
+          if (product["status"] && product["status"] >= 10) {
+            $('#edit-form').prop('disabled', true);
+          }
         }
         
         if (username == "") {
@@ -165,7 +169,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         }
 
         // nutrient unit
-        $('#nutrient_unit_copy').html(product["nutrient_unit"]);
+        $('#nutrient_snd_unit').val(product["nutrient_unit"]);
 
 
         // allergene / ingredients

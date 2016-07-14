@@ -33,6 +33,7 @@ var product_simple_properties = [
     "nutrient_100_bread_unit",
     
     "nutrient_snd_amount",
+    "nutrient_snd_unit",
 
     "nutrient_snd_energy",
     "nutrient_snd_fat_total",
@@ -52,7 +53,7 @@ var product_simple_properties = [
 ];
 
 var product_simple_properties_nofloat = [
-  "notice","nutrient_unit","origin","store"
+  "notice","nutrient_unit","nutrient_snd_unit","origin","store"
 ];
 
 

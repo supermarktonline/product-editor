@@ -104,6 +104,7 @@ CREATE TABLE fdata (
     status integer DEFAULT 0,
     notice text DEFAULT '',
     nutrient_unit varchar(10) DEFAULT 'g',
+    nutrient_snd_unit varchar(10),
 
     nutrient_100_prepared boolean DEFAULT false,
 

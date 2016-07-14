@@ -34,5 +34,5 @@ onkeyup = onkeydown = function(e){
 
 
 $(document).on('change','#nutrient_unit',function() {
-    $('#nutrient_unit_copy').html($('#nutrient_unit').val());
+    $('#nutrient_snd_unit').val($('#nutrient_unit').val());
 });

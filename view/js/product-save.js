@@ -48,11 +48,11 @@ function saveCurrentProduct(status) {
     }
 
     if (status == 10 && ($('#notice').val()).trim().length > 0) {
-        status = 11;
+        status = 9;
     }
 
-    if (status > 20) {
-        status = 20;
+    if (status > 30) {
+        status = 30;
     }
 
     if (status > 9) {
