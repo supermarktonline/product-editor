@@ -9,6 +9,8 @@ CREATE TABLE fdata (
     id SERIAL PRIMARY KEY,
     import_id timestamp REFERENCES import (id) ON UPDATE RESTRICT ON DELETE RESTRICT,
 
+    bestandsfuehrer text NOT NULL,
+
     "productMuid" varchar(255),
     "productNumber" varchar(255),
     "productOverrideInsertNew" varchar(255),
@@ -158,8 +160,10 @@ CREATE TABLE fdata (
     store varchar(255) DEFAULT 'normal',
     container varchar(255) DEFAULT '',
     category int DEFAULT null,
-    reserved_by varchar(255) DEFAULT ''
+    reserved_by varchar(255) DEFAULT '',
 
+
+    CONSTRAINT bestandsfuehrer_unique UNIQUE (bestandsfuehrer)
 );
 
 
