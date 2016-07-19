@@ -38,7 +38,7 @@ CREATE TABLE fdata (
     "articleUnreducedPrice" varchar(255),
     "articleUnreducedPriceType" varchar(255),
     "articleMerchantInfo" varchar(255),
-    "articleBarCode" varchar(255),
+    "articleBarCode" text,
     "articleSortValue" varchar(255),
     "productImages" text,
     "articleImages" text,
