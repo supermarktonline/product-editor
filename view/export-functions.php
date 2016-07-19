@@ -595,7 +595,7 @@ function getCategoryExportPath($id)
         array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["class_code"]));
         array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["brick_code"]));
 
-        return implode(" >> ", $catgath);
+        return implode(" >> ", $catgath) . " >> ";
     } else return "";
 }
 
@@ -763,7 +763,7 @@ function getTagIDsForRow($row)
  */
 function getPreparedTagPathForRow($row)
 {
-    return " >> " . implode(" >> ", getTagIDsForRow($row));
+    return implode(" >> ", getTagIDsForRow($row));
 }
 
 
