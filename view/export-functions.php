@@ -588,13 +588,15 @@ function getCategoryExportPath($id)
 {
     $cat = getCategory($id);
 
-    $catgath = array();
-    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["segment_code"]));
-    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["family_code"]));
-    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["class_code"]));
-    array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["brick_code"]));
+    if ($cat) {
+        $catgath = array();
+        array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["segment_code"]));
+        array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["family_code"]));
+        array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["class_code"]));
+        array_push($catgath, replaceNonAsciiInCategories("GPC_" . $cat["brick_code"]));
 
-    return implode(" >> ", $catgath);
+        return implode(" >> ", $catgath);
+    } else return "";
 }
 
 

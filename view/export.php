@@ -121,9 +121,9 @@ foreach ($fdata as $row) {
         $value = $row[$dbColumnName];
         $id = $row["id"];
         if ($columnName === "productMuid") {
-            $article[$columnName] = explode("~", $row["articleBarCode"])[1];
+            $article[$columnName] = $row["bestandsfuehrer"];
         } else if ($columnName === "articleMuid") {
-            $article[$columnName] = explode("~", $row["articleBarCode"])[1];
+            $article[$columnName] = $row["bestandsfuehrer"];
         } else if ($columnName === "articleTagPaths") {
             $tagpath = "";
 
