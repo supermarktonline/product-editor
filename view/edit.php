@@ -106,7 +106,7 @@ $media_path = $properties["media_path"];
                 <th>Status</th>
                 <th>Reservierung</th>
                 <th>Name</th>
-                <th>EAN Code</th>
+                <th>Bestandsführer</th>
                 <th>Marke</th>
             </tr>
 
@@ -138,7 +138,7 @@ $media_path = $properties["media_path"];
                             echo $tp;
                         }
                         ?></td>
-                    <td><?php echo preg_replace('/^.*~/', '', $imp["articleEanCode"] . $imp["articleBarCode"]); ?></td>
+                    <td><?php echo $imp["bestandsfuehrer"]; ?></td>
                     <td data-nfieldb="<?php echo $imp["id"]; ?>"><?php
                         if (strlen($tp = $imp["productBrand de_AT"]) > 1) {
                             echo $tp;
