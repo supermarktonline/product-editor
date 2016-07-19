@@ -538,34 +538,6 @@ function _replToAscii($t, $length = null)
     return $t;
 }
 
-function buildMuid($row, $buildForArticle = false)
-{
-    $productName = $row["productName de_AT"];
-    $barCode = explode("~", $row["articleBarCode"])[1];
-    $brand = $row["productBrand de_AT"];
-    $family = $row["productFamily de_AT"];
-
-    if ($family) {
-      $family = _replToAscii($family, 10) . ".";
-    }
-
-    // @ is the separator charactor to indicate that everything afterwards should be treated like a comment
-    $muid = $barCode . "@" . _replToAscii($brand, 11) . "." . $family . _replToAscii($productName, 15);
-    if ($buildForArticle) {
-        $weight = $row["articleWeight"];
-        $volume = $row["articleVolume"];
-        $area = $row["articleArea"];
-        $length = $row["articleLength"];
-        $uses = $row["articleUses"];
-
-        $size = $weight . $volume . $area . $length . $uses;
-
-        if ($size != "") $muid .= "." . _replToAscii($size);
-    }
-    return $muid;
-}
-
-
 /************ CATEGORIES: Category Path **********/
 function getCategory($id)
 {
