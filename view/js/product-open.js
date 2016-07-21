@@ -22,19 +22,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
     var nextImpId = $(this).attr('data-open-next-id');
 
     function extractImageNames(product) {
-        var images_product = product["productImages"].split(/[;,]/).map(function(e){return e.trim();});
-
-        var images_article = product["articleImages"].split(/[;,]/).map(function(e){return e.trim();});
-
-        var allImages = images_product.concat(images_article);
-
-        var allImagesUnique = [];
-
-        $.each(allImages, function(i, el){
-            if(($.inArray(el, allImagesUnique) === -1) && (el !== "")) allImagesUnique.push(el);
-        });
-
-        return allImagesUnique;
+        return product["productImages"].split(/[;,]/);
     }
 
     $.ajax({url: "/?productjson="+$(this).attr('data-open_edit_id'), success: function(result){
