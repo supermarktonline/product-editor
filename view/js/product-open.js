@@ -94,15 +94,15 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
         var did = false;
 
-        for(st in pcSets) {
+        for (var st in pcSets) {
             var val = product[pcSets[st]];
-            if(val!="") {
+            if (val != null && val != "") {
                 var parts = val.split(" ");
                 $('#weight_amount').val(parts[0]);
 
-                did=true;
+                did = true;
 
-                if(typeof parts[1] !== 'undefined') {
+                if (typeof parts[1] !== 'undefined') {
                     $('#weight_amount_unit').val(parts[1]);
                 } else {
                     $('#weight_amount_unit').val("uses");
@@ -117,7 +117,6 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
 
         var images = product["productImages"];
-        var imagesAr = images.split(/[;,]/);
 
         // populate the simple fields
         $.each(product_simple_properties,function(key,value) {
