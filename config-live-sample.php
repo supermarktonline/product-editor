@@ -8,11 +8,6 @@ define('DB_USER','');
 define('DB_PASSWORD','');
 define('DB_PORT','');
 
-define('NUM_COLS_BEFORE',2);
-define('NUM_IMPORT_COLS',77);
-define('NUM_DEFAULT_COLS_AFTER',51);
-define('NUM_COLS_OVERALL',NUM_COLS_BEFORE+NUM_DEFAULT_COLS_AFTER+NUM_IMPORT_COLS);
-
 define('NUM_GOOGLE_IMPORT_COLS',8);
 
 define('VIEWPATH','view/');
