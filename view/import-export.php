@@ -25,29 +25,6 @@ if (isset($_POST["new_import_name"])) {
     }
 }
 
-
-/**
- * Execute list deletion.
- */
-if (isset($_POST["delete_list"]) && $_POST["delete_list"] == "do") {
-    if (isset($_POST["todelete"]) && strlen($_POST["todelete"] > 1)) {
-        $stmt = $db->prepare("DELETE FROM fdata WHERE import_id = :import_id");
-        $stmt->bindValue(":import_id", urldecode($_POST["todelete"]));
-
-        if (!$stmt->execute()) {
-            array_push($user_messages, array("error", "Import could not be deleted: SQL Failure: " . $db->errorInfo()[2]));
-        } else {
-            array_push($user_messages, array("success", "The import " . urldecode($_POST["todelete"]) . " was successfully deleted."));
-        }
-
-        $stmt2 = $db->prepare("DELETE FROM import WHERE id = :id");
-        $stmt2->bindValue(":id", urldecode($_POST["todelete"]));
-        $stmt2->execute();
-
-    }
-}
-
-
 // get list of imports
 $stmt = $db->prepare('SELECT DISTINCT fdata.import_id, nam.name,nam.media_path FROM fdata LEFT OUTER JOIN import AS nam ON (nam.id = fdata.import_id) ORDER BY fdata.import_id DESC');
 $stmt->execute();
@@ -210,8 +187,6 @@ insert into category_tag (category_id, tag_id) values (1338, 7970);
                         <input type="hidden" name="import_id" value="<?php echo urlencode($row['import_id']); ?>"/>
                         <input type="submit" name="update_import" value="Update properties"/>
                     </form>
-                    &nbsp;&nbsp;&nbsp;
-                    <a href="#" data-deletelist="<?php echo urlencode($row['import_id']); ?>">[Delete this import]</a>
                 </span>
                 </div>
                 <?php
@@ -296,31 +271,5 @@ insert into category_tag (category_id, tag_id) values (1338, 7970);
     </form>
 
 </div>
-
-<script type="text/javascript">
-
-    $(document).on('click', '[data-deletelist]', function () {
-        confirmDelete($(this).attr("data-deletelist"));
-    });
-
-    function confirmDelete(listId) {
-        $("#dialog-confirm").dialog({
-            resizable: false,
-            height: 180,
-            modal: true,
-            buttons: {
-                "Delete all items": function () {
-                    $("#todelete").val(listId);
-                    $("#delete_form").submit();
-                    $(this).dialog("close");
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-    }
-</script>
-
 </body>
 </html>
