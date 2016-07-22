@@ -21,7 +21,9 @@ $columns = [
     "articleUnit de_AT" => "container",
     "articleTagPaths" => "",
     "productEditorId" => "id",
-    "productGpcBrick" => "category"
+    "productGpcBrick" => "category",
+    "articlePricings" => "articlePrice",
+    "articleTaxCategory" => ""
 ];
 
 $defaultColumns = [
@@ -29,7 +31,6 @@ $defaultColumns = [
     "productOverrideInsertNew" => "",
     "productDisplaySortValue" => "",
     "articleNumber" => "",
-    "articlePricings" => "",
     "articleDescription de_AT" => "",
     "articleShippingWeight" => "",
     "articleShippingHeight" => "",
@@ -42,7 +43,6 @@ $defaultColumns = [
     "articleSortValue" => "",
     "articleImages" => "",
     "articleCurrency" => "EUR",
-    "articleTaxCategory" => "",
     "articleRestrictDeliveryToZone" => "",
     "articleNoticesJson de_AT" => "",
     "articlePosText de_AT" => "",
