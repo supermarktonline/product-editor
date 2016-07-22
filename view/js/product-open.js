@@ -1,8 +1,3 @@
-/**
- * Created by david on 3/15/16.
- */
-
-
 // clicking a product within the list --> get the product via ajax and display the edit fields
 $(document).on('click','*[data-open_edit_id]',function(e) {
 
@@ -266,7 +261,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         $('#current_image_wrapper').html('');
 
         var first = true;
-        for (var img in product["productImages"].split(/[;,]/)) {
+        product["productImages"].split(/[;,]/).split("/").forEach(function (img) {
             var path = media_path + encodeURIComponent(img);
             var img_src = "?rescale=" + path;
 
@@ -277,7 +272,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
             $thumb.append('<div data-src="' + img_src + '"><img src="' + img_src + '" alt="" /></div>');
             $thumb.append('<div style="display:none" data-src="' + path + '"><img src="' + img_src + '" alt="" /></div>');
-        }
+        });
 
         startAutosave();
 
@@ -287,13 +282,14 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                 $.ajax({
                     url: "/?productjson=" + nextImpId, success: function (result) {
                         var nextProduct = JSON.parse(result);
-                        for (var img in nextProduct["productImages"].split(/[;,]/)) {
+                        nextProduct["productImages"].split(/[;,]/).split("/").forEach(function (img) {
                             var path = media_path + encodeURIComponent(img);
                             new Image().src = "?rescale=" + path;
-                        }
+                        });
                     }
                 });
             }, 10000);
         }
-    }});
+    }
+    });
 });
