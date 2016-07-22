@@ -261,7 +261,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         $('#current_image_wrapper').html('');
 
         var first = true;
-        product["productImages"].split(/[;,]/).split("/").forEach(function (img) {
+        product["productImages"].split(/[;,]/).forEach(function (img) {
             var path = media_path + encodeURIComponent(img);
             var img_src = "?rescale=" + path;
 
@@ -282,7 +282,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                 $.ajax({
                     url: "/?productjson=" + nextImpId, success: function (result) {
                         var nextProduct = JSON.parse(result);
-                        nextProduct["productImages"].split(/[;,]/).split("/").forEach(function (img) {
+                        nextProduct["productImages"].split(/[;,]/).forEach(function (img) {
                             var path = media_path + encodeURIComponent(img);
                             new Image().src = "?rescale=" + path;
                         });
