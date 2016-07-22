@@ -21,10 +21,6 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
     var nextImpId = $(this).attr('data-open-next-id');
 
-    function extractImageNames(product) {
-        return product["productImages"].split(/[;,]/);
-    }
-
     $.ajax({url: "/?productjson="+$(this).attr('data-open_edit_id'), success: function(result){
 
         $('#main-container').show();
@@ -265,44 +261,39 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
 
         // the images
-        $('#thumb-container').html('');
+        var $thumb = $('#thumb-container');
+        $thumb.html('');
         $('#current_image_wrapper').html('');
 
-        var allImagesUnique = extractImageNames(product);
-
         var first = true;
-
-        $.each(allImagesUnique,function(i,img_src_orig) {
-            var path = media_path + encodeURIComponent(img_src_orig);
+        for (var img in product["productImages"].split(/[;,]/)) {
+            var path = media_path + encodeURIComponent(img);
             var img_src = "?rescale=" + path;
-            if(first===true) {
 
+            if (first === true) {
                 setActiveImage(img_src);
-
                 first = false;
             }
 
-            $('#thumb-container').append('<div data-src="'+img_src+'"><img src="'+img_src+'" alt="" /></div>');
-            $('#thumb-container').append('<div style="display:none" data-src="'+path+'"><img src="'+img_src+'" alt="" /></div>');
-
-        });
+            $thumb.append('<div data-src="' + img_src + '"><img src="' + img_src + '" alt="" /></div>');
+            $thumb.append('<div style="display:none" data-src="' + path + '"><img src="' + img_src + '" alt="" /></div>');
+        }
 
         startAutosave();
 
         if (nextImpId != "-") {
-            setTimeout(function() {
+            setTimeout(function () {
                 console.log("Preloading images for " + nextImpId);
-                $.ajax({url: "/?productjson="+nextImpId, success: function(result) {
-                    var nextProduct = JSON.parse(result);
-                    var allImagesNext = extractImageNames(nextProduct);
-                    for (var index in allImagesNext) {
-                        var imgSrc = allImagesNext[index];
-                        var path = media_path + encodeURIComponent(imgSrc);
-                        var smallPath = "?rescale=" + path;
-                        new Image().src = smallPath;
+                $.ajax({
+                    url: "/?productjson=" + nextImpId, success: function (result) {
+                        var nextProduct = JSON.parse(result);
+                        for (var img in nextProduct["productImages"].split(/[;,]/)) {
+                            var path = media_path + encodeURIComponent(img);
+                            new Image().src = "?rescale=" + path;
+                        }
                     }
-                }});
+                });
             }, 10000);
-        };
+        }
     }});
 });
