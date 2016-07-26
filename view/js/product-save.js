@@ -103,44 +103,28 @@ function saveCurrentProduct(status) {
     var weight_amount = parseFloat($('#weight_amount').val());
     var weight_amount_unit = $('#weight_amount_unit').val();
 
-    // add toFixed(10) to prevent double weirdness. Ex: 0.009 would otherwise become 0.009000000000000001
     if (!isNaN(weight_amount) && weight_amount != 0) {
         switch (weight_amount_unit) {
             case "g":
-            {
-                // the changes the rounded string-number back to a number trimming the trailing 0s
-                product["articleWeight"] = +((weight_amount * 0.001).toFixed(10)) + " kg";
-                break;
-            }
             case "kg":
-            {
-                product["articleWeight"] = weight_amount + " kg";
+                product["articleWeight"] = weight_amount + " " + weight_amount_unit;
                 break;
-            }
             case "l":
-            {
-                product["articleVolume"] = weight_amount + " l";
-            }
             case "ml":
-            {
-                product["articleVolume"] = +((weight_amount * 0.001).toFixed(10)) + " l";
-            }
             case "m³":
-            {
-                product["articleVolume"] = weight_amount + " m³";
-            }
+                product["articleVolume"] = weight_amount + " " + weight_amount_unit;
+                break;
             case "m²":
-            {
-                product["articleArea"] = weight_amount + " m²";
-            }
+                product["articleArea"] = weight_amount + " " + weight_amount_unit;
+                break;
             case "m":
-            {
-                product["articleLength"] = weight_amount + " m";
-            }
+                product["articleLength"] = weight_amount + " " + weight_amount_unit;
+                break;
             case "uses":
-            {
                 product["articleUses"] = parseInt(weight_amount);
-            }
+                break;
+            default:
+                console.log("Unknown unit: " + weight_amount_unit);
         }
     }
 
