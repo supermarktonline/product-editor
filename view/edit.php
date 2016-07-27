@@ -46,7 +46,7 @@ $stmt4 = $db->prepare('SELECT * FROM tag WHERE gs1_attribute_value_code IS NULL 
 $stmt4->execute();
 $tags = $stmt4->fetchAll();
 
-$stmt5 = $db->prepare('SELECT name,media_path FROM import WHERE id = :id');
+$stmt5 = $db->prepare('SELECT name FROM import WHERE id = :id');
 $stmt5->bindValue(":id", urldecode($_GET['edit']));
 $stmt5->execute();
 $properties = $stmt5->fetch();
@@ -58,7 +58,6 @@ $taggroups = $stmt6->fetchAll();
 
 
 $name = $properties["name"];
-$media_path = $properties["media_path"];
 ?>
 <!DOCTYPE html>
 <html>
@@ -792,11 +791,6 @@ $media_path = $properties["media_path"];
                                     <button id="tag_delete">Tag löschen</button>
                                 </p>
                             </div>
-                            <div id="images_edit">
-                                <p>
-                                    <label for="productImages">Bilder: </label><input type="text" id="productImages" value=""/>
-                                </p>
-                            </div>
 
                             <hr>
 
@@ -879,8 +873,6 @@ $media_path = $properties["media_path"];
     <div class="hidden" id="categories"><?php echo json_encode($categories); ?></div>
 
     <div class="hidden" id="tags"><?php echo json_encode($tags); ?></div>
-
-    <div class="hidden" id="media_path"><?php echo $media_path; ?></div>
 
     <div class="clear"></div>
 </div>

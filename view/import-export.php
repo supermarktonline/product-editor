@@ -13,11 +13,9 @@ if (isset($_POST["new_import_name"])) {
 
     $import_id = urldecode($_POST["import_id"]);
     $name = $_POST["new_import_name"];
-    $media_path = $_POST["media_path"];
 
-    $stmt = $db->prepare("UPDATE import SET name = :name,media_path = :media_path WHERE id = :id");
+    $stmt = $db->prepare("UPDATE import SET name = :name WHERE id = :id");
     $stmt->bindValue(":id", $import_id);
-    $stmt->bindValue(":media_path", $media_path);
     $stmt->bindValue(":name", $name);
 
     if (!$stmt->execute()) {
@@ -26,7 +24,7 @@ if (isset($_POST["new_import_name"])) {
 }
 
 // get list of imports
-$stmt = $db->prepare('SELECT DISTINCT fdata.import_id, nam.name,nam.media_path FROM fdata LEFT OUTER JOIN import AS nam ON (nam.id = fdata.import_id) ORDER BY fdata.import_id DESC');
+$stmt = $db->prepare('SELECT DISTINCT fdata.import_id, nam.name FROM fdata LEFT OUTER JOIN import AS nam ON (nam.id = fdata.import_id) ORDER BY fdata.import_id DESC');
 $stmt->execute();
 $imports = $stmt->fetchAll();
 
@@ -80,7 +78,6 @@ $imports = $stmt->fetchAll();
                 <p>Note: List must be a .csv File in the correct format.</p>
 
                 <p><label>Name:</label><input type="text" name="name" value=""/></p>
-                <p><label>Media Path:</label><input type="text" name="media_path" value=""/></p>
                 <p><input type="file" name="impfile"/></p>
                 <p>
                     <button type="submit" name="newimp" value="doit">Import ausführen</button>
@@ -183,7 +180,6 @@ insert into category_tag (category_id, tag_id) values (1338, 7970);
                 <span id="admin_listedit" class="admin-area">
                     <form method="post" action="">
                         Name: <input type="text" name="new_import_name" value="<?php echo $row['name']; ?>"/>
-                        Media Path: <input type="text" name="media_path" value="<?php echo $row['media_path']; ?>"/>
                         <input type="hidden" name="import_id" value="<?php echo urlencode($row['import_id']); ?>"/>
                         <input type="submit" name="update_import" value="Update properties"/>
                     </form>

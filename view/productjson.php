@@ -6,4 +6,14 @@ $stmt->bindValue(":id",$_GET['productjson']);
 $stmt->execute();
 $productdata = $stmt->fetch();
 
+$imgs = preg_split( '/[;,]/', $productdata["productImages"] );
+$encoded = array();
+
+foreach ($imgs as $img) {
+    $binfile = json_decode(file_get_contents(BACKEND_URL . "/backend/v2/merchant/binaryFile?muid=$img"));
+    array_push($encoded, $binfile->generatedName);
+}
+
+$productdata["productImages"] = implode(";", $encoded);
+
 echo json_encode($productdata); die;

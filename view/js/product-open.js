@@ -262,16 +262,16 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
         var first = true;
         product["productImages"].split(/[;,]/).forEach(function (img) {
-            var path = media_path + encodeURIComponent(img);
+            var path = "https://file.incpy.com/" + img;
             var img_src = "?rescale=" + path;
 
             if (first === true) {
-                setActiveImage(img_src);
+                setActiveImage(path);
                 first = false;
             }
 
-            $thumb.append('<div data-src="' + img_src + '"><img src="' + img_src + '" alt="" /></div>');
-            $thumb.append('<div style="display:none" data-src="' + path + '"><img src="' + img_src + '" alt="" /></div>');
+            $thumb.append('<div data-src="' + path + '"><img src="' + path + '" alt="" /></div>');
+            $thumb.append('<div style="display:none" data-src="' + path + '"><img src="' + path + '" alt="" /></div>');
         });
 
         startAutosave();
@@ -283,8 +283,8 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                     url: "/?productjson=" + nextImpId, success: function (result) {
                         var nextProduct = JSON.parse(result);
                         nextProduct["productImages"].split(/[;,]/).forEach(function (img) {
-                            var path = media_path + encodeURIComponent(img);
-                            new Image().src = "?rescale=" + path;
+                            var path = "https://file.incpy.com/" + img;
+                            new Image().src = path;//"?rescale=" + path;
                         });
                     }
                 });

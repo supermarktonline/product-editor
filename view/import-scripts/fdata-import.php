@@ -24,10 +24,9 @@ if (isset($_POST['newimp']) && $_POST['newimp'] == "doit") {
                 $importId = Tool::timePHPtoSQL(time());
 
                 // 1. Create the import
-                $stmt = $db->prepare('INSERT INTO import (id,name,media_path) VALUES (:id,:name,:media_path)');
+                $stmt = $db->prepare('INSERT INTO import (id,name) VALUES (:id,:name)');
                 $stmt->bindValue(":id", $importId);
                 $stmt->bindValue(":name", $_POST['name']);
-                $stmt->bindValue(":media_path", $_POST['media_path']);
                 $res = $stmt->execute();
 
                 if ($res) {

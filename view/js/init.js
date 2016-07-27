@@ -74,8 +74,6 @@ var tags;
 
 var tag_labels = [];
 
-var media_path = "";
-
 var taggroups;
 
 var taggroup_labels = [];
@@ -206,9 +204,7 @@ $(document).ready(function() {
         }
     });
 
-   
-   media_path = $('#media_path').text();
-   
+
    // initialize the tags
    tags = JSON.parse($('#tags').html());
 

@@ -89,7 +89,6 @@ function saveCurrentProduct(status) {
     product["productDescription___de_AT"] = $('#description').val();
     product["productBrand___de_AT"] = $('#brand').val();
     product["notice"] = $('#notice').val();
-    product["productImages"] = $('#productImages').val();
     product["productCorporation___de_AT"] = $('#company').val();
 
 

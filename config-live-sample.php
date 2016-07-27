@@ -35,3 +35,5 @@ define('NUMERICAL_VALUE_TYPES_MAP',serialize(
 
 define('HTTP_USERNAME', 'username');
 define('HTTP_PASSWORD', 'password');
+
+define('BACKEND_URL', "http://backend:8080/");
