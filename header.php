@@ -6,12 +6,14 @@
     <link rel="stylesheet" href="<?php echo VIEWPATH; ?>css/custom.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="<?php echo VIEWPATH; ?>js/jquery-2.1.3.min.js"></script>
+    <script src="<?php echo VIEWPATH; ?>js/md5.min.js"></script>
     <script src="<?php echo VIEWPATH; ?>bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
     <script src="<?php echo VIEWPATH; ?>js/ui-functions.js"></script>
     
     <?php if(isset($_GET['edit'])) { ?>
         <script src="<?php echo VIEWPATH; ?>js/init.js"></script>
         <script src="<?php echo VIEWPATH; ?>js/mixed.js"></script>
+        <script src="<?php echo VIEWPATH; ?>js/fs-resize.js"></script>
         <script src="<?php echo VIEWPATH; ?>js/product-open.js"></script>
         <script src="<?php echo VIEWPATH; ?>js/product-save.js"></script>
         <script src="<?php echo VIEWPATH; ?>js/ingredient.js"></script>

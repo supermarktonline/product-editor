@@ -254,7 +254,6 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         });
 
 
-
         // the images
         var $thumb = $('#thumb-container');
         $thumb.html('');
@@ -262,8 +261,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
         var first = true;
         product["productImages"].split(/[;,]/).forEach(function (img) {
-            var path = "https://file.incpy.com/" + img;
-            var img_src = "?rescale=" + path;
+            var path = "https://file.incpy.com/" + fs_resize(img, 1400, 1400);
 
             if (first === true) {
                 setActiveImage(path);
@@ -275,21 +273,6 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         });
 
         startAutosave();
-
-        if (nextImpId != "-") {
-            setTimeout(function () {
-                console.log("Preloading images for " + nextImpId);
-                $.ajax({
-                    url: "/?productjson=" + nextImpId, success: function (result) {
-                        var nextProduct = JSON.parse(result);
-                        nextProduct["productImages"].split(/[;,]/).forEach(function (img) {
-                            var path = "https://file.incpy.com/" + img;
-                            new Image().src = path;//"?rescale=" + path;
-                        });
-                    }
-                });
-            }, 10000);
-        }
     }
     });
 });
