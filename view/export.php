@@ -125,13 +125,8 @@ foreach ($fdata as $row) {
         } else if ($columnName === "articleMuid") {
             $article[$columnName] = $row["bestandsfuehrer"];
         } else if ($columnName === "articleTagPaths") {
-            $tagpath = "";
-
-            // Categories
-            $tagpath .= getCategoryExportPath($id);
-            $tagpath .= getPreparedTagPathForRow($row);
-
-            $article[$columnName] = quoteForCsv($tagpath);
+            $tags =  implode(";", array_merge(getCategoryExportPath($id), getTagIDsForRow($row)));
+            $article[$columnName] = quoteForCsv($tags);
         } else if ($columnName === "productDescription de_AT") {
             $beschreibung = $value ? "-----------\nBeschreibung\n======\n" . $value . "\n" : "";
             $article[$columnName] = quoteForCsv($beschreibung . getDescriptionAppendix($id));
