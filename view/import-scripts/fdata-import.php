@@ -6,7 +6,8 @@
  * Time: 4:54 PM
  */
 
-$pStr = "INSERT INTO public.fdata(import_id, bestandsfuehrer, \"productImages\") VALUES (:iid, :inv, :img);";
+$pStr = "INSERT INTO public.fdata(import_id, bestandsfuehrer) VALUES (:iid, :inv);";
+$upStr = "UPDATE public.fdata SET \"productImages\" = :img WHERE bestandsfuehrer = :inv;";
 
 /**
  * Execute an import of data.
@@ -39,15 +40,24 @@ if (isset($_POST['newimp']) && $_POST['newimp'] == "doit") {
                             // if not, parsing of the row went probably wrong
                             if (count($data) === 2) {
                                 $stmt = $db->prepare($pStr);
-
                                 $stmt->bindValue(":iid", $importId);
                                 $stmt->bindValue(":inv", $data[0]);
-                                $stmt->bindValue(":img", $data[1]);
-
+                                $stmt->execute();
                                 if ($stmt->execute()) {
                                     $anySuccess = true;
                                 } else {
-                                    array_push($user_messages, array("warning", "Row was not imported: SQL Failure: " . $db->errorInfo()[2]));
+                                    $einfo = $stmt->errorInfo();
+
+                                    if ($einfo[0] !== '23505') {
+                                        array_push($user_messages, array("error", "Row was not imported: " . $einfo[2]));
+                                    }
+                                }
+
+                                $stmt = $db->prepare($upStr);
+                                $stmt->bindValue(":inv", $data[0]);
+                                $stmt->bindValue(":img", $data[1]);
+                                if (!$stmt->execute()) {
+                                    array_push($user_messages, array("error", "Row was not imported: " . $stmt->errorInfo()[2]));
                                 }
                             } else {
                                 array_push($user_messages, array("error", "Row was not imported: Incorrect number of fields."));
@@ -57,7 +67,7 @@ if (isset($_POST['newimp']) && $_POST['newimp'] == "doit") {
 
                         // no reason to save empty import
                         if (!$anySuccess) {
-                            $stmt = $db->prepare('DELETE FROM import WHERE id=:id)');
+                            $stmt = $db->prepare('DELETE FROM import WHERE id=:id;');
                             $stmt->bindValue(":id", $importId);
                             $stmt->execute();
                         }
