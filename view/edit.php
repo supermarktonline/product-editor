@@ -484,9 +484,9 @@ $name = $properties["name"];
 
             <div id="tab2" role="tabpanel" class="tab-pane">
 
-                <div class="form-group">
+                <div class="form-group" style="display: none">
                     <label class="control-label">Inhaltsstoffe</label>
-                    <p>Inhaltsstoffe bitte OHNE % eintragen.  Aus z.B. "8% Zucker" würde "Zucker" werden.</p>
+                    <p>Inhaltsstoffe bitte OHNE % eintragen. Aus z.B. "8% Zucker" würde "Zucker" werden.</p>
 
                     <p>
                         <span id="ingredients_collector"></span>
@@ -496,8 +496,8 @@ $name = $properties["name"];
                 </span>
                     </p>
                 </div>
-                
-                <div class="admin-area">
+
+                <div style="display: none">
                     <label>ing-id</label><input type="text" id="change-sort-ingredient-id" data-type="standard"/>
                     <label>sort-nb</label><input type="text" id="change-sort-sort-nb" data-type="standard"/>
                     <button id="ingredient-change-sort-nb-button">Change sort#</button>
@@ -505,7 +505,7 @@ $name = $properties["name"];
 
                 <!-- -->
                 <div class="form-group">
-                    <div class="div-allergene">
+                    <div class="div-allergene" style="display: none">
                         <label class="control-label">Allergene für <span id="current_ingredient" data-id="">...</span>:</label>
                         <div id="allergy-select">
                             <div class="checkbox">
@@ -605,7 +605,7 @@ $name = $properties["name"];
                         </div>
                     </div>
 
-                    <div class="div-allergene div-allergene-right">
+                    <div class="div-allergene">
                         <label class="control-label">Allergene (insgesamt):</label>
                         <div id="allergy-select">
                             <div class="checkbox">
@@ -696,9 +696,9 @@ $name = $properties["name"];
                     </div>
 
 
-                    <hr/>
+                    <hr style="display: none"/>
 
-                    <div>
+                    <div style="display: none">
                         <p>
                             <label class="enthaltwrp">Kann Spuren von enthalten:</label>
                             <span id="enthalt_spuren_collector"></span>
@@ -706,7 +706,7 @@ $name = $properties["name"];
                         </p>
                     </div>
 
-                    <div>
+                    <div style="display: none">
                         <p>
                             <label class="enthaltwrp">Enthält eine geringe Menge:</label>
                             <span id="enthalt_gering_collector""></span>
