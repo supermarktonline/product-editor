@@ -4,8 +4,7 @@ $minstate = intval((isset($_GET['minstate'])) ? $_GET['minstate'] : "0");
 $maxstate = intval((isset($_GET['maxstate'])) ? $_GET['maxstate'] : "20");
 
 // query the list of the desired import
-$stmt = $db->prepare('SELECT * FROM fdata WHERE import_id = :import_id AND status >=:minstate AND status <= :maxstate ORDER BY id ASC');
-$stmt->bindValue(":import_id", urldecode($_GET['edit']));
+$stmt = $db->prepare('SELECT * FROM fdata WHERE status >=:minstate AND status <= :maxstate ORDER BY status ASC');
 $stmt->bindValue(":minstate", $minstate);
 $stmt->bindValue(":maxstate", $maxstate);
 $stmt->execute();
@@ -46,22 +45,25 @@ $stmt4 = $db->prepare('SELECT * FROM tag WHERE gs1_attribute_value_code IS NULL 
 $stmt4->execute();
 $tags = $stmt4->fetchAll();
 
-$stmt5 = $db->prepare('SELECT name FROM import WHERE id = :id');
-$stmt5->bindValue(":id", urldecode($_GET['edit']));
-$stmt5->execute();
-$properties = $stmt5->fetch();
-
-
 $stmt6 = $db->prepare('SELECT * FROM taggroup ORDER BY name DESC');
 $stmt6->execute();
 $taggroups = $stmt6->fetchAll();
-
-
-$name = $properties["name"];
 ?>
 <!DOCTYPE html>
 <html>
 <?php include("header.php"); ?>
+<script src="<?php echo VIEWPATH; ?>js/init.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/mixed.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/fs-resize.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/product-open.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/product-save.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/ingredient.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/category.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/tag.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/image.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/tags-admin.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/reservation.js"></script>
+<script src="<?php echo VIEWPATH; ?>js/autosave.js"></script>
 <body>
 
 
@@ -70,15 +72,12 @@ $name = $properties["name"];
         <div class="navbar-header"><a class="navbar-brand">Produkteditor</a></div>
         <div id="menu-navbar">
             <ul class="nav navbar-nav">
-                <li><a href="/" class="dropdown-toggle">&laquo; Zurück zur Listenverwaltung</a></li>
-
                 <li>
                     <input type="text" id="claim_name" placeholder="Benutzername" value=""/>
                 </li>
 
                 <li>
                     <form action="" method="get">
-                        <input type="hidden" name="edit" value="<?php echo $_GET['edit']; ?>"/>
                         <input type="text" name="minstate" value="<?php echo $minstate; ?>" size="2"/>
                         <input type="text" name="maxstate" value="<?php echo $maxstate; ?>" size="2"/>
                         <input type="submit" value="Status filtern"/>
@@ -91,7 +90,9 @@ $name = $properties["name"];
             </ul>
         </div>
         <div class="navbar-right-label">
-            <?php echo $name . ", " . urldecode($_GET['edit']); ?>
+            <a href="https://github.com/supermarktonline/product-editor/blob/master/hilfe/README.md">HILFE</a>
+            &middot;
+            <a href="/?import-export" class="dropdown-toggle">Zur Listenverwaltung</a>
         </div>
     </div>
 </nav>

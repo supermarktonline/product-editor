@@ -61,13 +61,6 @@ $imports = $stmt->fetchAll();
         <?php
     } ?>
 
-    <div class="mc">
-        <h1>HILFE</h1>
-        Unsere aktuelle Hilfeseite findet ihr <a
-            href="https://github.com/supermarktonline/product-editor/blob/master/hilfe/README.md">HIER</a>.
-    </div>
-
-
     <div class="mc admin-area">
         <h1>Import new list</h1>
 
@@ -165,33 +158,6 @@ insert into category_tag (category_id, tag_id) values (1338, 7970);
         </div>
     </div>
 
-
-    <div class="mc">
-        <h1>Liste zum Bearbeiten wählen</h1>
-
-        <div class="area_sel_container">
-            <?php
-
-            foreach ($imports as $row) {
-                ?>
-                <div class="area_sel_container_row">
-                    <a href="/?edit=<?php echo urlencode($row['import_id']); ?>"><?php echo $row['import_id'] . " (" . $row['name'] . ")"; ?></a>
-                    &nbsp;&nbsp;&nbsp;
-                <span id="admin_listedit" class="admin-area">
-                    <form method="post" action="">
-                        Name: <input type="text" name="new_import_name" value="<?php echo $row['name']; ?>"/>
-                        <input type="hidden" name="import_id" value="<?php echo urlencode($row['import_id']); ?>"/>
-                        <input type="submit" name="update_import" value="Update properties"/>
-                    </form>
-                </span>
-                </div>
-                <?php
-            }
-            ?>
-        </div>
-    </div>
-
-
     <div class="mc admin-area">
         <h1>Select a list to export</h1>
         <div class="area_sel_container">
@@ -255,17 +221,5 @@ insert into category_tag (category_id, tag_id) values (1338, 7970);
 
 </main>
 
-<div class="hide">
-    <div id="dialog-confirm" title="Delete list permanently?">
-        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This import will be
-            deleted and cannot be recovered. Are you sure you want to delete all items?</p>
-    </div>
-
-    <form id="delete_form" method="post" action="">
-        <input type="hidden" name="delete_list" value="do"/>
-        <input type="hidden" name="todelete" id="todelete" value=""/>
-    </form>
-
-</div>
 </body>
 </html>

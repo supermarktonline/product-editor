@@ -1,7 +1,7 @@
 <?php
 
-if(isset($_REQUEST['edit'])) {
-    include("edit.php");
+if(isset($_REQUEST['import-export'])) {
+    include("import-export.php");
 } else if(isset($_REQUEST['export'])) {
     include("export.php");
 } else if(isset($_REQUEST['export-tags'])) {
@@ -27,5 +27,5 @@ if(isset($_REQUEST['edit'])) {
 } else if(isset($_REQUEST['reserve'])) {
     include("reserve.php");
 } else {
-    include("import-export.php");
+    include("edit.php");
 } 
