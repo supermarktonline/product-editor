@@ -4,7 +4,7 @@ $minstate = intval((isset($_GET['minstate'])) ? $_GET['minstate'] : "0");
 $maxstate = intval((isset($_GET['maxstate'])) ? $_GET['maxstate'] : "20");
 
 // query the list of the desired import
-$stmt = $db->prepare('SELECT * FROM fdata WHERE status >=:minstate AND status <= :maxstate ORDER BY status ASC');
+$stmt = $db->prepare('SELECT * FROM fdata WHERE status >=:minstate AND status <= :maxstate ORDER BY (case when status < 10 then 0 else 1 end), status DESC, random()');
 $stmt->bindValue(":minstate", $minstate);
 $stmt->bindValue(":maxstate", $maxstate);
 $stmt->execute();
