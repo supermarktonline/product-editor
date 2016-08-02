@@ -319,6 +319,7 @@ $taggroups = $stmt6->fetchAll();
                                     <label class="control-label">pro</label>
                                     <input type="text" class="myTextInput" id="nutrient_snd_amount" value="0">
                                     <select id="nutrient_snd_unit">
+                                        <option disabled selected value> -- wie links -- </option>
                                         <option>g</option>
                                         <option>ml</option>
                                     </select>
