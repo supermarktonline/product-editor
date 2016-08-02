@@ -147,7 +147,9 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
         }
 
         // nutrient unit
-        $('#nutrient_snd_unit').val(product["nutrient_unit"]);
+        if (product["nutrient_snd_unit"]) {
+          $('#nutrient_snd_unit').val(product["nutrient_snd_unit"]);
+        }
 
 
         // allergene / ingredients
