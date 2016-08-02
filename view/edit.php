@@ -318,7 +318,10 @@ $taggroups = $stmt6->fetchAll();
                                 <div class="c50">
                                     <label class="control-label">pro</label>
                                     <input type="text" class="myTextInput" id="nutrient_snd_amount" value="0">
-                                    <span id="nutrient_unit_copy"></span>
+                                    <select id="nutrient_snd_unit">
+                                        <option>g</option>
+                                        <option>ml</option>
+                                    </select>
                                     <br/>
                                     Nährwerte gelten für zubereitet? <input type="checkbox" id="nutrient_snd_prepared"/>
                                 </div>

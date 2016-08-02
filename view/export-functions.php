@@ -134,6 +134,8 @@ function getNutrientTagColumn($row, $nut)
     $tag_column = array();
 
     $tgam = "100 " . $row["nutrient_unit"];
+    $snd_unit = $row["nutrient_snd_unit"];
+    if (!$snd_unit) $snd_unit = $row["nutrient_unit"];
     $dgam = $tgam;
     if ($nut["amount"] === "snd") {
         $tgam = "serving";
@@ -146,7 +148,7 @@ function getNutrientTagColumn($row, $nut)
 
 
     if ($nut["amount"] === "snd") {
-        $fullvalue .= " (per " . $row["nutrient_snd_amount"] . " " . $row["nutrient_unit"];
+        $fullvalue .= " (per " . $row["nutrient_snd_amount"] . " " . $snd_unit;
 
         if ($row["nutrient_snd_prepared"]) {
             $fullvalue .= " prepared";
@@ -178,7 +180,7 @@ function getNutrientTagColumn($row, $nut)
 
     // add the with
     if ($nut["amount"] === "snd") {
-        $deTagName .= " (pro " . $row["nutrient_snd_amount"] . " " . $row["nutrient_unit"];
+        $deTagName .= " (pro " . $row["nutrient_snd_amount"] . " " . $snd_unit;
 
         if ($row["nutrient_snd_prepared"] != "") {
             $deTagName .= " zubereitet";
