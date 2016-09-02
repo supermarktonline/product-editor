@@ -232,7 +232,7 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
                 return;
             }
 
-            if(product["status"]>0) {
+            if(product["status"]>0 || product["category"]) {
                 // set the categories and populate the GS1 Tags
                 $('#cs_segment,#cs_family,#cs_class,#cs_brick').html('');
 
