@@ -64,18 +64,25 @@ function saveCurrentProduct(status) {
 
         var unit = $('#container option').filter(':selected').text().concat($('#container_custom').val());
 
-        if (!(honig_in ^ honig_out)) {
+        var isFood = $('#cs_segment .catsel').val() == "50000000";
+        if (!(honig_in ^ honig_out) && isFood) {
             $('#message_container_save').html('<div class="umsg error">Nicht gespeichert: Ist Honig enthalten oder nicht?</div>');
             return false;
         }
 
-        if (!(meat_in ^ meat_out)) {
+        if (!(meat_in ^ meat_out) && isFood) {
             $('#message_container_save').html('<div class="umsg error">Nicht gespeichert: Ist Fleisch enthalten oder nicht?</div>');
             return false;
         }
 
         if (unit.trim() == "") {
             $('#message_container_save').html('<div class="umsg error">Nicht gespeichert: Behälter muss gesetzt sein.</div>');
+            return false;
+        }
+
+        var brickCode = $('#cs_brick .catsel').val();
+        if (!brickCode) {
+            $('#message_container_save').html('<div class="umsg error">Nicht gespeichert: GS1 Kategorie muss vollständig ausgewählt sein.</div>');
             return false;
         }
     }
