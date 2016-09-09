@@ -2,6 +2,7 @@
 
 
 require('config-local.php');
+require('model/helpers.php');
 require('model/Tool.php');
 require('model/Validator.php');
 require('dal/db.php');

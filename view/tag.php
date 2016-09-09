@@ -55,12 +55,14 @@ if($_REQUEST["tag"]=="create") {
     }
 
 
-    $stmt = $db->prepare("INSERT INTO tag (taggroup,muid,name_de,name_at,type) VALUES (:taggroup,:muid,:name_de,:name_at,:type)");
+    $stmt = $db->prepare("INSERT INTO tag (taggroup,muid,name_de,name_at,type,definition_en,definition_de) VALUES (:taggroup,:muid,:name_de,:name_at,:type,:definition_en,:definition_de)");
     $stmt->bindValue(":taggroup",intval($_REQUEST["taggroup"]));
     $stmt->bindValue(":muid",ucfirst($_REQUEST["muid"]));
     $stmt->bindValue(":name_de",ucfirst($_REQUEST["name_de"]));
     $stmt->bindValue(":name_at",ucfirst(strval($_REQUEST["name_at"])));
     $stmt->bindValue(":type",$type);
+    $stmt->bindValue(":definition_en",$_REQUEST["definition_en"]);
+    $stmt->bindValue(":definition_de",$_REQUEST["definition_de"]);
 
     if(!$stmt->execute()) {
         echo json_encode(array("error"=>"SQL Failure: ".json_encode($db->errorInfo()[0]))); die;

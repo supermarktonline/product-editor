@@ -27,9 +27,9 @@ foreach($rows as $row) {
     $a[1] = trim($a[1], '"');
 
     if($a[0]!="" && $a[1]!="") {
-        $stmt = $db->prepare("INSERT INTO taggroup (muid,name) VALUES (:muid,:name)");
+        $stmt = $db->prepare("INSERT INTO taggroup (muid,name_de) VALUES (:muid,:name_de)");
         $stmt->bindValue(":muid",$a[0]);
-        $stmt->bindValue(":name",$a[1]);
+        $stmt->bindValue(":name_de",$a[1]);
 
         $stmt->execute();
 

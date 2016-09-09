@@ -504,3 +504,11 @@ table tr td.reserve {
 select {
     height:34px;
 }
+
+.adm-blc {
+    display:inline-block;
+}
+
+.adm-blc textarea {
+    vertical-align:middle;
+}

@@ -169,7 +169,6 @@ CREATE TABLE fdata (
 
 
 CREATE TABLE ingredient (
-
     id SERIAL PRIMARY KEY,
     name text UNIQUE,
     a boolean DEFAULT false,
@@ -195,7 +194,7 @@ CREATE SEQUENCE ingredient_sort_seq;
 CREATE TABLE fdata_ingredient (
   fdata_id    int REFERENCES fdata (id) ON UPDATE CASCADE ON DELETE CASCADE
 , ingredient_id int REFERENCES ingredient(id) ON UPDATE CASCADE ON DELETE CASCADE
-, sort_nb float DEFAULT nextval('ingredient_sort_seq'::regclass);
+, sort_nb float DEFAULT nextval('ingredient_sort_seq'::regclass)
   -- explicit pk
 , CONSTRAINT fdata_ingredient_pkey PRIMARY KEY (fdata_id, ingredient_id)
 );
@@ -230,6 +229,8 @@ CREATE TABLE category (
     family_description_de varchar(255) NOT NULL default '',
     class_description_de varchar(255) NOT NULL default '',
     brick_description_de varchar(255) NOT NULL default '',
+    brick_definition_en text NOT NULL default '',
+    brick_definition_de text NOT NULL default '',
     CONSTRAINT gs1_unique UNIQUE (segment_code,family_code,class_code,brick_code)
 );
 
@@ -242,7 +243,10 @@ CREATE TABLE taggroup (
     id SERIAL PRIMARY KEY,
     gs1_attribute_type_code int DEFAULT NULL,
     muid varchar(255) UNIQUE, /* = Name EN */
-    name varchar(255),
+    name_de varchar(255) DEFAULT '',
+    name_at varchar(255) DEFAULT '',
+    definition_en text NOT NULL default '',
+    definition_de text NOT NULL default '',
     numerical_required boolean DEFAULT FALSE
 );
 
@@ -253,6 +257,8 @@ CREATE TABLE tag (
     muid varchar(255) NOT NULL, /* = Name EN */
     name_de varchar(255) DEFAULT '',
     name_at varchar(255) DEFAULT '',
+    definition_en text NOT NULL default '',
+    definition_de text NOT NULL default '',
     type VARCHAR(255) /* if type is set, this is a numerical tag */,
     CONSTRAINT tag_unique_cbd UNIQUE(gs1_attribute_value_code,muid,taggroup)
 );

@@ -45,7 +45,7 @@ $stmt4 = $db->prepare('SELECT * FROM tag WHERE gs1_attribute_value_code IS NULL 
 $stmt4->execute();
 $tags = $stmt4->fetchAll();
 
-$stmt6 = $db->prepare('SELECT * FROM taggroup ORDER BY name DESC');
+$stmt6 = $db->prepare('SELECT * FROM taggroup ORDER BY name_de DESC');
 $stmt6->execute();
 $taggroups = $stmt6->fetchAll();
 ?>
@@ -138,7 +138,7 @@ $taggroups = $stmt6->fetchAll();
                             echo $tp;
                         }
                         ?></td>
-                    <td><?php echo $imp["bestandsfuehrer"]; ?></td>
+                    <td><?php echo resempty($imp,"bestandsfuehrer"); ?></td>
                     <td data-nfieldb="<?php echo $imp["id"]; ?>"><?php
                         if (strlen($tp = $imp["productBrand de_AT"]) > 1) {
                             echo $tp;
@@ -740,15 +740,21 @@ $taggroups = $stmt6->fetchAll();
                         <div id="admin-area" class="admin-area">
                             <div id="tag_group_wrapper">
 
-                                <p><label>Admin - Tag-Gruppe anlegen:</label> MUID (en): <input type="text"
-                                                                                                id="tag_group_new_muid"
-                                                                                                value=""/> Name (de):
-                                    <input type="text" id="tag_group_new_name"/>
-                                    Numerical required: <input type="checkbox" id="tag_group_new_numerical_required"
-                                                               value=""/>
+                                <p><label>Admin - Tag-Gruppe anlegen:</label>
+
+                                    <span class="adm-blc">MUID (en): <input type="text" id="tag_group_new_muid" value="" /></span>
+
+                                    <span class="adm-blc">Name (de):<input type="text" id="tag_group_new_name" /></span>
+
+                                    <span class="adm-blc">Numerical required: <input type="checkbox" id="tag_group_new_numerical_required" value="" /></span>
+
+                                    <span class="adm-blc">Beschreibung (en): <textarea id="tag_group_new_definition_en"></textarea></span>
+
+                                    <span class="adm-blc">Beschreibung (de): <textarea id="tag_group_new_definition_de"></textarea></span>
 
                                     <button id="tag_group_new_create">Gruppe anlegen</button>
-
+                                </p>
+                                <p>
                                     <label>Admin - Tag-Gruppe löschen:</label> <input type="text"
                                                                                       id="tag_group_delete_selector"
                                                                                       value=""/><input type="hidden"
@@ -763,29 +769,42 @@ $taggroups = $stmt6->fetchAll();
                                     in MUID/Name, $ ... Platzhalter für numerischen Value Type in MUID/Name, wenn nicht
                                     numerisch: keine Placeholder, typ leerlassen)</p>
                                 <p>
-                                    Gruppe wählen: <input type="text" id="tag_group_selector" value=""/><input
-                                        type="hidden" id="tag_group_selected_id" value="0"/>
-                                    UID (EN): <input type="text" id="tag_uid_new" value=""/>
-                                    Name (DE): <input type="text" id="tag_name_new" value=""/>
-                                    Name (AT) *: <input type="text" id="tag_name_at_new" value=""/>
-                                    Numerical Typ:
-                                    <select id="tag_numerical_new_type">
-                                        <option value="">-- nicht numerisch --</option>
-                                        <option value="numeric">(Zahl ohne Einheit)</option>
-                                        <option value="percent">% (percent)</option>
-                                        <option value="kilogram">kg (kilogram)</option>
-                                        <option value="gram">g (gram)</option>
-                                        <option value="milligram">mg (miligram)</option>
-                                        <option value="liter">l (liter)</option>
-                                        <option value="milliliter">ml (milliliter)</option>
-                                        <option value="seconds">s (seconds)</option>
-                                        <option value="minutes">m (minutes)</option>
-                                        <option value="hours">h (hours)</option>
-                                        <option value="days">d (days)</option>
-                                        <option value="permill">‰ (promille)</option>
-                                        <option value="squaremeters">m² (square meters)</option>
-                                        <option value="cubicmeters">m³ (cubic meters)</option>
-                                    </select>
+                                    <span class="adm-blc">
+                                        Gruppe wählen: <input type="text" id="tag_group_selector" value=""/><input
+                                            type="hidden" id="tag_group_selected_id" value="0"/>
+                                    </span>
+
+                                    <span class="adm-blc">UID (EN): <input type="text" id="tag_uid_new" value=""/></span>
+
+                                    <span class="adm-blc">Name (DE): <input type="text" id="tag_name_new" value=""/></span>
+
+                                    <span class="adm-blc">Name (AT) *: <input type="text" id="tag_name_at_new" value=""/></span>
+
+                                    <span class="adm-blc">
+                                        Numerical Typ:
+                                        <select id="tag_numerical_new_type">
+                                            <option value="">-- nicht numerisch --</option>
+                                            <option value="numeric">(Zahl ohne Einheit)</option>
+                                            <option value="percent">% (percent)</option>
+                                            <option value="kilogram">kg (kilogram)</option>
+                                            <option value="gram">g (gram)</option>
+                                            <option value="milligram">mg (miligram)</option>
+                                            <option value="liter">l (liter)</option>
+                                            <option value="milliliter">ml (milliliter)</option>
+                                            <option value="seconds">s (seconds)</option>
+                                            <option value="minutes">m (minutes)</option>
+                                            <option value="hours">h (hours)</option>
+                                            <option value="days">d (days)</option>
+                                            <option value="permill">‰ (promille)</option>
+                                            <option value="squaremeters">m² (square meters)</option>
+                                            <option value="cubicmeters">m³ (cubic meters)</option>
+                                        </select>
+                                    </span>
+
+                                    <span class="adm-blc">Beschreibung (en): <textarea id="tag_new_definition_en"></textarea></span>
+
+                                    <span class="adm-blc">Beschreibung (de): <textarea id="tag_new_definition_de"></textarea></span>
+
                                     <button id="tag_new_create">Tag anlegen</button>
                                 </p>
                                 <p>

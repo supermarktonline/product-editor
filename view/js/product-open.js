@@ -157,9 +157,11 @@ $(document).on('click','*[data-open_edit_id]',function(e) {
 
         // taggroups
         // clear tag area
-        $('#tag_group_new_muid,#tag_group_new_name,#tag_uid_new,#tag_name_new,#tag_name_at_new,#tag_numerical_new,#tag_delete_selector,#tag_group_delete_selector').val('');
+        $('#tag_group_new_muid,#tag_group_new_name,#tag_group_new_definition_en,#tag_group_new_definition_de' +
+            ',#tag_uid_new,#tag_name_new,#tag_name_at_new,#tag_numerical_new,#tag_new_definition_en,tag_new_definition_de,#tag_delete_selector,#tag_group_delete_selector').val('');
         $('#tag_group_selected_id,#tag_group_delete_selected_id,#tag_delete_selected_id').val(0);
         $('#tag_group_new_numerical_required').attr('checked',false);
+
 
         // show ingredients
         var types = ["standard","enthalt","gering"];

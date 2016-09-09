@@ -61,6 +61,10 @@ function setActiveImage(img_src) {
 }
 
 
+(function($) {
+    $(document).ready(function() {
+
+
 $(document).on('click','#ifc_larger',function() {
     var width =  zimg.width();
     var height =  zimg.height();
@@ -143,3 +147,6 @@ $(document).on('click','#ifc_lb',function() {
 $(document).on('click','#ifc_rb',function() {
     zimg.css({left: cont.width()-zimg.width(), top: cont.height()-zimg.height() });
 });
+
+    });
+}) (jQuery)

@@ -13,8 +13,11 @@ $(document).on('click','#tag_group_new_create',function(e) {
 
     var taggroup = {
         muid:   $('#tag_group_new_muid').val(),
-        name:   $('#tag_group_new_name').val(),
-        numerical_required: (($('#tag_group_new_numerical_required').is(":checked")) ? true : false)
+        name_de:   $('#tag_group_new_name').val(),
+        numerical_required: (($('#tag_group_new_numerical_required').is(":checked")) ? true : false),
+        name_at: '',
+        definition_en: $('#tag_group_new_definition_en').val(),
+        definition_de: $('#tag_group_new_definition_de').val()
     };
 
     $.ajax({ type:"POST", url: "/?taggroup=create", data:taggroup, success: function(result){
@@ -24,7 +27,7 @@ $(document).on('click','#tag_group_new_create',function(e) {
         // success
         if(dec["id"]>0) {
             $('#message_container').html('<div class="umsg success">New Tag group successfully created.</div>');
-            $('#tag_group_new_muid,#tag_group_new_name').val('');
+            $('#tag_group_new_muid,#tag_group_new_name,#tag_group_new_definition_en,#tag_group_new_definition_de').val('');
             $('#tag_group_new_numerical_required').attr('checked',false);
             taggroups.push(dec);
             taggroup_labels.push({label: dec["name"]+" ("+dec["muid"]+")",value: dec["id"]});
@@ -74,7 +77,9 @@ $(document).on('click','#tag_new_create',function(e) {
         muid:   $('#tag_uid_new').val(),
         name_de:   $('#tag_name_new').val(),
         name_at:   $('#tag_name_at_new').val(),
-        type: $('#tag_numerical_new_type').val()
+        type: $('#tag_numerical_new_type').val(),
+        definition_en: $('#tag_new_definition_en').val(),
+        definition_de: $('#tag_new_definition_de').val()
     };
 
     $.ajax({ type:"POST", url: "/?tag=create", data:tag, success: function(result){
@@ -84,7 +89,7 @@ $(document).on('click','#tag_new_create',function(e) {
         // success
         if(dec["id"]>0) {
             $('#message_container').html('<div class="umsg success">New Tag successfully created.</div>');
-            $('#tag_group_new_muid,#tag_group_new_name').val('');
+            $('#tag_group_selected_id,#tag_uid_new,#tag_name_new,#tag_name_at_new,#tag_numerical_new_type,#tag_new_definition_en,#ta_new_definition_de').val('');
 
 
         } else {
