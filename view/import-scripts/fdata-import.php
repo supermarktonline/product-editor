@@ -53,11 +53,16 @@ if (isset($_POST['newimp']) && $_POST['newimp'] == "doit") {
                                     }
                                 }
 
-                                $stmt = $db->prepare($upStr);
-                                $stmt->bindValue(":inv", $data[0]);
-                                $stmt->bindValue(":img", $data[1]);
-                                if (!$stmt->execute()) {
-                                    array_push($user_messages, array("error", "Row was not imported: " . $stmt->errorInfo()[2]));
+                                // Checking if the list of images is empty, so the code can also be used to import
+                                // products without pictures. Of course if the product already exists with images those
+                                // images should not be overwritten.
+                                if ("" !== "$data[1]") {
+                                    $stmt = $db->prepare($upStr);
+                                    $stmt->bindValue(":inv", $data[0]);
+                                    $stmt->bindValue(":img", $data[1]);
+                                    if (!$stmt->execute()) {
+                                        array_push($user_messages, array("error", "Row was not imported: " . $stmt->errorInfo()[2]));
+                                    }
                                 }
                             } else {
                                 array_push($user_messages, array("error", "Row was not imported: Incorrect number of fields."));
