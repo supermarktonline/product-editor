@@ -107,9 +107,26 @@ function appendTag(tag,checked) {
     if(checked) {
         dochk = 'checked="checked"';
     }
+
+    var label = (tag["name_de"]).trim();
+    var def = (tag["definition_de"]).trim();
+
+    if(label=="") {
+        label = tag["muid"];
+    }
+
+    if(def=="") {
+        def = (tag["definition_en"]).trim();
+    }
+
+    var info = '';
+
+    if(def!="") {
+        info = '<div class="info-icon tg-info"><div class="no-show" title="'+label+'">'+def+'</div></div>';
+    }
     
     var html = '<div class="gs" data-id="'+tag["id"]+'">';
-    html += '<label><input type="checkbox" '+dochk+' class="tag" value="'+tag["id"]+'" />'+tag["name_de"]+'</label>';
+    html += '<label><input type="checkbox" '+dochk+' class="tag" value="'+tag["id"]+'" />'+label+'</label> '+info+' ';
     html += '</div>';
 
     $('#guetesiegel').append(html);
@@ -118,16 +135,31 @@ function appendTag(tag,checked) {
 function appendNumericalTag(tag,value) {
     value = value || "";
 
+    var label = (tag["name_de"]).trim();
+    var def = (tag["definition_de"]).trim();
+
+    if(label=="") {
+        label = tag["muid"];
+    }
+
+    if(def=="") {
+        def = (tag["definition_en"]).trim();
+    }
+
+
     var html = '<div class="gs" data-id="'+tag["id"]+'">';
 
     var input = '<input size="4" type="text" class="numerical-tag" data-tagid="'+tag["id"]+'" value="'+value+'" />';
 
-    var name = tag["name_de"];
+    var prep = (label.replace("$",input)).replace("~",numerical_tags_map[tag["type"]]);
 
-    var prep = (name.replace("$",input)).replace("~",numerical_tags_map[tag["type"]]);
+    var info = '';
 
+    if(def!="") {
+        info = '<div class="info-icon tg-info"><div class="no-show" title="'+label.replace("~",numerical_tags_map[tag["type"]]).replace("$","")+'">'+def+'</div></div>';
+    }
 
-    html += '<label>'+prep+'</label>';
+    html += '<label>'+prep+'</label> '+info+' ';
     html += '</div>';
 
     $('#tags_numerical').append(html);
