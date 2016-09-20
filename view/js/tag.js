@@ -1,4 +1,20 @@
 
+// tag show info
+$(document).on('click','.tg-info',function() {
+
+    if($(this).children().length > 0) {
+        var dialog = $(this).children().first();
+
+        if($(dialog).text().trim()!="") {
+            $(dialog).clone().dialog({
+               width:600
+            });
+        }
+
+    }
+
+});
+
 // add a new tag
 $(document).on('click','#tag_adder',function() {
     var new_tag = $('#tag_new').val();
@@ -190,14 +206,11 @@ function populateGS1TagsForCategory(brick,tag_connections) {
 
 function appendGS1Selector(tagsel,tag_connections) {
 
-    var html = '<div class="gs1tag" data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'" >';
-    html += '<label>'+tagsel["muid"]+'</label> ';
-    html += '<select data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'">';
-    html += '<option value="">---- OPTION AUSWÄHLEN ---</option>';
-
+    var tags_options = "";
+    var tags_info = "<br/><br/><strong>Attribute:</strong>";
 
     for(var tag in tagsel["tags"]) {
-        selected ="";
+        var selected ="";
 
         for(var con in tag_connections) {
             if(tag_connections[con]["tag_id"] == tagsel["tags"][tag]["tag_id"]) {
@@ -206,8 +219,52 @@ function appendGS1Selector(tagsel,tag_connections) {
             }
         }
 
-      html += '<option '+selected+' value="'+tagsel["tags"][tag]["tag_id"]+'">'+tagsel["tags"][tag]["tag_muid"]+'</option>';
+        var tl = (tagsel["tags"][tag]["tag_name_de"]).trim();
+
+        if(tl=="") {
+            tl = (tagsel["tags"][tag]["tag_muid"]).trim();
+        }
+
+        tags_options += '<option '+selected+' value="'+tagsel["tags"][tag]["tag_id"]+'">'+tl+'</option>';
+
+        var ti = (tagsel["tags"][tag]["tag_def_de"]).trim();
+
+        if(ti=="") {
+            ti = (tagsel["tags"][tag]["tag_def_en"]).trim();
+        }
+
+        if(ti=="") {
+            tags_info += "<br/><br/>"+tl+" - Keine weiteren Informationen";
+        } else {
+            tags_info += "<br/><br/>"+tl+ " - "+ti;
+        }
+
     }
+
+
+
+    var label = (tagsel["name"]).trim();
+    var def = (tagsel["def_de"]).trim();
+
+    if(label=="") {
+        label = tagsel["muid"];
+    }
+
+    if(def=="") {
+        def = (tagsel["def_en"]).trim();
+    }
+
+    var info = '';
+
+    if(def!="") {
+        info = '<div class="info-icon tg-info"><div class="no-show" title="'+label+'">'+def+tags_info+'</div></div>';
+    }
+
+    var html = '<div class="gs1tag" data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'" >';
+    html += '<label>'+label+'</label> '+info+' ';
+    html += '<select data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'">';
+    html += '<option value="">---- OPTION AUSWÄHLEN ---</option>';
+    html += tags_options;
     html += '</select></div>';
     $('#tags_gs1').append(html);
 }

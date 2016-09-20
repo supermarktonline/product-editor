@@ -512,3 +512,22 @@ select {
 .adm-blc textarea {
     vertical-align:middle;
 }
+
+#attributes-container {
+    margin-top:15px;
+}
+
+/* Infos and Dialogs for definitions */
+
+.info-icon {
+    background:url('../img/info.png') center center no-repeat;
+    width:16px;
+    height:16px;
+    background-size:contain;
+    display:inline-block;
+    cursor:pointer;
+}
+
+#active_category_showdef_vis p {
+    line-height:1.5em;
+}
