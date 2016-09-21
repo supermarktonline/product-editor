@@ -1,4 +1,20 @@
 
+// tag show info
+$(document).on('click','.tg-info',function() {
+
+    if($(this).children().length > 0) {
+        var dialog = $(this).children().first();
+
+        if($(dialog).text().trim()!="") {
+            $(dialog).clone().dialog({
+               width:600
+            });
+        }
+
+    }
+
+});
+
 // add a new tag
 $(document).on('click','#tag_adder',function() {
     var new_tag = $('#tag_new').val();
@@ -91,9 +107,26 @@ function appendTag(tag,checked) {
     if(checked) {
         dochk = 'checked="checked"';
     }
+
+    var label = (tag["name_de"]).trim();
+    var def = (tag["definition_de"]).trim();
+
+    if(label=="") {
+        label = tag["muid"];
+    }
+
+    if(def=="") {
+        def = (tag["definition_en"]).trim();
+    }
+
+    var info = '';
+
+    if(def!="") {
+        info = '<div class="info-icon tg-info"><div class="no-show" title="'+label+'">'+def+'</div></div>';
+    }
     
     var html = '<div class="gs" data-id="'+tag["id"]+'">';
-    html += '<label><input type="checkbox" '+dochk+' class="tag" value="'+tag["id"]+'" />'+tag["name_de"]+'</label>';
+    html += '<label><input type="checkbox" '+dochk+' class="tag" value="'+tag["id"]+'" />'+label+'</label> '+info+' ';
     html += '</div>';
 
     $('#guetesiegel').append(html);
@@ -102,16 +135,31 @@ function appendTag(tag,checked) {
 function appendNumericalTag(tag,value) {
     value = value || "";
 
+    var label = (tag["name_de"]).trim();
+    var def = (tag["definition_de"]).trim();
+
+    if(label=="") {
+        label = tag["muid"];
+    }
+
+    if(def=="") {
+        def = (tag["definition_en"]).trim();
+    }
+
+
     var html = '<div class="gs" data-id="'+tag["id"]+'">';
 
     var input = '<input size="4" type="text" class="numerical-tag" data-tagid="'+tag["id"]+'" value="'+value+'" />';
 
-    var name = tag["name_de"];
+    var prep = (label.replace("$",input)).replace("~",numerical_tags_map[tag["type"]]);
 
-    var prep = (name.replace("$",input)).replace("~",numerical_tags_map[tag["type"]]);
+    var info = '';
 
+    if(def!="") {
+        info = '<div class="info-icon tg-info"><div class="no-show" title="'+label.replace("~",numerical_tags_map[tag["type"]]).replace("$","")+'">'+def+'</div></div>';
+    }
 
-    html += '<label>'+prep+'</label>';
+    html += '<label>'+prep+'</label> '+info+' ';
     html += '</div>';
 
     $('#tags_numerical').append(html);
@@ -190,14 +238,11 @@ function populateGS1TagsForCategory(brick,tag_connections) {
 
 function appendGS1Selector(tagsel,tag_connections) {
 
-    var html = '<div class="gs1tag" data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'" >';
-    html += '<label>'+tagsel["muid"]+'</label> ';
-    html += '<select data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'">';
-    html += '<option value="">---- OPTION AUSWÄHLEN ---</option>';
-
+    var tags_options = "";
+    var tags_info = "<br/><br/><strong>Attribute:</strong>";
 
     for(var tag in tagsel["tags"]) {
-        selected ="";
+        var selected ="";
 
         for(var con in tag_connections) {
             if(tag_connections[con]["tag_id"] == tagsel["tags"][tag]["tag_id"]) {
@@ -206,8 +251,52 @@ function appendGS1Selector(tagsel,tag_connections) {
             }
         }
 
-      html += '<option '+selected+' value="'+tagsel["tags"][tag]["tag_id"]+'">'+tagsel["tags"][tag]["tag_muid"]+'</option>';
+        var tl = (tagsel["tags"][tag]["tag_name_de"]).trim();
+
+        if(tl=="") {
+            tl = (tagsel["tags"][tag]["tag_muid"]).trim();
+        }
+
+        tags_options += '<option '+selected+' value="'+tagsel["tags"][tag]["tag_id"]+'">'+tl+'</option>';
+
+        var ti = (tagsel["tags"][tag]["tag_def_de"]).trim();
+
+        if(ti=="") {
+            ti = (tagsel["tags"][tag]["tag_def_en"]).trim();
+        }
+
+        if(ti=="") {
+            tags_info += "<br/><br/>"+tl+" - Keine weiteren Informationen";
+        } else {
+            tags_info += "<br/><br/>"+tl+ " - "+ti;
+        }
+
     }
+
+
+
+    var label = (tagsel["name"]).trim();
+    var def = (tagsel["def_de"]).trim();
+
+    if(label=="") {
+        label = tagsel["muid"];
+    }
+
+    if(def=="") {
+        def = (tagsel["def_en"]).trim();
+    }
+
+    var info = '';
+
+    if(def!="") {
+        info = '<div class="info-icon tg-info"><div class="no-show" title="'+label+'">'+def+tags_info+'</div></div>';
+    }
+
+    var html = '<div class="gs1tag" data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'" >';
+    html += '<label>'+label+'</label> '+info+' ';
+    html += '<select data-id="'+tagsel["id"]+'" data-group_code="'+tagsel["code"]+'">';
+    html += '<option value="">---- OPTION AUSWÄHLEN ---</option>';
+    html += tags_options;
     html += '</select></div>';
     $('#tags_gs1').append(html);
 }

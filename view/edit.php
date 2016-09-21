@@ -826,16 +826,23 @@ $taggroups = $stmt6->fetchAll();
                     <label>Artikelbeschreibende Information</label>
 
                     <div class="cfg_row">
-                        Aktive Kategorie:
+                        <span id="acd_label">Aktive Kategorie:</span>
                         <input type="hidden" id="active_category" value=""/>
                         <span id="active_category_display">-- Keine --</span>
-                <span class="admin-area">
-                &nbsp;&nbsp;&nbsp;TagVorschlag für alle: <input type="checkbox" id="tag_for_all"/>
-                &nbsp;&nbsp;&nbsp;<button id="active_category_tag_update">Speichere Tag-Vorschläge</button>
-                &nbsp;&nbsp;&nbsp;<button data-ishidden="0" id="switch_show_recommended">Alle Tags
-                        einblenden/ausblenden
-                    </button>
-                </span>
+                        <span id="active_category_showdef" class="info-icon"></span>
+                        <div id="active_category_def" class="no-show" title=""></div>
+                    </div>
+
+
+
+                    <div class="cfg_row">
+                        <span class="admin-area">
+                        Tag-Vorschlag für alle: <input type="checkbox" id="tag_for_all"/>
+                        &nbsp;&nbsp;&nbsp;<button id="active_category_tag_update">Speichere Tag-Vorschläge</button>
+                        &nbsp;&nbsp;&nbsp;<button data-ishidden="0" id="switch_show_recommended">Alle Tags
+                                einblenden/ausblenden
+                            </button>
+                        </span>
                     </div>
 
                     <div id="attributes-container">

@@ -20,26 +20,31 @@ $(document).ready(function() {
 
         if(!(segment_code in gs_tree)) {
             gs_tree[segment_code] = {};
-            gs_tree[segment_code]["label"] = categories[i]["segment_description_en"];
+            gs_tree[segment_code]["label_en"] = categories[i]["segment_description_en"];
+            gs_tree[segment_code]["label_de"] = categories[i]["segment_description_de"];
             gs_tree[segment_code]["family_codes"] = {};
         }
 
         if(!(family_code in gs_tree[segment_code]["family_codes"] )) {
             gs_tree[segment_code]["family_codes"][family_code] = {};
-            gs_tree[segment_code]["family_codes"][family_code]["label"] = categories[i]["family_description_en"];
+            gs_tree[segment_code]["family_codes"][family_code]["label_en"] = categories[i]["family_description_en"];
+            gs_tree[segment_code]["family_codes"][family_code]["label_de"] = categories[i]["family_description_de"];
             gs_tree[segment_code]["family_codes"][family_code]["class_codes"] = {};
         }
 
         if(!(class_code in gs_tree[segment_code]["family_codes"][family_code]["class_codes"] )) {
             gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code] = {};
-            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["label"] = categories[i]["class_description_en"];
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["label_en"] = categories[i]["class_description_en"];
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["label_de"] = categories[i]["class_description_de"];
             gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"] = {};
         }
 
         // we assume that the brick codes are also unique identifiers for now
         if(!(brick_code in gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"] )) {
             gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"][brick_code] = {};
-            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"][brick_code]["label"] = categories[i]["brick_description_en"];
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"][brick_code]["label_en"] = categories[i]["brick_description_en"];
+            gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"][brick_code]["label_de"] = categories[i]["brick_description_de"];
+
             gs_tree[segment_code]["family_codes"][family_code]["class_codes"][class_code]["brick_codes"][brick_code]["category_id"] = category_id;
         }
 
@@ -47,6 +52,16 @@ $(document).ready(function() {
     
 });
 
+
+$(document).on('click','#active_category_showdef',function() {
+    if($('#active_category_def').text().trim()!="") {
+        $('#active_category_def').clone().each(function(){
+            this.id = "active_category_showdef_vis"; // to keep it unique
+        }).dialog({
+            width:600
+        });
+    }
+});
 
 // category in category selector was selected
 $(document).on('change','.cat-selector',function() {
@@ -107,12 +122,33 @@ function setGlobalCurrentCat(catid) {
     // set the label
     if(catid==0) {
         $('#active_category_display').text("");
+        $('#active_category_def').attr("title","").html('');
+        $('#active_category_showdef,#acd_label').hide();
     } else {
 
         // set the label
         var cat = getCategoryById(catid);
 
-        $('#active_category_display').text(cat["brick_description_en"]);
+        var displab = (cat["brick_description_de"]).trim();
+        var dispdef = (cat["brick_definition_de"]).trim();
+
+        if(displab=="") {
+            displab = (cat["brick_description_en"]).trim();
+        }
+
+        if(dispdef=="") {
+            dispdef = (cat["brick_definition_en"]).trim();
+        }
+
+        $('#acd_label').show();
+
+        $('#active_category_display').text(displab);
+
+        if(dispdef!="") {
+            $('#active_category_showdef').show();
+            $('#active_category_def').attr("title",displab);
+            $('#active_category_def').html('<p>'+dispdef+'</p>');
+        }
 
 
 
@@ -190,7 +226,9 @@ function setCategorySelectorAndGS1Tags(category_id,tag_connections) {
         }
 
     } else {
-        $('#cs_segment').html(buildSelector(1));
+        if($('#cs_segment').children('.catsel').length < 1) {
+            $('#cs_segment').html(buildSelector(1));
+        }
         $('#tags_gs1').html('');
     }
 
@@ -258,7 +296,13 @@ function buildSelector(level,segment,family,_class,brick,preselect) {
             selected = 'selected="selected"';
         }
 
-        html += '<option '+selected+' data-categoryid="'+this[key]["category_id"]+'" value="'+key+'">'+this[key]["label"]+'</option>';
+        var lab = this[key]["label_de"];
+
+        if(lab=="") {
+            lab = this[key]["label_en"];
+        }
+
+        html += '<option '+selected+' data-categoryid="'+this[key]["category_id"]+'" value="'+key+'">'+lab+'</option>';
     }, base);
 
     html += '</select>';
