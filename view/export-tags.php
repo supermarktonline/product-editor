@@ -1,5 +1,8 @@
 <?php
 
+// Since we passed ~5000 products, the export needs more memory than PHP might otherwise provide. Other optimizations
+// may be possible and this is only a quick fix.
+ini_set('memory_limit', '-1');
 
 include("export-functions.php");
 

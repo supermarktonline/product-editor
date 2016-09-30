@@ -1,5 +1,8 @@
 <?php
 
+// Since we passed ~5000 products, the export needs more memory than PHP might otherwise provide. Other optimizations
+// may be possible and this is only a quick fix.
+ini_set('memory_limit', '-1');
 
 include("export-functions.php");
 
@@ -125,7 +128,7 @@ foreach ($fdata as $row) {
         } else if ($columnName === "articleMuid") {
             $article[$columnName] = $row["bestandsfuehrer"];
         } else if ($columnName === "articleTagPaths") {
-            $tags =  implode(";", array_merge(getCategoryExportPath($id), getTagIDsForRow($row)));
+            $tags = implode(";", array_merge(getCategoryExportPath($id), getTagIDsForRow($row)));
             $article[$columnName] = quoteForCsv($tags);
         } else if ($columnName === "productDescription de_AT") {
             $beschreibung = $value ? "-----------\nBeschreibung\n======\n" . $value . "\n" : "";
