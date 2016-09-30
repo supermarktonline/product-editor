@@ -5,7 +5,7 @@ $maxstate = intval((isset($_GET['maxstate'])) ? $_GET['maxstate'] : "20");
 
 // query the list of the desired import. Now limiting to 1000 products after random sorting, because displaying all our
 // (at the time of writing) 5500 products at once exhausts memory and is not necessary at this time.
-$stmt = $db->prepare('SELECT * FROM fdata WHERE status >=:minstate AND status <= :maxstate ORDER BY (case when status < 10 then 0 else 1 end), status DESC, random() LIMIT 1000');
+$stmt = $db->prepare('SELECT * FROM fdata WHERE status >=:minstate AND status <= :maxstate AND "productImages" <> \'noimage.png\' ORDER BY (case when status < 10 then 0 else 1 end), status DESC, random() LIMIT 1000');
 $stmt->bindValue(":minstate", $minstate);
 $stmt->bindValue(":maxstate", $maxstate);
 $stmt->execute();
