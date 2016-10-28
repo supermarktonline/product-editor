@@ -96,27 +96,30 @@ foreach ($editorColumns as $intName => $columnName) {
 }
 
 $column_gatherer = array();
+
+function sanitizeValue($row, $field)
+{
+    if ($row[$field] != "") {
+        $parts = explode(" ", $row[$field]);
+
+        if ($parts[0] == "0") {
+            $row[$field] = "";
+            return $row;
+        } else {
+            $row[$field] = "" . round($parts[0], 12) . " " . $parts[1];
+            return $row;
+        }
+    }
+    return $row;
+}
+
 foreach ($fdata as $row) {
     $article = array();
 
     // undo bug where for instance «9 g» has been converted to 0.009000000000000001 kg
     // also don't print 0 values
-    $articleWeight = $row['articleWeight'];
-    if ($articleWeight != "") {
-        if ($articleWeight == "0 kg") {
-            $row['articleWeight'] = "";
-        } else {
-            $row['articleWeight'] = "" . round(explode(" ", $articleWeight)[0], 12) . " kg";
-        }
-    }
-    $articleVolume = $row['articleVolume'];
-    if ($articleVolume != "") {
-        if ($articleVolume == "0 l") {
-            $row['articleVolume'] = "";
-        } else {
-            $row['articleVolume'] = "" . round(explode(" ", $articleVolume)[0], 12) . " l";
-        }
-    }
+    $row = sanitizeValue($row, 'articleWeight');
+    $row = sanitizeValue($row, 'articleVolume');
 
     foreach ($columns as $columnName => $dbColumnName) {
         if ($dbColumnName === "") $dbColumnName = $columnName;
