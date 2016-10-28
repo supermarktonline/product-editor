@@ -502,7 +502,7 @@ function getSpecialTags($row)
         $tag_column["tagGroupingName de_DE"] = "Verpackung";
         $tag_column["tagGroupingTagNumericalRequired"] = "No";
 
-        $tag_column["tagUid"] = "Packaging : " . $row["container"];
+        $tag_column["tagUid"] = "Packaging : " . _replToAscii($row["container"]);
         $tag_column["tagName de_DE"] = $row["container"];
         $tag_column["tagType"] = "ArticleDescribing";
 
