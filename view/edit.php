@@ -2,12 +2,14 @@
 
 $minstate = intval((isset($_GET['minstate'])) ? $_GET['minstate'] : "0");
 $maxstate = intval((isset($_GET['maxstate'])) ? $_GET['maxstate'] : "20");
+$reserved = (isset($_GET['reserved'])) ? $_GET['reserved'] : "%";
 
 // query the list of the desired import. Now limiting to 1000 products after random sorting, because displaying all our
 // (at the time of writing) 5500 products at once exhausts memory and is not necessary at this time.
-$stmt = $db->prepare('SELECT * FROM fdata WHERE status >=:minstate AND status <= :maxstate AND "productImages" <> \'noimage.png\' ORDER BY (case when status < 10 then 0 else 1 end), status DESC, random() LIMIT 1000');
+$stmt = $db->prepare('SELECT * FROM fdata WHERE reserved_by LIKE :reserved AND status >=:minstate AND status <= :maxstate AND "productImages" <> \'noimage.png\' ORDER BY (case when status < 10 then 0 else 1 end), status DESC, random() LIMIT 1000');
 $stmt->bindValue(":minstate", $minstate);
 $stmt->bindValue(":maxstate", $maxstate);
+$stmt->bindValue(":reserved", $reserved);
 $stmt->execute();
 $imports = $stmt->fetchAll();
 
@@ -79,9 +81,19 @@ $taggroups = $stmt6->fetchAll();
 
                 <li>
                     <form action="" method="get">
-                        <input type="text" name="minstate" value="<?php echo $minstate; ?>" size="2"/>
-                        <input type="text" name="maxstate" value="<?php echo $maxstate; ?>" size="2"/>
-                        <input type="submit" value="Status filtern"/>
+                        <label>
+                            Status von:
+                            <input type="text" name="minstate" value="<?php echo $minstate; ?>" size="2"/>
+                        </label>
+                        <label>
+                            Status bis:
+                            <input type="text" name="maxstate" value="<?php echo $maxstate; ?>" size="2"/>
+                        </label>
+                        <label>
+                            Reserviert durch:
+                            <input type="text" name="reserved" value="<?php echo $reserved; ?>"/>
+                        </label>
+                        <input type="submit" value="Filtern"/>
                         <a href="#" id="show_status_info">(?)</a>
                     </form>
                 </li>
